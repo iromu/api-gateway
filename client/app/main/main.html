@@ -1,0 +1,28 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <form class="form-inline">
+      <div class="form-group">
+        <label class="sr-only" for="inputUri">API address</label>
+        <input size="50" type="url" class="form-control input-lg" id="inputUri" ng-model="service.code"
+               placeholder="{{ service.code}}">
+      </div>
+      <div class="form-group">
+        <label for="inputVersion" class="sr-only">Version</label>
+
+        <select id="inputVersion" class="form-control input-lg" ng-model="service.apiVersion"
+                ng-options="item.apiVersion as item.label for item in service.endpoints">
+        </select>
+      </div>
+      <button type="submit" class="btn btn-default btn-lg" ng-click="addThing()">Explore</button>
+    </form>
+  </div>
+</header>
+
+
+<footer class="footer">
+  <div class="container">
+
+  </div>
+</footer>

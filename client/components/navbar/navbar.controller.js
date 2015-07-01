@@ -1,32 +1,23 @@
-;(function(){
 'use strict';
 
-angular
-  .module('apiGatewayApp')
-  .controller('NavbarCtrl', NavbarCtrl);
-
-  NavbarCtrl.$inject = ['$scope', '$location', 'Auth'];
-  function NavbarCtrl($scope, $location, Auth) {
-    var vm = this;
-    vm.menu = [{
+angular.module('apiGatewayApp')
+  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+    $scope.menu = [{
       'title': 'Home',
       'link': '/'
     }];
 
-    vm.isCollapsed = true;
-    vm.isLoggedIn = Auth.isLoggedIn;
-    vm.isAdmin = Auth.isAdmin;
-    vm.getCurrentUser = Auth.getCurrentUser;
-    vm.logout = logout;
-    vm.isActive = isActive;
+    $scope.isCollapsed = true;
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.isAdmin = Auth.isAdmin;
+    $scope.getCurrentUser = Auth.getCurrentUser;
 
-    function logout() {
+    $scope.logout = function() {
       Auth.logout();
       $location.path('/login');
-    }
+    };
 
-    function isActive(route) {
+    $scope.isActive = function(route) {
       return route === $location.path();
-    }
-  }
-}).call(this);
+    };
+  });

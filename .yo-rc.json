@@ -1,5 +1,5 @@
 {
-  "generator-soa": {
+  "generator-angular-fullstack": {
     "insertRoutes": true,
     "registerRoutesFile": "server/routes.js",
     "routesNeedle": "// Insert routes below",
@@ -11,7 +11,7 @@
     "filters": {
       "js": true,
       "html": true,
-      "less": true,
+      "sass": true,
       "uirouter": true,
       "bootstrap": true,
       "uibootstrap": true,
