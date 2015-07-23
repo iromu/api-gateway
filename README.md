@@ -48,12 +48,32 @@ You need a running local mongodb instance. (For OSX, 'brew install mongodb')
 
     http://localhost:9000
       
-### Settings
+### Use
 
-`X-Api-Version` parameter from header or querystring
+Set `X-Api-Version` parameter from header or querystring
 
 
 ###### Test links
+
+http://localhost:9000/api/samples` endpoint test api
+
+
+Sample service model seed data
+
+```json
+{
+  name: 'Sample Service',
+  code: 'sampleservice',
+  public: true,
+  hits: 10,
+  endpoints: [
+    {uri: 'http://localhost:9000/api/samples/v1', apiVersion: '1.0.1'},
+    {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.0.0'},
+    {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.0.3'},
+    {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.1.0'}
+  ]
+}
+```
 
 Call http://localhost:9000/api/samples/v1/hello rest resource
  
