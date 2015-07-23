@@ -8,8 +8,8 @@
 [travis-image]: https://travis-ci.org/iromu/api-gateway.svg?branch=develop
 [travis-url]: https://travis-ci.org/iromu/api-gateway
 
-[coveralls-image]: https://coveralls.io/repos/iromu/api-gateway/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/r/iromu/api-gateway?branch=master
+[coveralls-image]: https://coveralls.io/repos/iromu/api-gateway/badge.svg?branch=develop
+[coveralls-url]: https://coveralls.io/r/iromu/api-gateway?branch=develop
 
 [dep-image]: https://david-dm.org/iromu/api-gateway.svg
 [dep-url]: https://david-dm.org/iromu/api-gateway#info=dependencies&view=table
