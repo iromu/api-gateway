@@ -19,13 +19,16 @@ exports.handle = function (req, res) {
   };
 
   var apiVersion;
+
   if ('x-api-version' in req.headers) {
     apiVersion = req.headers['x-api-version'];
+  } else if ('x-api-version' in req.query) {
+    apiVersion = req.query['x-api-version'];
   }
   console.info('code %s api version', code, apiVersion);
 
   Service
-    .findOne({code: code}, {'endpoints': {$elemMatch: {apiVersion: apiVersion}}})
+    .findOne({code: code}, {'endpoints': {$elemMatch: {apiVersion: {$eq: apiVersion}}}})
     .populate(populateOptions)
     .lean()
     .exec(function (err, service) {
