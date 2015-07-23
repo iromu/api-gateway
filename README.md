@@ -50,7 +50,7 @@ You need a running local mongodb instance. (For OSX, 'brew install mongodb')
       
 ### Settings
 
-X-Api-Version` parameter from header or querystring`
+`X-Api-Version` parameter from header or querystring
 
 
 ###### Test links
