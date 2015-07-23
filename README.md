@@ -5,7 +5,7 @@
 [![Dependency Status][dep-image]][dep-url]
 [![Dev Dependency Status][dev-dep-image]][dev-dep-url]
 
-[travis-image]: https://travis-ci.org/iromu/api-gateway.svg?branch=develop
+[travis-image]: https://travis-ci.org/iromu/api-gateway.svg?branch=master
 [travis-url]: https://travis-ci.org/iromu/api-gateway
 
 [coveralls-image]: https://coveralls.io/repos/iromu/api-gateway/badge.svg?branch=master
