@@ -15,6 +15,7 @@ var ServiceSchema = new Schema({
   name: String,
   code: String,
   info: String,
+  latestVersion: String,
   public: Boolean,
   active: Boolean,
   example: Boolean,

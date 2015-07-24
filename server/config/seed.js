@@ -32,6 +32,7 @@ Service.find({}).remove(function () {
       code: 'sampleservice',
       public: true,
       hits: 10,
+      latestVersion: '2.1.0',
       endpoints: [
         {uri: 'http://localhost:9000/api/samples/v1', apiVersion: '1.0.1'},
         {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.0.0'},
