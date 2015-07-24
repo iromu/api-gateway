@@ -1,5 +1,7 @@
 'use strict';
 
+var API_VERSION_KEY = 'X-Api-Version';
+
 var _ = require('lodash');
 var util = require('util');
 var request = require('request');
@@ -22,8 +24,8 @@ exports.handle = function (req, res) {
 
   if ('x-api-version' in req.headers) {
     apiVersion = req.headers['x-api-version'];
-  } else if ('x-api-version' in req.query) {
-    apiVersion = req.query['x-api-version'];
+  } else if (API_VERSION_KEY in req.query) {
+    apiVersion = req.query[API_VERSION_KEY];
   }
   console.info('code %s api version', code, apiVersion);
 
@@ -35,7 +37,7 @@ exports.handle = function (req, res) {
       if (err) {
         return handleError(res, err);
       }
-      if (!service) {
+      if (!service || !service.endpoints) {
         return res.sendStatus(404);
       }
       console.info('service %s', util.inspect(service, 2));
