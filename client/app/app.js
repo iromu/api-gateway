@@ -7,7 +7,8 @@ angular.module('apiGatewayApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',
-  'restangular'
+  'restangular',
+  'swaggerUi'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

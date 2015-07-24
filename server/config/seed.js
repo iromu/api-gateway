@@ -34,10 +34,10 @@ Service.find({}).remove(function () {
       hits: 10,
       latestVersion: '2.1.0',
       endpoints: [
-        {uri: 'http://localhost:9000/api/samples/v1', apiVersion: '1.0.1'},
-        {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.0.0'},
-        {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.0.3'},
-        {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.1.0'}
+        {uri: 'http://localhost:9000/api/samples/v1', hits: 4, apiVersion: '1.0.1'},
+        {uri: 'http://localhost:9000/api/samples/v2', hits: 1, apiVersion: '2.0.0'},
+        {uri: 'http://localhost:9000/api/samples/v2', hits: 3, apiVersion: '2.0.3'},
+        {uri: 'http://localhost:9000/api/samples/v2', hits: 2, apiVersion: '2.1.0'}
       ]
     }, {
       name: 'Swagger Petstore',
@@ -45,7 +45,14 @@ Service.find({}).remove(function () {
       public: true,
       hits: 0,
       endpoints: [
-        {uri: 'http://petstore.swagger.io/v2', apiVersion: '2'}
+        {
+          uri: 'http://petstore.swagger.io/v2',
+          apiVersion: '2',
+          apiDoc: 'http://petstore.swagger.io/v2/swagger.json',
+          headers: [
+            {name: 'api_key', value: 's5hredf5hy41er8yhee58'}
+          ]
+        }
       ]
     },
     function () {

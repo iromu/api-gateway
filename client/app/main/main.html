@@ -5,22 +5,29 @@
     <form class="form-inline">
       <div class="form-group">
         <label class="sr-only" for="inputUri">API address</label>
-        <input size="50" type="url" class="form-control input-lg" id="inputUri" ng-model="service.code"
+        <input size="50" class="form-control input-lg" id="inputUri" ng-model="service.code"
                placeholder="{{ service.code}}">
       </div>
       <div class="form-group">
         <label for="inputVersion" class="sr-only">Version</label>
 
-        <select id="inputVersion" class="form-control input-lg" ng-model="service.apiVersion"
-                ng-options="item.apiVersion as item.label for item in service.endpoints">
+        <select id="inputVersion" class="form-control input-lg"
+                ng-change="apiVersionChanged()"
+                ng-model="service.apiVersionSelection">
+          <option ng-selected="service.apiVersionSelection == item.apiVersion"
+                  ng-repeat="item in service.endpoints" ng-value="item.apiVersion">{{item.apiVersion}}
+          </option>
+        </select>
         </select>
       </div>
-      <button type="submit" class="btn btn-default btn-lg" ng-click="addThing()">Explore</button>
+      <button type="submit" class="btn btn-default btn-lg" ng-click="explore()">Explore</button>
     </form>
   </div>
 </header>
-
-
+<div class="container">
+  <div swagger-ui url="swaggerUrl" api-explorer="true" error-handler="swaggerErrorHandler"
+       api-explorer-transform="swaggerTransform"></div>
+</div>
 <footer class="footer">
   <div class="container">
 

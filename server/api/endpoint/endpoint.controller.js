@@ -27,26 +27,50 @@ exports.handle = function (req, res) {
   } else if (API_VERSION_KEY in req.query) {
     apiVersion = req.query[API_VERSION_KEY];
   }
-  console.info('code %s api version', code, apiVersion);
 
-  Service
-    .findOne({code: code}, {'endpoints': {$elemMatch: {apiVersion: {$eq: apiVersion}}}})
-    .populate(populateOptions)
-    .lean()
-    .exec(function (err, service) {
-      if (err) {
-        return handleError(res, err);
-      }
-      if (!service || !service.endpoints) {
-        return res.sendStatus(404);
-      }
-      console.info('service %s', util.inspect(service, 2));
+  console.info('code %s api version %s', code, apiVersion);
 
-      var upstreamUrl = service.endpoints[0].uri + '/' + upstreamPath;
-      var x = request(upstreamUrl);
-      req.pipe(x);
-      x.pipe(res);
-    });
+  var findEndpoint = function () {
+    Service
+      .findOne({code: code}, {'endpoints': {$elemMatch: {apiVersion: {$eq: apiVersion}}}})
+      .populate(populateOptions)
+      .lean()
+      .exec(function (err, service) {
+        if (err) {
+          return handleError(res, err);
+        }
+        if (!service || !service.endpoints) {
+          return res.sendStatus(404);
+        }
+        console.info('service %s', util.inspect(service, 2));
+
+        var upstreamUrl = service.endpoints[0].uri + '/' + upstreamPath;
+        var x = request(upstreamUrl);
+        req.pipe(x);
+        x.pipe(res);
+      });
+  };
+
+  if (!apiVersion) {
+    Service
+      .findOne({code: code})
+      .lean()
+      .exec(function (err, service) {
+        if (err) {
+          return handleError(res, err);
+        }
+        if (!service) {
+          return res.sendStatus(404);
+        }
+        apiVersion = service.latestVersion;
+
+        console.info('code %s latest api version %s', code, apiVersion);
+        findEndpoint();
+      });
+  } else {
+    findEndpoint();
+  }
+
 
 };
 
