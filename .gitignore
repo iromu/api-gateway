@@ -1,4 +1,4 @@
-  node_modules
+node_modules
 public
 .tmp
 .sass-cache
@@ -7,5 +7,6 @@ client/bower_components
 dist
 /server/config/local.env.js
 *.iml
+coverage
 
 npm-debug.log
