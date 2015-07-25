@@ -10,3 +10,9 @@ dist
 coverage
 
 npm-debug.log
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.sample
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

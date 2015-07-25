@@ -394,6 +394,13 @@ module.exports = function (grunt) {
           branch: 'master'
         }
       },
+      eb: {
+        options: {
+          remote: '../',
+          branch: 'eb',
+          push: false
+        }
+      },
       openshift: {
         options: {
           remote: 'openshift',
