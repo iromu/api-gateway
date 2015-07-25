@@ -1,6 +1,6 @@
 {
   "name": "api-gateway",
-  "version": "0.0.0",
+  "version": "0.0.1-SNAPSHOT",
   "main": "server/app.js",
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -17,7 +17,7 @@
     "jsonwebtoken": "^5.0.4",
     "lodash": "~3.10.0",
     "method-override": "~2.3.4",
-    "mongoose": "~4.0.8",
+    "mongoose": "~4.1.0",
     "morgan": "~1.6.1",
     "passport": "~0.2.2",
     "passport-facebook": "latest",
@@ -93,7 +93,8 @@
     "start": "node server/app.js",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
-    "coverage": "istanbul cover -- grunt test && grunt coveralls:grunt_coveralls_real_coverage"
+    "coverage": "istanbul cover -- grunt test && grunt coveralls:grunt_coveralls_real_coverage",
+    "toc": "doctoc --maxlevel 3 README.md"
   },
   "private": true
 }
