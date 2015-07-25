@@ -368,6 +368,8 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             'package.json',
+            '.ebextensions/*.config',
+            '.elasticbeanstalk/*.yml',
             'server/**/*'
           ]
         }]
