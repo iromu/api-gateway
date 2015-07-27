@@ -4,6 +4,7 @@ public
 .sass-cache
 .idea
 client/bower_components
+bower_components
 dist
 /server/config/local.env.js
 *.iml
@@ -16,3 +17,8 @@ npm-debug.log
 !.elasticbeanstalk/*.sample
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+.ebextensions/*.private.config
+
+client/components/bootstrap-override/*
+!client/components/bootstrap-override/.empty

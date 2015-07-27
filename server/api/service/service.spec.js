@@ -27,7 +27,7 @@ describe('GET /api/services', function () {
       .end(function (err, res) {
         if (err) return done(err);
         res.body.should.be.instanceof(Array);
-        res.body.should.have.length(2);
+        res.body.should.have.length(1);
         done();
       });
   });

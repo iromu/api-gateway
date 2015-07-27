@@ -15,18 +15,22 @@ before(function (done) {
         hits: 10,
         latestVersion: '2.1.0',
         endpoints: [
-          {uri: 'http://localhost:9000/api/samples/v1', apiVersion: '1.0.1'},
-          {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.0.0'},
-          {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.0.3'},
-          {uri: 'http://localhost:9000/api/samples/v2', apiVersion: '2.1.0'}
+          {uri: 'http://localhost:9000/api/samples/v101', hits: 4, apiVersion: '1.0.1'},
+          {uri: 'http://localhost:9000/api/samples/v200', hits: 1, apiVersion: '2.0.0'},
+          {uri: 'http://localhost:9000/api/samples/v203', hits: 3, apiVersion: '2.0.3'},
+          {uri: 'http://localhost:9000/api/samples/v210', hits: 2, apiVersion: '2.1.0'}
         ]
-      }, {
-        name: 'Swagger Petstore',
-        code: 'swaggerpetstore',
-        public: true,
-        hits: 0,
+      },{
+        name: 'Private',
+        code: 'private',
+        public: false,
+        hits: 10,
+        latestVersion: '2.1.0',
         endpoints: [
-          {uri: 'http://petstore.swagger.io/v2', apiVersion: '2'}
+          {uri: 'http://localhost:9000/api/samples/v101', hits: 4, apiVersion: '1.0.1'},
+          {uri: 'http://localhost:9000/api/samples/v200', hits: 1, apiVersion: '2.0.0'},
+          {uri: 'http://localhost:9000/api/samples/v203', hits: 3, apiVersion: '2.0.3'},
+          {uri: 'http://localhost:9000/api/samples/v210', hits: 2, apiVersion: '2.1.0'}
         ]
       },
       function () {

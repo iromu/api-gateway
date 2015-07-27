@@ -3,24 +3,27 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-var EndpointSchema = new Schema({
+var HeaderSchema = new Schema({
   name: String,
-  info: String,
-  active: Boolean,
-  public: Boolean,
-  uri: String,
-  apiVersion: String
+  value: String
 });
+
+var EndpointSchema = new Schema({
+  hits: {type: Number, default: 0},
+  uri: String,
+  apiVersion: String,
+  headers: [HeaderSchema]
+});
+
 var ServiceSchema = new Schema({
   name: String,
-  code: String,
-  info: String,
+  hits: {type: Number, default: 0},
+  code: {type: String, unique: true, validate: /^(?!api).*$/},
   latestVersion: String,
-  public: Boolean,
-  active: Boolean,
+  public: {type: Boolean, default: true},
   example: Boolean,
+  defaultHeaders: [HeaderSchema],
   endpoints: [EndpointSchema]
-
 });
 
 module.exports = mongoose.model('Service', ServiceSchema);

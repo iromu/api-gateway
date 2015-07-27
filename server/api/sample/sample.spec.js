@@ -15,33 +15,50 @@ function respondWithObject(res) {
   res.body.message.should.equal('Hello world');
 }
 
-describe('GET /api/samples/v1/hello', function () {
-
-
+var shouldRespondWithVersion = function (versionUrl, version) {
   it('should respond with JSON object', function (done) {
     request(app)
-      .get('/api/samples/v1/hello')
+      .get('/api/samples/' + versionUrl + '/hello')
       .expect(200)
       .expect('Content-Type', /json/)
       .expect(respondWithObject)
-      .end(function (err) {
+      .end(function (err, res) {
         if (err) return done(err);
+        res.body.version.should.equal(version);
         done();
       });
   });
+};
+
+
+describe('GET /api/samples/v101/hello', function () {
+
+  var versionUrl = 'v101';
+  var version = '1.0.1';
+  shouldRespondWithVersion(versionUrl, version);
+
 });
 
-describe('GET /api/samples/v2/hello', function () {
+describe('GET /api/samples/v200/hello', function () {
 
-  it('should respond with JSON object', function (done) {
-    request(app)
-      .get('/api/samples/v2/hello')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .expect(respondWithObject)
-      .end(function (err) {
-        if (err) return done(err);
-        done();
-      });
-  });
+  var versionUrl = 'v200';
+  var version = '2.0.0';
+  shouldRespondWithVersion(versionUrl, version);
+
+});
+
+describe('GET /api/samples/v203/hello', function () {
+
+  var versionUrl = 'v203';
+  var version = '2.0.3';
+  shouldRespondWithVersion(versionUrl, version);
+
+});
+
+describe('GET /api/samples/v210/hello', function () {
+
+  var versionUrl = 'v210';
+  var version = '2.1.0';
+  shouldRespondWithVersion(versionUrl, version);
+
 });

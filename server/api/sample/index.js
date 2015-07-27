@@ -5,11 +5,9 @@ var controller = require('./sample.controller');
 
 var router = express.Router();
 
-router.get('/v1', controller.apiDoc);
-router.get('/v2', controller.apiDoc);
+router.get('/v*/swagger.json', controller.apiDoc);
 
-router.get('/v1/hello', controller.v1);
-router.get('/v2/hello', controller.v2);
+router.get('/v*/hello', controller.hello);
 
 
 module.exports = router;

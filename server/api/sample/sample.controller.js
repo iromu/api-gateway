@@ -4,35 +4,43 @@ var fs = require('fs');
 var path = require('path');
 var template = JSON.parse(fs.readFileSync(path.join(__dirname, './swagger.json'), 'utf-8'));
 
-var API_VERSION_KEY = 'X-Api-Version';
 var apiVersion;
+var apiVersionText;
 
-var filterApiVersion = function (req, res) {
+var getApiVersion = function (req, res) {
+  var re = /^\/v(\d+)/g;
+  var str = req.url;
+  var m;
 
-  if ('x-api-version' in req.headers) {
-    apiVersion = req.headers['x-api-version'];
-  } else if (API_VERSION_KEY in req.query) {
-    apiVersion = req.query[API_VERSION_KEY];
+  while ((m = re.exec(str)) !== null) {
+    if (m.index === re.lastIndex) {
+      re.lastIndex++;
+    }
+    apiVersionText = m[1];
+    apiVersion = m[1].split('').join('.');
   }
 
-  console.info('api version %s', apiVersion)
-
-  res.set('x-api-version', apiVersion);
+  res.set('Sample-Api-Version', apiVersion);
   return apiVersion;
 };
 
 exports.apiDoc = function (req, res) {
-  filterApiVersion(req, res);
+  var apiVersion = getApiVersion(req, res);
   template.info.version = apiVersion;
+  template.host = req.get('host');
+  template.basePath = '/api/v' + apiVersionText;
   return res.status(200).json(template);
 };
 
-exports.v1 = function (req, res) {
-  filterApiVersion(req, res);
-  return res.status(200).json({message: 'Hello world', version: apiVersion});
-};
+exports.hello = function (req, res) {
+  var apiVersion = getApiVersion(req, res);
+  res.set('Echo-Header-Response', req.headers['echo-header']);
+  res.cookie('echo-token-response', req.cookies['echo-token'], {
+    domain: 'test.example.com',
+    path: '/api/samples/v' + apiVersionText,
+    maxAge: 900000,
+    httpOnly: true
+  });
 
-exports.v2 = function (req, res) {
-  filterApiVersion(req, res);
   return res.status(200).json({message: 'Hello world', version: apiVersion});
 };

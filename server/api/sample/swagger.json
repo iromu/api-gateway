@@ -3,13 +3,13 @@
   "info": {
     "title": "Sample API",
     "description": "Sample API",
-    "version": "1.0.1"
+    "version": "X.X.X"
   },
-  "host": "localhost:9000",
+  "host": "XXXX",
   "schemes": [
     "http"
   ],
-  "basePath": "/sampleservice",
+  "basePath": "/api/vXXXX",
   "produces": [
     "application/json"
   ],

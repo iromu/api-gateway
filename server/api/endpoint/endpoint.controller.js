@@ -1,77 +1,72 @@
 'use strict';
 
 var API_VERSION_KEY = 'X-Api-Version';
+var API_VERSION_KEY_LC = API_VERSION_KEY.toLowerCase();
 
 var _ = require('lodash');
 var util = require('util');
 var request = require('request');
-var Service = require('../service/service.model');
+var service = require('./endpoint.service');
+
+var getApiVersion = function (req) {
+  var apiVersion;
+
+  if (API_VERSION_KEY_LC in req.headers) {
+    apiVersion = req.headers[API_VERSION_KEY_LC];
+    delete req.headers[API_VERSION_KEY_LC];
+  } else if (API_VERSION_KEY in req.query) {
+    apiVersion = req.query[API_VERSION_KEY];
+    delete req.query[API_VERSION_KEY_LC];
+  }
+  return apiVersion;
+};
+
+var handleApiDoc = function (res, env, options) {
+  request(options, function (error, response, body) {
+
+      var match = /"basePath" *?: *?".+?" *?,/;
+      body = body.replace(match, '"basePath":"/' + env.code + '",');
+
+      var host = env.host;
+      match = /"host" *?: *?".+?" *?,/;
+      body = body.replace(match, '"host":"' + host + '",');
+
+      res.set(response.headers);
+      return res.send(body);
+    }
+  ).on('error', function (error) {
+      console.log(error);
+    });
+};
 
 exports.handle = function (req, res) {
 
   var tokenizedUrl = req.originalUrl.split('/');
   var code = tokenizedUrl[1];
+
   tokenizedUrl.splice(0, 2);
 
   var upstreamPath = tokenizedUrl.join('/');
 
-  var populateOptions = {
-    path: 'endpoints',
-    select: 'apiVersion uri -_id'
-  };
+  var apiVersion = getApiVersion(req);
 
-  var apiVersion;
+  service.findEndpoint(code, apiVersion, function (error, options) {
+    if (error) {
+      return handleError(res, error);
+    }
+    if (!options) {
+      return res.send(404);
+    }
 
-  if ('x-api-version' in req.headers) {
-    apiVersion = req.headers['x-api-version'];
-  } else if (API_VERSION_KEY in req.query) {
-    apiVersion = req.query[API_VERSION_KEY];
-  }
+    options.headers = _.merge(options.headers, req.headers);
+    options.url = options.url + upstreamPath;
 
-  console.info('code %s api version %s', code, apiVersion);
-
-  var findEndpoint = function () {
-    Service
-      .findOne({code: code}, {'endpoints': {$elemMatch: {apiVersion: {$eq: apiVersion}}}})
-      .populate(populateOptions)
-      .lean()
-      .exec(function (err, service) {
-        if (err) {
-          return handleError(res, err);
-        }
-        if (!service || !service.endpoints) {
-          return res.sendStatus(404);
-        }
-        console.info('service %s', util.inspect(service, 2));
-
-        var upstreamUrl = service.endpoints[0].uri + '/' + upstreamPath;
-        var x = request(upstreamUrl);
-        req.pipe(x);
-        x.pipe(res);
-      });
-  };
-
-  if (!apiVersion) {
-    Service
-      .findOne({code: code})
-      .lean()
-      .exec(function (err, service) {
-        if (err) {
-          return handleError(res, err);
-        }
-        if (!service) {
-          return res.sendStatus(404);
-        }
-        apiVersion = service.latestVersion;
-
-        console.info('code %s latest api version %s', code, apiVersion);
-        findEndpoint();
-      });
-  } else {
-    findEndpoint();
-  }
-
-
+    if (upstreamPath && _.contains(upstreamPath, 'swagger.json')) {
+      handleApiDoc(res, {code: code, host: req.get('host')}, options);
+    } else {
+      req.pipe(request(options)).pipe(res);
+    }
+  });
 };
 
 function handleError(res, err) {
