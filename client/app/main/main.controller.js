@@ -3,19 +3,26 @@
 angular.module('apiGatewayApp')
   .controller('MainCtrl', function ($scope, $http, socket, FullRestangular) {
 
-    var sampleService = {};
+    $scope.awesomeThings = [];
+
+    $http.get('/api/services').success(function (awesomeThings) {
+      $scope.awesomeThings = awesomeThings;
+      socket.syncUpdates('service', $scope.awesomeThings);
+    });
 
     $scope.publicServices = [];
-    $scope.service = {code: 'sampleservice', apiVersion: '', apiVersionSelection: ''};
 
-    // init form
-    $scope.swaggerUrl = 'http://localhost:9000/sampleservice/';
+    $scope.codeSelection = undefined;
+    $scope.apiVersionSelection = undefined;
 
-    FullRestangular.all('services').getList({code: 'sampleservice'}).then(function (response) {
-      sampleService = response.data[0];
-      $scope.service = sampleService;
-      $scope.service.apiVersionSelection = sampleService.latestVersion;
-    });
+    $scope.service = {code: undefined, apiVersion: undefined, endpoints: []};
+
+    /*
+     FullRestangular.all('services').getList({code: 'sampleservice'}).then(function (response) {
+     $scope.service = response.data[0];
+     $scope.swaggerUrl = '/' + $scope.service.code;
+     });
+     */
 
     FullRestangular.all('services').getList({public: true}).then(function (response) {
       $scope.publicServices = response.data;
@@ -23,17 +30,33 @@ angular.module('apiGatewayApp')
 
     // error management
     $scope.swaggerErrorHandler = function (data, status) {
-      alert('failed to load swagger: ' + status);
+      console.log('failed to load swagger: ' + status);
     };
 
     // transform API explorer requests
     $scope.swaggerTransform = function (request) {
-      request.headers['X-Api-Version'] = $scope.service.apiVersionSelection;
+      request.headers['X-Api-Version'] = $scope.apiVersionSelection;
     };
 
     // API explorer
-    $scope.explore = function () {
-      $scope.swaggerUrl = 'http://localhost:9000/' + $scope.service.code;
+    $scope.exploreSwagger = function () {
+      $scope.swaggerUrl = '/' + $scope.service.code + '/swagger.json' + '?X-Api-Version=' + $scope.apiVersionSelection;
     };
+
+    $scope.loadVersions = function () {
+      $scope.apiVersionSelection = undefined;
+      //$scope.service = _.filter($scope.publicServices, {'code': $scope.codeSelection});
+      //$scope.endpoints = $scope.service;
+    };
+
+    $scope.selectService = function (value) {
+      $scope.apiVersionSelection = '@LATEST';
+      $scope.codeSelection = value.code;
+      $scope.service = _.filter($scope.publicServices, {'code': $scope.codeSelection})[0];
+    };
+
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('thing');
+    });
 
   });

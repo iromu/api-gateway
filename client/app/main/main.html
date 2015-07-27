@@ -5,29 +5,52 @@
     <form class="form-inline">
       <div class="form-group">
         <label class="sr-only" for="inputUri">API address</label>
-        <input size="50" class="form-control input-lg" id="inputUri" ng-model="service.code"
-               placeholder="{{ service.code}}">
+        <input size="50" class="form-control input-lg" id="inputUri" type="text"
+               ng-model="codeSelection"
+               ng-change="loadVersions()"
+               placeholder="Service code"
+               typeahead="service.code for service in publicServices | filter:$viewValue | limitTo:8"
+               typeahead-loading="loadingServices">
+        <i ng-show="loadingServices" class="glyphicon glyphicon-refresh"></i>
+
       </div>
       <div class="form-group">
         <label for="inputVersion" class="sr-only">Version</label>
 
         <select id="inputVersion" class="form-control input-lg"
-                ng-change="apiVersionChanged()"
-                ng-model="service.apiVersionSelection">
-          <option ng-selected="service.apiVersionSelection == item.apiVersion"
+                ng-model="apiVersionSelection">
+          <option value="@LATEST" ng-selected="apiVersionSelection===undefined">@LATEST</option>
+          <option ng-selected="apiVersionSelection == item.apiVersion"
                   ng-repeat="item in service.endpoints" ng-value="item.apiVersion">{{item.apiVersion}}
           </option>
         </select>
-        </select>
       </div>
-      <button type="submit" class="btn btn-default btn-lg" ng-click="explore()">Explore</button>
+      <button type="submit" class="btn btn-default btn-lg" ng-click="exploreSwagger()">Explore</button>
     </form>
   </div>
 </header>
+
+
 <div class="container">
-  <div swagger-ui url="swaggerUrl" api-explorer="true" error-handler="swaggerErrorHandler"
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Popular:</h1>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
+        <li><a href="#" ng-click="selectService(thing)" tooltip="{{thing.hits}} hits">{{thing.name}}
+          <button type="button" class="close" ng-click="deleteThing(thing)">&times;</button>
+        </a></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <p ng-show="codeSelection && swaggerUrl">Swagger config location {{swaggerUrl}}</p>
+
+  <div ng-show="codeSelection && swaggerUrl" swagger-ui url="swaggerUrl" api-explorer="true" error-handler="swaggerErrorHandler"
        api-explorer-transform="swaggerTransform"></div>
 </div>
+
 <footer class="footer">
   <div class="container">
 
