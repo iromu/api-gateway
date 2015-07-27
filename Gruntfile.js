@@ -558,7 +558,7 @@ module.exports = function (grunt) {
         // When true, grunt-coveralls will only print a warning rather than
         // an error, to prevent CI builds from failing unnecessarily (e.g. if
         // coveralls.io is down). Optional, defaults to false.
-        force: false
+        force: true
       },
       grunt_coveralls_real_coverage: {
         src: 'coverage/lcov.info'

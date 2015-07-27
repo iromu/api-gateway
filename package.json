@@ -93,7 +93,7 @@
     "start": "node server/app.js",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
-    "coverage": "istanbul cover -- grunt test --force && grunt coveralls:grunt_coveralls_real_coverage",
+    "coverage": "istanbul cover -- grunt test && grunt coveralls:grunt_coveralls_real_coverage",
     "toc": "doctoc --maxlevel 3 README.md"
   },
   "private": true
