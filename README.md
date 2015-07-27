@@ -1,6 +1,7 @@
 # rest api gateway
 
 [![Build Status][travis-image]][travis-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
 [![Dependency Status][dep-image]][dep-url]
 [![Dev Dependency Status][dev-dep-image]][dev-dep-url]
 
@@ -12,6 +13,9 @@
 
 [dev-dep-image]: https://david-dm.org/iromu/api-gateway/dev-status.svg
 [dev-dep-url]: https://david-dm.org/iromu/api-gateway#info=devDependencies&view=table
+
+[coveralls-image]: https://coveralls.io/repos/iromu/api-gateway/badge.svg?branch=develop
+[coveralls-url]: https://coveralls.io/r/iromu/api-gateway?branch=develop
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
