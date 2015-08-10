@@ -13,6 +13,8 @@ module.exports = function (config) {
     files: [
       'client/bower_components/jquery/dist/jquery.js',
       'client/bower_components/angular/angular.js',
+      'client/bower_components/angular-mocks/angular-mocks.js',
+      'client/bower_components/angular-ui-grid/ui-grid.js',
       'client/bower_components/angular-resource/angular-resource.js',
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angular-sanitize/angular-sanitize.js',
@@ -37,7 +39,7 @@ module.exports = function (config) {
     preprocessors: {
       '**/*.jade': 'ng-jade2js',
       '**/*.html': 'html2js',
-      '**/*.coffee': 'coffee',
+      '**/*.coffee': 'coffee'
     },
 
     ngHtml2JsPreprocessor: {
