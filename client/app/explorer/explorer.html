@@ -1,0 +1,38 @@
+<div ng-controller="ExplorerCtrl">
+
+  <div class="input-group">
+    <span class="input-group-addon" id="addonCode">http://apiver.io/</span>
+    <input class="form-control input-md" id="inputCode" type="text" aria-describedby="addonCode"
+           ng-model="codeSelection"
+           ng-change="loadVersions()"
+           placeholder="Service code"
+           typeahead="service.code for service in publicServices | filter:$viewValue | limitTo:8"
+           typeahead-loading="loadingServices">
+    <i ng-show="loadingServices" class="glyphicon glyphicon-refresh"></i>
+
+
+    <div class="input-group-btn">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="true">Version <span class="caret"></span></button>
+
+    </div>
+    <!-- /btn-group -->
+  </div>
+<br />
+  <div class="row" ng-show="codeSelection && apiVersionSelection">
+    <div class="col-lg-12">
+      <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+        Configured <em>headers['X-Api-Version'] = {{apiVersionSelection}}</em>
+        <br>
+        Loaded Swagger config from <strong>http://apiver.io{{swaggerUrlDisplay}}</strong>
+      </div>
+    </div>
+  </div>
+
+
+  <div ng-show="codeSelection && swaggerUrl" swagger-ui url="swaggerUrl" api-explorer="true"
+       error-handler="swaggerErrorHandler"
+       api-explorer-transform="swaggerTransform"></div>
+</div>
