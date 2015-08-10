@@ -5,6 +5,9 @@ angular.module('apiGatewayApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    },{
+      'title': 'Explorer',
+      'link': '/explorer'
     }];
 
     $scope.isCollapsed = true;
