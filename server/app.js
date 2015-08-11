@@ -4,6 +4,9 @@
 
 'use strict';
 
+//add timestamps in front of log messages
+require('console-stamp')(console, '[HH:MM:ss.l]');
+
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -13,6 +16,7 @@ var config = require('./config/environment');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
+require('./components/redis').mongooseRedisCache(mongoose);
 
 // Populate DB with sample data
 if(config.seedDB) { require('./config/seed'); }

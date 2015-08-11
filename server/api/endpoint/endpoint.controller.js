@@ -4,6 +4,7 @@ var API_VERSION_KEY = 'X-Api-Version';
 var API_VERSION_KEY_LC = API_VERSION_KEY.toLowerCase();
 
 var _ = require('lodash');
+var querystring = require('querystring');
 var util = require('util');
 var request = require('request');
 var service = require('./endpoint.service');
@@ -18,25 +19,8 @@ var getApiVersion = function (req) {
     apiVersion = req.query[API_VERSION_KEY];
     delete req.query[API_VERSION_KEY_LC];
   }
+
   return apiVersion;
-};
-
-var handleApiDoc = function (res, env, options) {
-  request(options, function (error, response, body) {
-
-      var match = /"basePath" *?: *?".+?" *?,/;
-      body = body.replace(match, '"basePath":"/' + env.code + '",');
-
-      var host = env.host;
-      match = /"host" *?: *?".+?" *?,/;
-      body = body.replace(match, '"host":"' + host + '",');
-
-      res.set(response.headers);
-      return res.send(body);
-    }
-  ).on('error', function (error) {
-      console.log(error);
-    });
 };
 
 exports.handle = function (req, res) {
@@ -47,6 +31,8 @@ exports.handle = function (req, res) {
   tokenizedUrl.splice(0, 2);
 
   var upstreamPath = tokenizedUrl.join('/');
+  var upstreamQuerystring = upstreamPath.split('?')[1];
+  upstreamPath = upstreamPath.split('?')[0];
 
   var apiVersion = getApiVersion(req);
 
@@ -59,10 +45,26 @@ exports.handle = function (req, res) {
     }
 
     options.headers = _.merge(options.headers, req.headers);
-    options.url = options.url + upstreamPath;
+
+    var qs = querystring.parse(upstreamQuerystring);
+    delete qs[API_VERSION_KEY];
+    options.url = options.url + upstreamPath + '?' + querystring.stringify(qs);
 
     if (upstreamPath && _.contains(upstreamPath, 'swagger.json')) {
-      handleApiDoc(res, {code: code, host: req.get('host')}, options);
+      service.getApiDoc({code: code, apiVersion: apiVersion, host: req.get('host')}, options)
+        .then(function (response) {
+          res.set(response.headers);
+          return res.send(response.body);
+        })
+        .catch(function (error) {
+          if (error) {
+            return handleError(res, error);
+          } else {
+            return res.send(404);
+          }
+        })
+        .done();
+
     } else {
       req.pipe(request(options)).pipe(res);
     }
@@ -70,5 +72,6 @@ exports.handle = function (req, res) {
 };
 
 function handleError(res, err) {
+  console.error(err);
   return res.status(500).json(err);
 }

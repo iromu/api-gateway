@@ -16,36 +16,37 @@ var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 var session = require('express-session');
-var mongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
+var RedisStore = require('connect-redis')(session);
+var redisClient = require('../components/redis').getRedisClient();
 
-module.exports = function(app) {
+module.exports = function (app) {
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
   app.use(compression());
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.urlencoded({extended: false}));
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(passport.initialize());
 
-  // Persist sessions with mongoStore
-  // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
   app.use(session({
-    secret: config.secrets.session,
-    resave: true,
-    saveUninitialized: true,
-    store: new mongoStore({mongooseConnection: mongoose.connection})
-  }));
-
+      store: new RedisStore({
+        client: redisClient,
+        prefix: 'sess:ag:'
+      }),
+      resave: true,
+      saveUninitialized: true,
+      secret: config.secrets.session
+    }
+  ));
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
     app.set('appPath', config.root + '/public');
-    app.use(morgan('dev'));
   }
 
   if ('development' === env || 'test' === env) {
