@@ -9,4 +9,4 @@ before_script:
 script: "npm run-script coverage"
 services:
   - mongodb
-  - redis
+  - redis-server
