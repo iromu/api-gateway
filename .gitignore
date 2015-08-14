@@ -22,3 +22,5 @@ npm-debug.log
 
 client/components/bootstrap-override/*
 !client/components/bootstrap-override/.empty
+
+client/app/app.constants.js
