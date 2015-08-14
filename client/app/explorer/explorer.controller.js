@@ -1,11 +1,18 @@
 'use strict';
 
 angular.module('apiGatewayApp')
-  .controller('ExplorerCtrl', function ($scope, $rootScope) {
-    console.log('Init ExplorerCtrl');
+  .controller('ExplorerCtrl', function ($scope, $rootScope, $stateParams) {
+    console.log('Init ExplorerCtrl $stateParams: ' + JSON.stringify($stateParams));
     $scope.message = 'Hello';
 
-    $rootScope.showExplorerView = true;
+    if (!$rootScope.showExplorerView) {
+      $rootScope.showExplorerView = true;
+    }
+
+    if ('code' in $stateParams) {
+      console.log('Emit selectService: ' + $stateParams.code);
+      $scope.$emit('selectService', {code: $stateParams.code});
+    }
 
     $scope.$on('$destroy', function () {
       console.log('Destroy explorer');

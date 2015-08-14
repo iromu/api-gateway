@@ -8,7 +8,9 @@ angular.module('apiGatewayApp', [
   'ui.router',
   'ui.bootstrap',
   'restangular',
-  'swaggerUi'
+  'swaggerUi',
+  'ui.grid',
+  'ui.grid.pagination'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

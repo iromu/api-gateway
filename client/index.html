@@ -13,7 +13,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-swagger-ui/dist/css/swagger-ui.min.css"/>
+      <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -53,37 +53,41 @@
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+      <script src="bower_components/lodash/lodash.js"></script>
       <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/restangular/dist/restangular.js"></script>
-    <script src="bower_components/angular-swagger-ui/dist/scripts/swagger-ui.min.js"></script>
+      <script src="bower_components/restangular/dist/restangular.js"></script>
+      <script src="bower_components/angular-swagger-ui/dist/scripts/swagger-ui.min.js"></script>
+      <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,client}) app/app.js -->
-        <script src="app/app.js"></script>
-          <!-- injector:js -->
-          <script src="app/account/account.js"></script>
-          <script src="app/account/login/login.controller.js"></script>
-          <script src="app/account/settings/settings.controller.js"></script>
-          <script src="app/account/signup/signup.controller.js"></script>
-          <script src="app/admin/admin.controller.js"></script>
-          <script src="app/admin/admin.js"></script>
-    <script src="app/endpoint/endpoint.controller.js"></script>
-    <script src="app/endpoint/endpoint.js"></script>
-          <script src="app/main/main.controller.js"></script>
-          <script src="app/main/main.js"></script>
-          <script src="app/main/main.service.js"></script>
-          <script src="components/auth/auth.service.js"></script>
-          <script src="components/auth/user.service.js"></script>
-          <script src="components/full-restangular/full-restangular.service.js"></script>
-          <script src="components/modal/modal.service.js"></script>
-          <script src="components/mongoose-error/mongoose-error.directive.js"></script>
-          <script src="components/navbar/navbar.controller.js"></script>
-          <script src="components/socket/socket.service.js"></script>
-          <!-- endinjector -->
-        <!-- endbuild -->
+    <!-- build:js({.tmp,client}) app/app.js -->
+    <script src="app/app.js"></script>
+      <!-- injector:js -->
+      <script src="app/account/account.js"></script>
+      <script src="app/account/login/login.controller.js"></script>
+      <script src="app/account/settings/settings.controller.js"></script>
+      <script src="app/account/signup/signup.controller.js"></script>
+      <script src="app/admin/admin.controller.js"></script>
+      <script src="app/admin/admin.js"></script>
+      <script src="app/app.constants.js"></script>
+      <script src="app/endpoint/endpoint.controller.js"></script>
+      <script src="app/endpoint/endpoint.js"></script>
+      <script src="app/explorer/explorer.controller.js"></script>
+      <script src="app/explorer/explorer.js"></script>
+      <script src="app/main/main.controller.js"></script>
+      <script src="app/main/main.js"></script>
+      <script src="app/main/main.service.js"></script>
+      <script src="components/auth/auth.service.js"></script>
+      <script src="components/auth/user.service.js"></script>
+      <script src="components/full-restangular/full-restangular.service.js"></script>
+      <script src="components/modal/modal.service.js"></script>
+      <script src="components/mongoose-error/mongoose-error.directive.js"></script>
+      <script src="components/navbar/navbar.controller.js"></script>
+      <script src="components/socket/socket.service.js"></script>
+      <!-- endinjector -->
+    <!-- endbuild -->
 </body>
 </html>
