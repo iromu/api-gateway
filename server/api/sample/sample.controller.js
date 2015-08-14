@@ -1,11 +1,14 @@
 'use strict';
 
 var fs = require('fs');
+var util = require('util');
 var path = require('path');
 var template = JSON.parse(fs.readFileSync(path.join(__dirname, './swagger.json'), 'utf-8'));
 
 var apiVersion;
 var apiVersionText;
+
+var allowedApiVersion = ['1.0.1', '2.0.0', '2.0.3', '2.1.0'];
 
 var getApiVersion = function (req, res) {
   var re = /^\/v(\d+)/g;
@@ -17,9 +20,14 @@ var getApiVersion = function (req, res) {
       re.lastIndex++;
     }
     apiVersionText = m[1];
-    apiVersion = m[1].split('').join('.');
+    apiVersion = apiVersionText.split('').join('.');
   }
 
+  console.log('getApiVersion req.url ' + req.url);
+  console.log('getApiVersion apiVersion ' + apiVersion);
+  if (allowedApiVersion.indexOf(apiVersion) === -1) {
+    return res.send(404);
+  }
   res.set('Sample-Api-Version', apiVersion);
   return apiVersion;
 };

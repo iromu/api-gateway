@@ -14,9 +14,21 @@ var validationError = function(res, err) {
  * restriction: 'admin'
  */
 exports.index = function(req, res) {
-  User.find({}, '-salt -hashedPassword', function (err, users) {
-    if(err) return res.send(500, err);
-    res.json(200, users);
+  var limit = req.headers.size ? req.headers.size : 10;
+  var skip = req.headers.page ? (req.headers.page - 1) * limit : 0;
+  var orderBy = req.headers.order ? req.headers.order : 'name asc';
+
+  User.find({}, '-salt -hashedPassword', {
+    skip: skip,
+    limit: limit,
+    sort: 'name',
+    orderBy: orderBy
+  }, function (err, users) {
+    if (err) return res.send(500, err);
+    User.count(function (err, count) {
+      res.setHeader('total', count);
+      res.json(200, users);
+    })
   });
 };
 

@@ -65,7 +65,7 @@ exports.findEndpoint = function (code, apiVersion, cb) {
           return cb(undefined);
         }
 
-        console.log('endpoint findEndpoint service ' + JSON.stringify(service));
+        //console.debug('endpoint findEndpoint service ' + JSON.stringify(service));
         apiVersion = service.latestVersion;
         _findEndpoint(code, apiVersion, cb);
       });
@@ -77,10 +77,12 @@ exports.findEndpoint = function (code, apiVersion, cb) {
 
 exports.getApiDoc = function (env, options) {
   var deferred = Q.defer();
-  var key = 'apiDoc:' + env.code + ':' + (isLatestVersion(env.apiVersion)) ? '@latest' : env.apiVersion;
+  var key = 'apiDoc:' + env.code + ':' + ((isLatestVersion(env.apiVersion)) ? '@latest' : env.apiVersion);
 
+  console.log('cache key ' + key);
   redisClient.get(key, function (err, reply) {
     if (reply) {
+      console.log('found cache entry with key ' + key);
       deferred.resolve(JSON.parse(reply));
     } else {
       request(options, function (error, response, body) {
@@ -100,6 +102,9 @@ exports.getApiDoc = function (env, options) {
             body = body.replace(match, '"host":"' + host + '",');
 
             var apiDoc = {headers: response.headers, body: JSON.parse(body)};
+
+            console.log('storing new cache entry with key ' + key);
+
             redisClient.set(key, JSON.stringify(apiDoc), redis.print);
             redisClient.expire(key, 300);
 

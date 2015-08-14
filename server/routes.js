@@ -22,7 +22,11 @@ module.exports = function (app) {
     .get(errors[404]);
 
   // All other routes should redirect to the index.html
-  app.route('/:url(index.html|explorer|admin|login)')
+  app.route('/:url(index.html|explorer|admin|login|signup)')
+    .get(function (req, res) {
+      res.sendfile(app.get('appPath') + '/index.html');
+    });
+  app.route('/:url(index.html|explorer|admin|login|signup)/*')
     .get(function (req, res) {
       res.sendfile(app.get('appPath') + '/index.html');
     });
