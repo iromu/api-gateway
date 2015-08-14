@@ -78,6 +78,8 @@ You need a running local mongodb instance. (For OSX, 'brew install mongodb')
 To setup protractor e2e tests, you must first run
 
     $ npm run update-webdriver
+    
+Run    
 
     $ grunt test:e2e
          
