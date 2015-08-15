@@ -5,7 +5,7 @@ describe('Controller: ExplorerCtrl', function () {
   // load the controller's module
   beforeEach(module('apiGatewayApp'));
 
-  var ExplorerCtrl, scope, stateParams;
+  var vm, scope, stateParams;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope, $stateParams) {
@@ -13,7 +13,7 @@ describe('Controller: ExplorerCtrl', function () {
     spyOn(scope, '$emit');
     stateParams = $stateParams;
     stateParams.code = 'test';
-    ExplorerCtrl = $controller('ExplorerCtrl', {
+    vm = $controller('ExplorerCtrl', {
       $scope: scope,
       $stateParams: stateParams
     });
@@ -28,7 +28,7 @@ describe('Controller: ExplorerCtrl', function () {
       scope = $rootScope.$new();
       spyOn(scope, '$emit');
       stateParams = {};
-      ExplorerCtrl = $controller('ExplorerCtrl', {
+      vm = $controller('ExplorerCtrl', {
         $scope: scope,
         $stateParams: stateParams
       });
@@ -41,7 +41,7 @@ describe('Controller: ExplorerCtrl', function () {
   });
 
   it('should set apiRestBaseEndpoint scope to http://server/', function () {
-    expect(scope.apiRestBaseEndpoint).toBe('http://server/');
+    expect(vm.apiRestBaseEndpoint).toBe('http://server/');
   });
 
   it('should emit showExplorer {false} when scope $destroyed', function () {

@@ -6,16 +6,19 @@ angular.module('apiGatewayApp')
       .state('main', {
         url: '/',
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        controllerAs: 'vm'
       })
       .state('main.explorer', {
         url: 'explorer',
         templateUrl: 'app/explorer/explorer.html',
-        controller: 'ExplorerCtrl'
+        controller: 'ExplorerCtrl',
+        controllerAs: 'vm'
       })
       .state('main.explorer_select', {
         url: 'explorer/:code',
         templateUrl: 'app/explorer/explorer.html',
-        controller: 'ExplorerCtrl'
+        controller: 'ExplorerCtrl',
+        controllerAs: 'vm'
       });
   });

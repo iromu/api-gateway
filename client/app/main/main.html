@@ -1,58 +1,32 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<header class="hero-unit" id="banner">
-  <div class="container">
-    <form class="form-inline">
-      <div class="form-group">
-        <label class="sr-only" for="inputUri">API address</label>
-        <input size="50" class="form-control input-lg" id="inputUri" type="text"
-               ng-model="codeSelection"
-               ng-change="loadVersions()"
-               placeholder="Service code"
-               typeahead="service.code for service in publicServices | filter:$viewValue | limitTo:8"
-               typeahead-loading="loadingServices">
-        <i ng-show="loadingServices" class="glyphicon glyphicon-refresh"></i>
-
-      </div>
-      <div class="form-group">
-        <label for="inputVersion" class="sr-only">Version</label>
-
-        <select id="inputVersion" class="form-control input-lg"
-                ng-model="apiVersionSelection">
-          <option value="@LATEST" ng-selected="apiVersionSelection===undefined">@LATEST</option>
-          <option ng-selected="apiVersionSelection == item.apiVersion"
-                  ng-repeat="item in service.endpoints" ng-value="item.apiVersion">{{item.apiVersion}}
-          </option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-default btn-lg" ng-click="exploreSwagger()">Explore</button>
-    </form>
-  </div>
-</header>
-
-
 <div class="container">
-
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Popular:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" ng-click="selectService(thing)" tooltip="{{thing.hits}} hits">{{thing.name}}
-          <button type="button" class="close" ng-click="deleteThing(thing)">&times;</button>
+  <div class="jumbotron" ng-hide="showExplorerView">
+    <h1>Versionable <kbd>REST</kbd> Registry</h1>
+    <div ng-bind-html-unsafe="brand.jumbotron"></div>
+    <p><a class="btn btn-primary btn-lg" href="/explorer" ng-click="showExplorer()" role="button">Explore public
+      services</a>
+    </p>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Popular Public Services</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="nav nav-pills nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="top in topServices">
+        <li><a href="/explorer/{{top.code}}" ng-click="selectService(top)">
+          {{top.name}} <span class="badge">{{top.hits}}</span>
         </a></li>
       </ul>
     </div>
   </div>
 
-
-  <p ng-show="codeSelection && swaggerUrl">Swagger config location {{swaggerUrl}}</p>
-
-  <div ng-show="codeSelection && swaggerUrl" swagger-ui url="swaggerUrl" api-explorer="true" error-handler="swaggerErrorHandler"
-       api-explorer-transform="swaggerTransform"></div>
-</div>
-
-<footer class="footer">
-  <div class="container">
-
+  <div class="panel panel-default" ng-show="showExplorerView">
+    <div class="panel-heading">
+      <h3 class="panel-title">API Documentation explorer</h3>
+    </div>
+    <div class="panel-body">
+      <div ui-view></div>
+    </div>
   </div>
-</footer>
+</div>

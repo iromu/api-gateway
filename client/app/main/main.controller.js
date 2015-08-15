@@ -1,8 +1,14 @@
 'use strict';
 
 angular.module('apiGatewayApp')
-  .controller('MainCtrl', function ($scope, $http, $state, $rootScope, socket, FullRestangular, $location) {
+  .controller('MainCtrl', function ($scope, $http, $state, $rootScope, socket, FullRestangular, $location, CONFIG) {
+    var vm = this;
     console.log('Init MainCtrl');
+
+    vm.brand = {
+      JUMBOTRON: (CONFIG && CONFIG.BRAND.JUMBOTRON) || '...'
+    };
+
     $scope.topServices = [];
     $scope.showExplorerView = false;
 

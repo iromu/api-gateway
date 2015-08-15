@@ -8,6 +8,8 @@ var querystring = require('querystring');
 var util = require('util');
 var request = require('request');
 var service = require('./endpoint.service');
+var crypto = require('crypto');
+var hash;
 
 var getApiVersion = function (req) {
   var apiVersion;
@@ -66,6 +68,20 @@ exports.handle = function (req, res) {
         .done();
 
     } else {
+      var method = req.originalMethod;
+      if ('GET' === method) {
+        var url = options.url;
+        var headers = JSON.stringify(req.headers);
+        //if (!hash) {
+          hash = crypto.createHmac('sha512', req.secret || req.sessionID);
+        //}
+        hash.update(url + headers);
+        var value = hash.digest('hex');
+
+        // print result
+        console.log(value);
+      }
+      //console.log('options ' + JSON.stringify(options));
       req.pipe(request(options)).pipe(res);
     }
   });

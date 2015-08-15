@@ -24,3 +24,6 @@ client/components/bootstrap-override/*
 !client/components/bootstrap-override/.empty
 
 client/app/app.constants.js
+
+server/config/local.env/*
+!server/config/local.env/.empty
