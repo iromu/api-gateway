@@ -32,7 +32,8 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      '**/*.html': 'html2js'
+      '**/*.html': 'html2js',
+      'client/app/**/*.js': ['coverage']
     },
 
     ngHtml2JsPreprocessor: {
@@ -71,6 +72,8 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: false,
+
+    reporters: ['progress', 'coverage']
   });
 };

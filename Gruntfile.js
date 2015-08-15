@@ -72,7 +72,7 @@ module.exports = function (grunt) {
         tasks: ['injector:css']
       },
       mochaTest: {
-        files: ['server/**/*.spec.js'],
+        files: ['server/api/**/*.spec.js'],
         tasks: ['env:test', 'mochaTest']
       },
       jsTest: {
@@ -347,14 +347,14 @@ module.exports = function (grunt) {
       development: {
         constants: {
           ENV: {
-            name: 'development'
+            env: 'development'
           }
         }
       },
       production: {
         constants: {
           ENV: {
-            name: 'production'
+            env: 'production'
           }
         }
       }
@@ -471,7 +471,7 @@ module.exports = function (grunt) {
       options: {
         reporter: 'spec'
       },
-      src: ['server/**/*.spec.js']
+      src: ['server/api/**/*.spec.js']
     },
 
     protractor: {
@@ -648,6 +648,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', function (target) {
     if (target === 'server') {
       return grunt.task.run([
+        'ngconstant:development',
         'env:all',
         'env:test',
         'mochaTest'
@@ -684,6 +685,7 @@ module.exports = function (grunt) {
     }
 
     else grunt.task.run([
+        'ngconstant:development',
         'test:server',
         'test:client'
       ]);
