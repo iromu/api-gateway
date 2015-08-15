@@ -17,7 +17,7 @@ var _findEndpoint = function (code, apiVersion, cb) {
   };
 
   Service
-    .findOne({code: code}, {'endpoints': {$elemMatch: {apiVersion: {$eq: apiVersion}}}})
+    .findOne({code: code}, {'endpoints': {$elemMatch: {apiVersion: apiVersion}}})
     //.populate(populateOptions)
     .lean()
     .exec(function (err, service) {
