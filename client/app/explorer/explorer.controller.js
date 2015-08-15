@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('apiGatewayApp')
-  .controller('ExplorerCtrl', function ($scope, $rootScope, $stateParams, $location, ENV) {
+  .controller('ExplorerCtrl', function ($scope, $rootScope, $stateParams, $location) {
     console.log('Init ExplorerCtrl $stateParams: ' + JSON.stringify($stateParams));
 
-    $scope.apiRestBaseEndpoint = $location.protocol() + '://' + $location.host() + '/';
+    $scope.apiRestBaseEndpoint = $location.protocol() + '://' + $location.host() + (($location.port() !== 80) ? ':' + $location.port() + '/' : '/');
 
     if ('code' in $stateParams) {
       console.log('Emit selectService: ' + $stateParams.code);

@@ -36,8 +36,12 @@ describe('Controller: ExplorerCtrl', function () {
       expect(scope.$emit).toHaveBeenCalledWith('showExplorer', true);
     }));
 
-  it('should set codeSelection scope', function () {
+  it('should set codeSelection scope to test', function () {
     expect(scope.codeSelection).toBe('test');
+  });
+
+  it('should set apiRestBaseEndpoint scope to http://server/', function () {
+    expect(scope.apiRestBaseEndpoint).toBe('http://server/');
   });
 
   it('should emit showExplorer {false} when scope $destroyed', function () {
