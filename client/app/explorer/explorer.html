@@ -1,7 +1,7 @@
 <div>
 
   <div class="input-group">
-    <span class="input-group-addon" id="addonCode">http://apiver.io/</span>
+    <span class="input-group-addon" id="addonCode">{{apiRestBaseEndpoint}}</span>
     <input class="form-control input-md" id="inputCode" type="text" aria-describedby="addonCode"
            ng-model="codeSelection"
            ng-change="loadVersions()"
@@ -26,7 +26,7 @@
           aria-hidden="true">&times;</span></button>
         Configured <em>headers['X-Api-Version'] = {{apiVersionSelection}}</em>
         <br>
-        Loaded Swagger config from <strong>http://apiver.io{{swaggerUrlDisplay}}</strong>
+        Loaded Swagger config from <strong>{{swaggerUrlDisplay}}</strong>
       </div>
     </div>
   </div>

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('apiGatewayApp')
-  .controller('MainCtrl', function ($scope, $http, $state, $rootScope, socket, FullRestangular) {
+  .controller('MainCtrl', function ($scope, $http, $state, $rootScope, socket, FullRestangular, $location) {
     console.log('Init MainCtrl');
     $scope.topServices = [];
-    $rootScope.showExplorerView = false;
+    $scope.showExplorerView = false;
 
     $scope.publicServices = [];
 
@@ -36,7 +36,7 @@ angular.module('apiGatewayApp')
       var ts = Date.now();
       $scope.swaggerUrl = '/' + $scope.service.code + '/swagger.json' + '?X-Api-Version=' + $scope.apiVersionSelection + '&ts=' + ts;
       $scope.swaggerUrlMin = '/' + $scope.service.code + '/swagger.json' + '?X-Api-Version=' + $scope.apiVersionSelection;
-      $scope.swaggerUrlDisplay = '/' + $scope.service.code + '/swagger.json';
+      $scope.swaggerUrlDisplay = 'http://' + $location.host() + '/' + $scope.service.code + '/swagger.json';
 
       // $state.transitionTo('main.explorer');
     };
@@ -50,7 +50,7 @@ angular.module('apiGatewayApp')
     $scope.selectService = function (value) {
 
       console.log('MainCtrl selectService: ' + JSON.stringify(value.code));
-      if (!$rootScope.showExplorerView) {
+      if (!$scope.showExplorerView) {
         console.log('MainCtrl showExplorerView on selectService');
         $scope.showExplorer();
       }
@@ -85,11 +85,17 @@ angular.module('apiGatewayApp')
 
     $scope.$on('selectService', function (event, data) {
       console.log('$scope On selectService: ' + data.code);
-     // $scope.selectService(data);
+      $scope.showExplorerView = true;
+      $scope.selectService(data);
+    });
+
+    $scope.$on('showExplorer', function (event, data) {
+      console.log('showExplorer');
+      $scope.showExplorerView = data;
     });
 
     $scope.showExplorer = function () {
-      $rootScope.showExplorerView = true;
+      $scope.showExplorerView = true;
       if (!$scope.codeSelection) {
         console.log('Transition to explorer');
         $state.transitionTo('main.explorer');

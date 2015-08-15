@@ -5,17 +5,43 @@ describe('Controller: ExplorerCtrl', function () {
   // load the controller's module
   beforeEach(module('apiGatewayApp'));
 
-  var ExplorerCtrl, scope;
+  var ExplorerCtrl, scope, stateParams;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, $stateParams) {
     scope = $rootScope.$new();
+    spyOn(scope, '$emit');
+    stateParams = $stateParams;
+    stateParams.code = 'test';
     ExplorerCtrl = $controller('ExplorerCtrl', {
-      $scope: scope
+      $scope: scope,
+      $stateParams: stateParams
     });
   }));
 
-  it('should ...', function () {
-    expect(scope.message).toEqual('Hello');
+  it('should emit selectService when code is selected', function () {
+    expect(scope.$emit).toHaveBeenCalledWith('selectService', {code: 'test'});
+  });
+
+  it('should emit showExplorer {true} when no code is selected',
+    inject(function ($controller, $rootScope) {
+      scope = $rootScope.$new();
+      spyOn(scope, '$emit');
+      stateParams = {};
+      ExplorerCtrl = $controller('ExplorerCtrl', {
+        $scope: scope,
+        $stateParams: stateParams
+      });
+
+      expect(scope.$emit).toHaveBeenCalledWith('showExplorer', true);
+    }));
+
+  it('should set codeSelection scope', function () {
+    expect(scope.codeSelection).toBe('test');
+  });
+
+  it('should emit showExplorer {false} when scope $destroyed', function () {
+    scope.$destroy();
+    expect(scope.$emit).toHaveBeenCalledWith('showExplorer', false);
   });
 });
