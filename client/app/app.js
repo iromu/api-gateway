@@ -50,7 +50,17 @@ angular.module('apiGatewayApp', [
       }
     };
   })
-
+  .run(function ($templateCache, $http) {
+    $http.get('assets/templates/jumbotron.html',
+      //success
+      function (data) {
+        $templateCache.put('assets/templates/jumbotron.html', data);
+      },
+      //failure
+      function () {
+        $templateCache.put('assets/templates/jumbotron.html', '');
+      });
+  })
   .run(function ($rootScope, $location, Auth) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {

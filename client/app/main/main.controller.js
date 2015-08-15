@@ -5,9 +5,7 @@ angular.module('apiGatewayApp')
     var vm = this;
     console.log('Init MainCtrl');
 
-    vm.brand = {
-      JUMBOTRON: (CONFIG && CONFIG.BRAND.JUMBOTRON) || '...'
-    };
+    $scope.jumbotron = {url: 'assets/templates/jumbotron.html'};
 
     $scope.topServices = [];
     $scope.showExplorerView = false;

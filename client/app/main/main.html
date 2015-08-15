@@ -3,7 +3,10 @@
 <div class="container">
   <div class="jumbotron" ng-hide="showExplorerView">
     <h1>Versionable <kbd>REST</kbd> Registry</h1>
-    <div ng-bind-html-unsafe="brand.jumbotron"></div>
+
+    <div class="slide-animate-container">
+      <div class="slide-animate" ng-include="jumbotron.url"></div>
+    </div>
     <p><a class="btn btn-primary btn-lg" href="/explorer" ng-click="showExplorer()" role="button">Explore public
       services</a>
     </p>
