@@ -10,11 +10,11 @@ angular.module('apiGatewayApp', [
   'restangular',
   'swaggerUi',
   'ui.grid',
-  'ui.grid.pagination'
+  'ui.grid.pagination',
+  'config'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
-    $urlRouterProvider
-      .otherwise('/');
+    $urlRouterProvider.otherwise('/');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
