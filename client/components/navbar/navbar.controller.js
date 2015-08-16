@@ -1,6 +1,7 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('app')
+  angular.module('app.components')
   .controller('NavbarController', function ($scope, $location, Auth, CONFIG) {
     $scope.menu = [{
       'title': 'Home',
@@ -25,4 +26,5 @@ angular.module('app')
     $scope.isActive = function (route) {
       return route === $location.path();
     };
-  });
+    });
+}());

@@ -339,7 +339,7 @@ module.exports = function (grunt) {
         // Options for all targets
         options: {
           space: '  ',
-          wrap: '\'use strict\';\n\n {%= __ngModule %}',
+          wrap: '(function () {\n\'use strict\';\n\n {%= __ngModule %}\n}());',
           name: 'app.constants',
           dest: '<%= yeoman.client %>/app/app.constants.js',
           constants: {

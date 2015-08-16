@@ -1,4 +1,5 @@
-'use strict';
+(function () {
+  'use strict';
 
 angular.module('socketMock', [])
   .factory('socket', function() {
@@ -14,3 +15,4 @@ angular.module('socketMock', [])
       unsyncUpdates: function() {}
     };
   });
+}());

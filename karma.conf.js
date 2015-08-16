@@ -40,10 +40,6 @@ module.exports = function (config) {
       stripPrefix: 'client/'
     },
 
-    ngJade2JsPreprocessor: {
-      stripPrefix: 'client/'
-    },
-
     // list of files / patterns to exclude
     exclude: [],
 
@@ -56,7 +52,7 @@ module.exports = function (config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // Start these browsers, currently available:

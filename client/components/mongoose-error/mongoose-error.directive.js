@@ -1,9 +1,10 @@
-'use strict';
+(function () {
+  'use strict';
 
 /**
  * Removes server error when user updates input
  */
-angular.module('app')
+angular.module('app.components')
   .directive('mongooseError', function () {
     return {
       restrict: 'A',
@@ -15,3 +16,4 @@ angular.module('app')
       }
     };
   });
+}());

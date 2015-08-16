@@ -1,6 +1,7 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('app')
+  angular.module('app.components')
   .factory('Modal', function ($rootScope, $modal) {
     /**
      * Opens a modal
@@ -74,4 +75,5 @@ angular.module('app')
         }
       }
     };
-  });
+    });
+}());

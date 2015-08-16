@@ -1,7 +1,8 @@
 /* global io */
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('app')
+  angular.module('app.components')
   .factory('socket', function(socketFactory) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
@@ -71,4 +72,5 @@ angular.module('app')
         socket.removeAllListeners(modelName + ':remove');
       }
     };
-  });
+    });
+}());

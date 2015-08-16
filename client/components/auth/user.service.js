@@ -1,6 +1,7 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('app')
+  angular.module('app.components')
   .factory('User', function ($resource) {
     return $resource('/api/users/:id/:controller', {
       id: '@_id'
@@ -19,4 +20,5 @@ angular.module('app')
         }
       }
 	  });
-  });
+    });
+}());

@@ -1,6 +1,7 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('app')
+  angular.module('app.components')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
     if($cookieStore.get('token')) {
@@ -143,4 +144,5 @@ angular.module('app')
         return $cookieStore.get('token');
       }
     };
-  });
+    });
+}());

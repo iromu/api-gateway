@@ -2,55 +2,61 @@
   'use strict';
 
   angular.module('app', [
-    'app.core'
+    'app.core',
+    'app.components'
   ])
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
-      $urlRouterProvider.otherwise('/');
+    .config(configure)
+    .factory('authInterceptor', authInterceptor)
+    .run(initialize);
 
-      $locationProvider.html5Mode(true);
-      $httpProvider.interceptors.push('authInterceptor');
-    })
+  function configure($urlRouterProvider, $locationProvider, $httpProvider, RestangularProvider) {
+    console.log('configure');
+    $urlRouterProvider.otherwise('/');
 
-    .config(['RestangularProvider', function (RestangularProvider) {
-      var baseUrl = '/api';
-      RestangularProvider.setBaseUrl(baseUrl);
-    }])
+    $locationProvider.html5Mode(true);
+    $httpProvider.interceptors.push('authInterceptor');
 
-    .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
-      return {
-        // Add authorization token to headers
-        request: function (config) {
-          config.headers = config.headers || {};
-          if ($cookieStore.get('token')) {
-            config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
-          }
-          return config;
-        },
+    var baseUrl = '/api';
+    RestangularProvider.setBaseUrl(baseUrl);
+  }
 
-        // Intercept 401s and redirect you to login
-        responseError: function (response) {
-          if (response.status === 401) {
-            $location.path('/login');
-            // remove any stale tokens
-            $cookieStore.remove('token');
-            return $q.reject(response);
-          }
-          else {
-            return $q.reject(response);
-          }
+  function authInterceptor($q, $cookieStore, $location) {
+    console.log('authInterceptor');
+    return {
+      // Add authorization token to headers
+      request: function (config) {
+        config.headers = config.headers || {};
+        if ($cookieStore.get('token')) {
+          config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
         }
-      };
-    })
+        return config;
+      },
 
-    .run(function ($rootScope, $location, Auth) {
-      console.log('Redirect to login if route requires auth and you\'re not logged in');
-      // Redirect to login if route requires auth and you're not logged in
-      $rootScope.$on('$stateChangeStart', function (event, next) {
-        Auth.isLoggedInAsync(function (loggedIn) {
-          if (next.authenticate && !loggedIn) {
-            $location.path('/login');
-          }
-        });
+      // Intercept 401s and redirect you to login
+      responseError: function (response) {
+        if (response.status === 401) {
+          $location.path('/login');
+          // remove any stale tokens
+          $cookieStore.remove('token');
+          return $q.reject(response);
+        }
+        else {
+          return $q.reject(response);
+        }
+      }
+    };
+  }
+
+  function initialize($rootScope, $location, Auth) {
+    console.log('initialize');
+    // Redirect to login if route requires auth and you're not logged in
+    $rootScope.$on('$stateChangeStart', function (event, next) {
+      Auth.isLoggedInAsync(function (loggedIn) {
+        if (next.authenticate && !loggedIn) {
+          $location.path('/login');
+        }
       });
     });
+  }
+
 }());
