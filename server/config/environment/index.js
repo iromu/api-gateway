@@ -44,19 +44,25 @@ var all = {
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
-    callbackURL: (process.env.DOMAIN || '') + '/auth/facebook/callback'
+    callbackURL: (process.env.DOMAIN_SSL || '') + '/auth/facebook/callback'
   },
 
   twitter: {
     clientID: process.env.TWITTER_ID || 'id',
     clientSecret: process.env.TWITTER_SECRET || 'secret',
-    callbackURL: (process.env.DOMAIN || '') + '/auth/twitter/callback'
+    callbackURL: (process.env.DOMAIN_SSL || '') + '/auth/twitter/callback'
   },
 
   google: {
     clientID: process.env.GOOGLE_ID || 'id',
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
-    callbackURL: (process.env.DOMAIN || '') + '/auth/google/callback'
+    callbackURL: (process.env.DOMAIN_SSL || '') + '/auth/google/callback'
+  },
+
+  github: {
+    clientID: process.env.GITHUB_CLIENT_ID || 'id',
+    clientSecret: process.env.GITHUB_CLIENT_SECRET || 'secret',
+    callbackURL: (process.env.DOMAIN_SSL || '') + '/auth/github/callback'
   },
 
   redis: {
