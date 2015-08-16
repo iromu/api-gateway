@@ -3,7 +3,7 @@
 describe('Controller: EndpointCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('apiGatewayApp'));
+  beforeEach(module('app'));
 
   var EndpointCtrl, scope;
 
