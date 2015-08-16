@@ -1,7 +1,7 @@
 /* global io */
 'use strict';
 
-angular.module('apiGatewayApp')
+angular.module('app')
   .factory('socket', function(socketFactory) {
 
     // socket.io now auto-configures its connection when we ommit a connection url

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('apiGatewayApp')
-  .controller('AdminCtrl', function ($scope, $http, Auth, User, FullRestangular, uiGridConstants) {
+angular.module('app')
+  .controller('AdminController', function ($scope, $http, Auth, User, FullRestangular, uiGridConstants) {
 
     var paginationOptions = {
       pageNumber: 1,

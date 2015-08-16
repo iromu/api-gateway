@@ -1,9 +1,9 @@
 'use strict';
 
-describe('Controller: ExplorerCtrl', function () {
+describe('Controller: ExplorerController', function () {
 
   // load the controller's module
-  beforeEach(module('apiGatewayApp'));
+  beforeEach(module('app'));
 
   var vm, scope, stateParams;
 
@@ -13,7 +13,7 @@ describe('Controller: ExplorerCtrl', function () {
     spyOn(scope, '$emit');
     stateParams = $stateParams;
     stateParams.code = 'test';
-    vm = $controller('ExplorerCtrl', {
+    vm = $controller('ExplorerController', {
       $scope: scope,
       $stateParams: stateParams
     });
@@ -28,7 +28,7 @@ describe('Controller: ExplorerCtrl', function () {
       scope = $rootScope.$new();
       spyOn(scope, '$emit');
       stateParams = {};
-      vm = $controller('ExplorerCtrl', {
+      vm = $controller('ExplorerController', {
         $scope: scope,
         $stateParams: stateParams
       });

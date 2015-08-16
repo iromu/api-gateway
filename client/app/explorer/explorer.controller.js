@@ -1,10 +1,10 @@
 (function () {
   'use strict';
 
-  angular.module('apiGatewayApp')
-    .controller('ExplorerCtrl', function ($scope, $stateParams, $location) {
+  angular.module('app')
+    .controller('ExplorerController', function ($scope, $stateParams, $location) {
       var vm = this;
-      console.log('Init ExplorerCtrl $stateParams: ' + JSON.stringify($stateParams));
+      console.log('Init ExplorerController $stateParams: ' + JSON.stringify($stateParams));
 
       var port = (($location.port() !== 80) ? ':' + $location.port() : '');
       vm.apiRestBaseEndpoint = $location.protocol() + '://' + $location.host() + port + '/';

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('apiGatewayApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth, CONFIG) {
+angular.module('app')
+  .controller('NavbarController', function ($scope, $location, Auth, CONFIG) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'

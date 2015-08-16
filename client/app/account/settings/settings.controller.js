@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('apiGatewayApp')
-  .controller('SettingsCtrl', function ($scope, User, Auth) {
+angular.module('app')
+  .controller('SettingsController', function ($scope, User, Auth) {
     $scope.errors = {};
 
     $scope.changePassword = function(form) {

@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('apiGatewayApp')
-  .controller('MainCtrl', function ($scope, $http, $state, $rootScope, socket, FullRestangular, $location, CONFIG) {
+angular.module('app')
+  .controller('MainController', function ($scope, $http, $state, $rootScope, socket, FullRestangular, $location, CONFIG) {
     var vm = this;
-    console.log('Init MainCtrl');
+    console.log('Init MainController');
 
-    vm.jumbotron = {url: 'assets/templates/jumbotron.html'};
+    vm.jumbotron = {url: '/assets/templates/jumbotron.html'};
 
     vm.topServices = [];
 
@@ -19,7 +19,7 @@ angular.module('apiGatewayApp')
     $scope.service = {code: undefined, apiVersion: undefined, endpoints: []};
 
     FullRestangular.all('services').getList({public: true}).then(function (response) {
-      console.log('MainCtrl publicServices loaded');
+      console.log('MainController publicServices loaded');
       $scope.publicServices = response.data;
 
       vm.topServices = response.data;
@@ -54,9 +54,9 @@ angular.module('apiGatewayApp')
 
     $scope.selectService = function (value) {
 
-      console.log('MainCtrl selectService: ' + JSON.stringify(value.code));
+      console.log('MainController selectService: ' + JSON.stringify(value.code));
       if (!$scope.showExplorerView) {
-        console.log('MainCtrl showExplorerView on selectService');
+        console.log('MainController showExplorerView on selectService');
         $scope.showExplorer();
       }
       //TODO The next block should be called inside a callback
@@ -69,7 +69,7 @@ angular.module('apiGatewayApp')
         $scope.exploreSwagger();
       } else {
         FullRestangular.all('services').getList({code: $scope.codeSelection}).then(function (response) {
-          console.log('MainCtrl services by code');
+          console.log('MainController services by code');
           $scope.service = response.data[0];
           $scope.exploreSwagger();
         });

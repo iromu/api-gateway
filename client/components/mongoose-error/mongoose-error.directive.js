@@ -3,7 +3,7 @@
 /**
  * Removes server error when user updates input
  */
-angular.module('apiGatewayApp')
+angular.module('app')
   .directive('mongooseError', function () {
     return {
       restrict: 'A',

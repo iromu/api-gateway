@@ -1,9 +1,9 @@
 'use strict';
 
-describe('Controller: MainCtrl', function () {
+describe('Controller: MainController', function () {
 
 
-  beforeEach(module('apiGatewayApp'));
+  beforeEach(module('app'));
   beforeEach(module('socketMock'));
 
   var vm, scope;
@@ -11,7 +11,7 @@ describe('Controller: MainCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    vm = $controller('MainCtrl', {
+    vm = $controller('MainController', {
       $scope: scope
     });
   }));

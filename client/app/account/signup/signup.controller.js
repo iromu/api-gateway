@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('apiGatewayApp')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window) {
+angular.module('app')
+  .controller('SignupController', function ($scope, Auth, $location, $window) {
     $scope.user = {};
     $scope.errors = {};
 

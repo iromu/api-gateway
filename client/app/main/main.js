@@ -1,24 +1,24 @@
 'use strict';
 
-angular.module('apiGatewayApp')
+angular.module('app')
   .config(function ($stateProvider) {
     $stateProvider
       .state('main', {
         url: '/',
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl',
+        controller: 'MainController',
         controllerAs: 'vm'
       })
       .state('main.explorer', {
         url: 'explorer',
         templateUrl: 'app/explorer/explorer.html',
-        controller: 'ExplorerCtrl',
+        controller: 'ExplorerController',
         controllerAs: 'vm'
       })
       .state('main.explorer_select', {
         url: 'explorer/:code',
         templateUrl: 'app/explorer/explorer.html',
-        controller: 'ExplorerCtrl',
+        controller: 'ExplorerController',
         controllerAs: 'vm'
       });
   });
