@@ -312,7 +312,7 @@ module.exports = function (grunt) {
       ngtemplates: {
         options: {
           // This should be the name of your apps angular module
-          module: 'apiGatewayApp',
+          module: 'app',
           htmlmin: {
             collapseBooleanAttributes: true,
             collapseWhitespace: true,

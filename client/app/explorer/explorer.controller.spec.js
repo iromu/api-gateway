@@ -19,8 +19,8 @@ describe('Controller: ExplorerController', function () {
     });
   }));
 
-  it('should emit selectService when code is selected', function () {
-    expect(scope.$emit).toHaveBeenCalledWith('selectService', {code: 'test'});
+  it('should emit showExplorer when code is selected', function () {
+    expect(scope.$emit).toHaveBeenCalledWith('showExplorer', true);
   });
 
   it('should emit showExplorer {true} when no code is selected',
@@ -37,7 +37,7 @@ describe('Controller: ExplorerController', function () {
     }));
 
   it('should set codeSelection scope to test', function () {
-    expect(scope.codeSelection).toBe('test');
+    expect(vm.codeSelection).toBe('test');
   });
 
   it('should set apiRestBaseEndpoint scope to http://server/', function () {

@@ -1,13 +1,13 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <div class="jumbotron" ng-hide="showExplorerView">
+  <div class="jumbotron" ng-hide="vm.showExplorerView">
     <h1>Versionable <kbd>REST</kbd> Registry</h1>
 
     <div class="slide-animate-container">
       <div class="slide-animate" ng-include="vm.jumbotron.url"></div>
     </div>
-    <p><a class="btn btn-primary btn-lg" href="/explorer" ng-click="showExplorer()" role="button">Explore public
+    <p><a class="btn btn-primary btn-lg" href="/explorer" ng-click="vm.showExplorer()" role="button">Explore public
       services</a>
     </p>
   </div>
@@ -17,7 +17,7 @@
     </div>
     <div class="panel-body">
       <ul class="nav nav-pills nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="top in vm.topServices">
-        <li><a href="/explorer/{{top.code}}" ng-click="selectService(top)">
+        <li><a href="/explorer/{{top.code}}" ng-click="vm.selectService(top.code)">
           {{top.name}} <span class="badge">{{top.hits}}</span>
         </a></li>
       </ul>
@@ -32,4 +32,5 @@
       <div ui-view></div>
     </div>
   </div>
+
 </div>
