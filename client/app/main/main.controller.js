@@ -5,10 +5,11 @@ angular.module('apiGatewayApp')
     var vm = this;
     console.log('Init MainCtrl');
 
-    $scope.jumbotron = {url: 'assets/templates/jumbotron.html'};
+    vm.jumbotron = {url: 'assets/templates/jumbotron.html'};
 
-    $scope.topServices = [];
-    $scope.showExplorerView = false;
+    vm.topServices = [];
+
+    vm.showExplorerView = false;
 
     $scope.publicServices = [];
 
@@ -21,8 +22,8 @@ angular.module('apiGatewayApp')
       console.log('MainCtrl publicServices loaded');
       $scope.publicServices = response.data;
 
-      $scope.topServices = response.data;
-      socket.syncUpdates('service', $scope.topServices);
+      vm.topServices = response.data;
+      socket.syncUpdates('service', vm.topServices);
     });
 
     // error management
@@ -89,17 +90,17 @@ angular.module('apiGatewayApp')
 
     $scope.$on('selectService', function (event, data) {
       console.log('$scope On selectService: ' + data.code);
-      $scope.showExplorerView = true;
+      vm.showExplorerView = true;
       $scope.selectService(data);
     });
 
     $scope.$on('showExplorer', function (event, data) {
       console.log('showExplorer');
-      $scope.showExplorerView = data;
+      vm.showExplorerView = data;
     });
 
     $scope.showExplorer = function () {
-      $scope.showExplorerView = true;
+      vm.showExplorerView = true;
       if (!$scope.codeSelection) {
         console.log('Transition to explorer');
         $state.transitionTo('main.explorer');
