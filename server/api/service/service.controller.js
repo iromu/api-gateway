@@ -9,8 +9,9 @@ exports.public = function (req, res) {
   var filter = {};
 
   if (req.query.code) {
-    filter.code = req.query.code;
+    filter.code = new RegExp(req.query.code, "i");
   }
+
   if (req.query.public) {
     filter.public = {$eq: true};
   }
@@ -36,6 +37,7 @@ exports.index = function (req, res) {
   if (req.query.code) {
     filter.code = req.query.code;
   }
+
   if (req.query.public) {
     filter.public = true;
   }
@@ -53,17 +55,93 @@ exports.index = function (req, res) {
 
 };
 
+exports.typeahead = function (req, res) {
+
+  var filter = {};
+
+  if (req.query.code) {
+    filter.code = new RegExp(req.query.code, 'i');
+  }
+  else {
+    res.status(400);
+  }
+
+  Service.find(filter)
+    .sort({public: +1})
+    .sort({code: +1})
+    .lean()
+    .exec(function (err, services) {
+      if (err) {
+        return handleError(res, err);
+      }
+      return res.status(200).json(_.pluck(services, 'code'));
+    });
+
+};
+
 // Get a single service
 exports.show = function (req, res) {
-  Service.findById(req.params.id, function (err, service) {
-    if (err) {
-      return handleError(res, err);
-    }
-    if (!service) {
-      return res.send(404);
-    }
-    return res.json(service);
-  });
+
+  if (isNaN(req.params.id)) {
+
+    var filter = {code: req.params.id};
+
+    Service.findOne(filter)
+      .lean()
+      .exec(function (err, service) {
+        if (err) {
+          return handleError(res, err);
+        }
+        if (!service) {
+          return res.send(404);
+        }
+        return res.status(200).json(service);
+      });
+  }
+  else {
+
+    Service.findById(req.params.id, function (err, service) {
+      if (err) {
+        return handleError(res, err);
+      }
+      if (!service) {
+        return res.send(404);
+      }
+      return res.json(service);
+    });
+  }
+};
+
+exports.apiVersions = function (req, res) {
+
+  if (isNaN(req.params.id)) {
+
+    var filter = {code: req.params.id};
+
+    Service.findOne(filter)
+      .lean()
+      .exec(function (err, service) {
+        if (err) {
+          return handleError(res, err);
+        }
+        if (!service) {
+          return res.send(404);
+        }
+        return res.status(200).json(_.pluck(service.endpoints, 'apiVersion'));
+      });
+  }
+  else {
+
+    Service.findById(req.params.id, function (err, service) {
+      if (err) {
+        return handleError(res, err);
+      }
+      if (!service) {
+        return res.send(404);
+      }
+      return res.json(service);
+    });
+  }
 };
 
 // Creates a new service in the DB.

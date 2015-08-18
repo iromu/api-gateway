@@ -5,18 +5,19 @@
     <input class="form-control input-md" id="inputCode" type="text" aria-describedby="addonCode"
            ng-model="vm.codeSelection"
            placeholder="Service code"
-           typeahead="code for codes in vm.getServices($viewValue) | limitTo:8"
-           typeahead-loading="vm.loadingServices">
-    <i ng-show="vm.loadingServices" class="glyphicon glyphicon-refresh"></i>
-
+           typeahead="code for code in vm.typeServiceCode($viewValue)"
+           typeahead-on-select="vm.onCodeSelection($label)"
+           typeahead-select-on-exact="true"
+           typeahead-editable="false">
     <div class="input-group-btn" dropdown is-open="status.isopen">
-      <button ng-click="vm.loadVersions()" type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
+      <button ng-click="vm.loadVersions()" type="button" class="btn btn-primary" dropdown-toggle
+              ng-disabled="!vm.codeSelection">
         Version <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-        <li ng-selected="vm.apiVersionSelection == item.apiVersion"
-            ng-repeat="item in vm.endpoints" ng-value="item.apiVersion">
-          <a href="#" ng-click="vm.selectVersion(item.apiVersion)">{{item.apiVersion}}</a>
+        <li ng-selected="vm.apiVersionSelection == apiVersion"
+            ng-repeat="apiVersion in vm.versions" ng-value="item.apiVersion">
+          <a href="#" ng-click="vm.selectVersion(apiVersion)">{{apiVersion}}</a>
         </li>
       </ul>
     </div>

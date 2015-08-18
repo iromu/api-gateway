@@ -57,4 +57,70 @@ describe('GET /api/services', function () {
         done();
       });
   });
+
+  it('should respond with typeahead array', function (done) {
+    request(app)
+      .get('/api/services/typeahead?code=er')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function (err, res) {
+        if (err) return done(err);
+        res.body.should.be.instanceof(Array);
+        res.body.should.have.length(1);
+        res.body.should.eql(['sampleservice']);
+
+        done();
+      });
+  });
+
+  it('should respond with not found', function (done) {
+    request(app)
+      .get('/api/services?code=er')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function (err, res) {
+        if (err) return done(err);
+        res.body.should.be.instanceof(Array);
+        res.body.should.have.length(0);
+
+        done();
+      });
+  });
+
+  it('should respond with sampleservice by code', function (done) {
+    request(app)
+      .get('/api/services/sampleservice')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function (err, res) {
+        if (err) return done(err);
+
+        res.body.should.be.instanceof(Object);
+        res.body.should.not.be.an.instanceOf(Array);
+        res.should.be.json;
+
+        var sampleservice = res.body;
+
+        if (!('code' in  sampleservice)) throw new Error("missing code key");
+        res.body.code.should.equal('sampleservice');
+
+        done();
+      });
+  });
+
+  it('should respond with version array from sampleservice', function (done) {
+    request(app)
+      .get('/api/services/sampleservice/versioning')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function (err, res) {
+        if (err) return done(err);
+
+        res.body.should.be.instanceof(Array);
+        res.body.should.have.length(4);
+        res.body.should.eql(['1.0.1', '2.0.0', '2.0.3', '2.1.0']);
+
+        done();
+      });
+  });
 });

@@ -4,7 +4,7 @@
   angular.module('app')
     .controller('ExplorerController', ExplorerController);
 
-  function ExplorerController($scope, $stateParams, $location, FullRestangular) {
+  function ExplorerController($scope, $stateParams, $location, apiService) {
 
     console.log('Init ' + JSON.stringify($stateParams));
 
@@ -28,10 +28,8 @@
 
     vm.loadVersions = function () {
       console.log('loadVersions');
-      FullRestangular.all('services').getList({code: vm.codeSelection}).then(function (response) {
-        console.log('ExplorerController services by code');
-        $scope.service = response.data[0];
-        vm.endpoints = $scope.service.endpoints;
+      apiService.getVersioning(vm.codeSelection).then(function (response) {
+        vm.versions = response.data;
       });
     };
 
@@ -41,14 +39,15 @@
     };
 
 
-    vm.getServices = function (text) {
-      FullRestangular.all('services').getList({code: text, typeahead: true}).then(function (response) {
-        var codes = [];
-        angular.forEach(response.data, function (service) {
-          codes.push(service.code);
-        });
-        return codes;
+    vm.typeServiceCode = function (text) {
+      delete vm.versions;
+      return apiService.typeServiceCode(text).then(function (response) {
+        return response.data;
       });
+    };
+
+    vm.onCodeSelection = function ($label) {
+      vm.codeSelection = $label;
     };
 
     activate();
@@ -60,7 +59,8 @@
 
     function activate() {
       console.log('Activate');
-
+      delete vm.versions;
+      delete vm.codeSelection;
       $scope.$emit('showExplorer', true);
       if ('code' in $stateParams) {
         vm.codeSelection = $stateParams.code;
