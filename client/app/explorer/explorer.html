@@ -4,21 +4,25 @@
     <span class="input-group-addon" id="addonCode">{{vm.apiRestBaseEndpoint}}</span>
     <input class="form-control input-md" id="inputCode" type="text" aria-describedby="addonCode"
            ng-model="vm.codeSelection"
-           ng-change="vm.loadVersions()"
            placeholder="Service code"
-           typeahead="service.code for service in publicServices | filter:$viewValue | limitTo:8"
-           typeahead-loading="loadingServices">
+           typeahead="code for codes in vm.getServices($viewValue) | limitTo:8"
+           typeahead-loading="vm.loadingServices">
     <i ng-show="vm.loadingServices" class="glyphicon glyphicon-refresh"></i>
 
-
-    <div class="input-group-btn">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="true">Version <span class="caret"></span></button>
-
+    <div class="input-group-btn" dropdown is-open="status.isopen">
+      <button ng-click="vm.loadVersions()" type="button" class="btn btn-primary" dropdown-toggle ng-disabled="disabled">
+        Version <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+        <li ng-selected="vm.apiVersionSelection == item.apiVersion"
+            ng-repeat="item in vm.endpoints" ng-value="item.apiVersion">
+          <a href="#" ng-click="vm.selectVersion(item.apiVersion)">{{item.apiVersion}}</a>
+        </li>
+      </ul>
     </div>
-    <!-- /btn-group -->
   </div>
-<br />
+
+  <br/>
 
   <div class="row" ng-show="vm.codeSelection && vm.apiVersionSelection">
     <div class="col-lg-12">
@@ -37,3 +41,4 @@
        error-handler="vm.swaggerErrorHandler"
        api-explorer-transform="vm.swaggerTransform"></div>
 </div>
+
