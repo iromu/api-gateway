@@ -4,7 +4,7 @@
 module.exports = function (grunt) {
   var localConfig;
   try {
-    localConfig = require('./server/config/local.env');
+    localConfig = require('./src/server/config/local.env');
   } catch (e) {
     localConfig = {};
   }
@@ -15,7 +15,6 @@ module.exports = function (grunt) {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
     ngconstant: 'grunt-ng-constant',
-    cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     injector: 'grunt-asset-injector',
     buildcontrol: 'grunt-build-control',
@@ -32,7 +31,7 @@ module.exports = function (grunt) {
       pkg: grunt.file.readJSON('package.json'),
       yeoman: {
         // configurable paths
-        client: require('./bower.json').appPath || 'client',
+        client: require('./bower.json').appPath || 'src/client',
         dist: 'dist'
       },
       express: {
@@ -41,7 +40,7 @@ module.exports = function (grunt) {
         },
         dev: {
           options: {
-            script: 'server/app.js',
+            script: 'src/server/app.js',
             debug: true
           }
         },
@@ -72,7 +71,7 @@ module.exports = function (grunt) {
           tasks: ['injector:css']
         },
         mochaTest: {
-          files: ['server/api/**/*.spec.js'],
+          files: ['src/server/api/**/*.spec.js'],
           tasks: ['env:test', 'mochaTest']
         },
         jsTest: {
@@ -110,7 +109,7 @@ module.exports = function (grunt) {
         },
         express: {
           files: [
-            'server/**/*.{js,json}'
+            'src/server/**/*.{js,json}'
           ],
           tasks: ['express:dev', 'wait'],
           options: {
@@ -128,18 +127,18 @@ module.exports = function (grunt) {
         },
         server: {
           options: {
-            jshintrc: 'server/.jshintrc'
+            jshintrc: 'src/server/.jshintrc'
           },
           src: [
-            'server/**/*.js',
-            '!server/**/*.spec.js'
+            'src/server/**/*.js',
+            '!src/server/**/*.spec.js'
           ]
         },
         serverTest: {
           options: {
-            jshintrc: 'server/.jshintrc-spec'
+            jshintrc: 'src/server/.jshintrc-spec'
           },
-          src: ['server/**/*.spec.js']
+          src: ['src/server/**/*.spec.js']
         },
         all: [
           '<%= yeoman.client %>/{app,components}/**/*.js',
@@ -198,7 +197,7 @@ module.exports = function (grunt) {
       // Use nodemon to run server in debug mode with an initial breakpoint
       nodemon: {
         debug: {
-          script: 'server/app.js',
+          script: 'src/server/app.js',
           options: {
             nodeArgs: ['--debug-brk'],
             env: {
@@ -224,7 +223,7 @@ module.exports = function (grunt) {
       wiredep: {
         target: {
           src: '<%= yeoman.client %>/index.html',
-          ignorePath: '<%= yeoman.client %>/',
+          ignorePath: '../../',
           exclude: [/bootstrap-sass-official/, /angular-swagger-ui.*css/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/]
         }
       },
@@ -358,13 +357,6 @@ module.exports = function (grunt) {
           }
         }
       },
-      // Replace Google CDN references
-      cdnify: {
-        dist: {
-          html: ['<%= yeoman.dist %>/public/*.html']
-        }
-      }
-      ,
 
       // Copies remaining files to places other tasks can use
       copy: {
@@ -377,11 +369,18 @@ module.exports = function (grunt) {
             src: [
               '*.{ico,png,txt}',
               '.htaccess',
-              'bower_components/**/*',
               'assets/images/{,*/}*.{webp}',
               'assets/fonts/**/*',
               'assets/templates/**/*',
               'index.html'
+            ]
+          }, {
+            expand: true,
+            dot: true,
+            cwd: '',
+            dest: '<%= yeoman.dist %>/public',
+            src: [
+              'bower_components/**/*'
             ]
           }, {
             expand: true,
@@ -394,7 +393,13 @@ module.exports = function (grunt) {
             src: [
               'package.json',
               '.ebextensions/*.config',
-              '.elasticbeanstalk/*.yml',
+              '.elasticbeanstalk/*.yml'
+            ]
+          }, {
+            expand: true,
+            cwd: 'src',
+            dest: '<%= yeoman.dist %>',
+            src: [
               'server/**/*'
             ]
           }]
@@ -482,7 +487,7 @@ module.exports = function (grunt) {
           reporter: 'spec'
         }
         ,
-        src: ['server/api/**/*.spec.js']
+        src: ['src/server/api/**/*.spec.js']
       }
       ,
 
@@ -519,7 +524,7 @@ module.exports = function (grunt) {
         server: {
           options: {
             loadPath: [
-              '<%= yeoman.client %>/bower_components',
+              'bower_components',
               '<%= yeoman.client %>/app',
               '<%= yeoman.client %>/components'
             ],
@@ -540,15 +545,13 @@ module.exports = function (grunt) {
         scripts: {
           options: {
             transform: function (filePath) {
-              filePath = filePath.replace('/client/', '');
+              filePath = filePath.replace('/src/client/', '');
               filePath = filePath.replace('/.tmp/', '');
               return '<script src="' + filePath + '"></script>';
-            }
-            ,
+            },
             starttag: '<!-- injector:js -->',
             endtag: '<!-- endinjector -->'
-          }
-          ,
+          },
           files: {
             '<%= yeoman.client %>/index.html': [
               ['{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
@@ -564,8 +567,8 @@ module.exports = function (grunt) {
         sass: {
           options: {
             transform: function (filePath) {
-              filePath = filePath.replace('/client/app/', '');
-              filePath = filePath.replace('/client/components/', '');
+              filePath = filePath.replace('/src/client/app/', '');
+              filePath = filePath.replace('/src/client/components/', '');
               return '@import \'' + filePath + '\';';
             }
             ,
@@ -736,7 +739,6 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'cdnify',
     'cssmin',
     'uglify',
     'rev',

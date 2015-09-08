@@ -3,10 +3,9 @@ public
 .tmp
 .sass-cache
 .idea
-client/bower_components
 bower_components
 dist
-/server/config/local.env.js
+src/server/config/local.env.js
 *.iml
 coverage
 
@@ -20,13 +19,16 @@ npm-debug.log
 
 .ebextensions/*.private.config
 
-client/components/bootstrap-override/*
-!client/components/bootstrap-override/.empty
+src/client/components/bootstrap-override/*
+!src/client/components/bootstrap-override/.empty
 
-client/app/app.constants.js
+src/client/app/app.constants.js
 
-server/config/local.env/*
-!server/config/local.env/.empty
+src/server/config/local.env/*
+!src/server/config/local.env/.empty
 
-client/assets/templates/jumbotron.html
+src/client/assets/templates/jumbotron.html
 .vagrant
+
+build
+report

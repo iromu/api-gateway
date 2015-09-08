@@ -11,24 +11,24 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'client/bower_components/jquery/dist/jquery.js',
-      'client/bower_components/angular/angular.js',
-      'client/bower_components/angular-mocks/angular-mocks.js',
-      'client/bower_components/angular-ui-grid/ui-grid.js',
-      'client/bower_components/angular-resource/angular-resource.js',
-      'client/bower_components/angular-cookies/angular-cookies.js',
-      'client/bower_components/angular-sanitize/angular-sanitize.js',
-      'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-      'client/bower_components/lodash/lodash.js',
-      'client/bower_components/angular-socket-io/socket.js',
-      'client/bower_components/angular-ui-router/release/angular-ui-router.js',
-      'client/bower_components/restangular/dist/restangular.js',
-      'client/bower_components/angular-swagger-ui/dist/scripts/swagger-ui.min.js',
-      'client/app/app.js',
-      'client/app/**/*.js',
-      'client/components/**/*.js',
-      'client/app/**/*.html',
-      'client/components/**/*.html'
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-ui-grid/ui-grid.js',
+      'bower_components/angular-resource/angular-resource.js',
+      'bower_components/angular-cookies/angular-cookies.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/lodash/lodash.js',
+      'bower_components/angular-socket-io/socket.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/restangular/dist/restangular.js',
+      'bower_components/angular-swagger-ui/dist/scripts/swagger-ui.min.js',
+      'src/client/app/app.js',
+      'src/client/app/**/*.js',
+      'src/client/components/**/*.js',
+      'src/client/app/**/*.html',
+      'src/client/components/**/*.html'
     ],
 
     preprocessors: {
