@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css({client,bower_components}) app/vendor.css -->
+    <!-- build:css(.) app/vendor.css -->
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
       <!-- endbower -->
@@ -45,7 +45,7 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-    <!-- build:js({client,node_modules,bower_components}) app/vendor.js -->
+    <!-- build:js({.,node_modules}) app/vendor.js -->
       <!-- bower:js -->
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
@@ -63,7 +63,7 @@
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
 
-    <!-- build:js({.tmp,client}) app/app.js -->
+    <!-- build:js({.tmp,src/client}) app/app.js -->
     <script src="app/app.js"></script>
       <!-- injector:js -->
       <script src="app/account/account.js"></script>
@@ -72,19 +72,19 @@
       <script src="app/account/signup/signup.controller.js"></script>
       <script src="app/admin/admin.controller.js"></script>
       <script src="app/admin/admin.js"></script>
-    <script src="app/app.components.js"></script>
+      <script src="app/app.components.js"></script>
       <script src="app/app.constants.js"></script>
       <script src="app/app.core.js"></script>
       <script src="app/endpoint/endpoint.controller.js"></script>
       <script src="app/endpoint/endpoint.js"></script>
-    <script src="app/explorer/api.service.js"></script>
+      <script src="app/explorer/api.service.js"></script>
       <script src="app/explorer/explorer.controller.js"></script>
       <script src="app/explorer/explorer.js"></script>
       <script src="app/main/main.controller.js"></script>
       <script src="app/main/main.js"></script>
       <script src="app/main/main.service.js"></script>
       <script src="components/auth/auth.service.js"></script>
-    <script src="components/auth/interceptor.service.js"></script>
+      <script src="components/auth/interceptor.service.js"></script>
       <script src="components/auth/user.service.js"></script>
       <script src="components/full-restangular/full-restangular.service.js"></script>
       <script src="components/modal/modal.service.js"></script>
