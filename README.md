@@ -91,7 +91,10 @@ Run istanbul (install with `npm install -g istanbul`)
     $ istanbul cover -- grunt test   
 
 
+Open HTML reports:
 
+    open coverage/lcov-report/index.html
+    open coverage/client-report/index.html
 
 
 

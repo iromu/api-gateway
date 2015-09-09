@@ -616,7 +616,7 @@ module.exports = function (grunt) {
         }
         ,
         grunt_coveralls_real_coverage: {
-          src: 'coverage/lcov.info'
+          src: 'coverage/*.info'
         }
       }
     }

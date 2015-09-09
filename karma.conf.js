@@ -33,7 +33,7 @@ module.exports = function (config) {
 
     preprocessors: {
       '**/*.html': 'html2js',
-      'client/app/**/*.js': ['coverage']
+      'src/client/app/**/*.js': ['coverage']
     },
 
     ngHtml2JsPreprocessor: {
@@ -70,6 +70,29 @@ module.exports = function (config) {
     // if true, it capture browsers, run tests and exit
     singleRun: false,
 
-    reporters: ['progress', 'coverage']
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      instrumenterOptions: {
+        istanbul: {noCompact: true}
+      },
+      reporters: [
+        {type: 'html', subdir: 'client-report'},
+        {
+          type: 'lcovonly',
+          subdir: '.',
+          file: 'client-lcov.info'
+        },
+        {type: 'teamcity', subdir: '.', file: 'client-teamcity.txt'},
+        {type: 'text', subdir: '.', file: 'client-text.txt'},
+        {type: 'text-summary', subdir: '.', file: 'client-text-summary.txt'},]
+    },
+
+    plugins: [
+      'karma-html2js-preprocessor',
+      'karma-jasmine',
+      'karma-phantomjs-launcher',
+      'karma-coverage'
+    ]
   });
 };
