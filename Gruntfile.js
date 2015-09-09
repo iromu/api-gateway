@@ -19,7 +19,8 @@ module.exports = function (grunt) {
     injector: 'grunt-asset-injector',
     buildcontrol: 'grunt-build-control',
     coveralls: 'grunt-coveralls',
-    jscs: 'grunt-jscs'
+    jscs: 'grunt-jscs',
+    plato: 'grunt-plato'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -627,6 +628,19 @@ module.exports = function (grunt) {
           config: '.jscsrc'
         }
       }
+      ,
+      plato: {
+        run: {
+          options: {
+            jshint: false,
+            title: 'Plato Inspections Report',
+            exclude: /\.spec\.js$/,
+          },
+          files: {
+            'report/plato': ['src/**/*.js']
+          }
+        }
+      }
     }
   )
   ;
@@ -734,8 +748,14 @@ module.exports = function (grunt) {
       ]);
   });
 
-  grunt.registerTask('build', [
+  grunt.registerTask('analysis', [
     'jscs',
+    'plato:run'
+  ]);
+
+
+  grunt.registerTask('build', [
+    'analysis',
     'clean:dist',
     'ngconstant:production',
     'injector:sass',
