@@ -18,7 +18,8 @@ module.exports = function (grunt) {
     protractor: 'grunt-protractor-runner',
     injector: 'grunt-asset-injector',
     buildcontrol: 'grunt-build-control',
-    coveralls: 'grunt-coveralls'
+    coveralls: 'grunt-coveralls',
+    jscs: 'grunt-jscs'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -338,7 +339,7 @@ module.exports = function (grunt) {
         // Options for all targets
         options: {
           space: '  ',
-          wrap: '(function () {\n\'use strict\';\n\n {%= __ngModule %}\n}());',
+          wrap: '(function () {\n\'use strict\';\n\n {%= __ngModule %}\n}());\n',
           name: 'app.constants',
           dest: '<%= yeoman.client %>/app/app.constants.js',
           constants: {
@@ -619,6 +620,13 @@ module.exports = function (grunt) {
           src: 'coverage/*.info'
         }
       }
+      ,
+      jscs: {
+        src: 'src/**/*.js',
+        options: {
+          config: '.jscsrc'
+        }
+      }
     }
   )
   ;
@@ -727,6 +735,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
+    'jscs',
     'clean:dist',
     'ngconstant:production',
     'injector:sass',
