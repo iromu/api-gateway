@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app')
+angular.module('app.account')
   .controller('SettingsController', function ($scope, User, Auth) {
     $scope.errors = {};
 

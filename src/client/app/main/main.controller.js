@@ -2,7 +2,8 @@
 
   'use strict';
 
-  angular.module('app')
+  angular.module('app.main', []);
+  angular.module('app.main')
     .controller('MainController', MainController);
 
   function MainController($scope, $state, socket, FullRestangular) {

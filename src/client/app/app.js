@@ -1,9 +1,15 @@
 (function () {
+
   'use strict';
 
   angular.module('app', [
     'app.core',
-    'app.components'
+    'app.components',
+    'app.explorer',
+    'app.dashboard',
+    'app.admin',
+    'app.account',
+    'app.main'
   ])
     .config(configure)
     .factory('authInterceptor', authInterceptor)

@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  angular.module('app')
+
+  angular.module('app.explorer', []);
+  angular.module('app.explorer')
     .controller('ExplorerController', ExplorerController);
 
   function ExplorerController($scope, $stateParams, $location, apiService) {

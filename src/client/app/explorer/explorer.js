@@ -1,6 +1,9 @@
-'use strict';
+(function () {
 
-angular.module('app')
+  'use strict';
+
+angular.module('app.explorer')
   .config(function ($stateProvider) {
 
   });
+}());

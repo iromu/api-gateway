@@ -1,6 +1,8 @@
-'use strict';
+(function () {
 
-angular.module('app')
+  'use strict';
+
+angular.module('app.main')
   .config(function ($stateProvider) {
     $stateProvider
       .state('main', {
@@ -22,3 +24,4 @@ angular.module('app')
         controllerAs: 'vm'
       });
   });
+}());

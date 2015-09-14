@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  angular.module('app')
+  angular.module('app.explorer')
     .factory('apiService', function (FullRestangular) {
 
       var service = FullRestangular.service('services');

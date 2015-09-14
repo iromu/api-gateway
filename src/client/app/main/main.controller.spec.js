@@ -3,7 +3,7 @@
 describe('Controller: MainController', function () {
 
 
-  beforeEach(module('app'));
+  beforeEach(module('app.main'));
   beforeEach(module('socketMock'));
 
   var vm, scope;

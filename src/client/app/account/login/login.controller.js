@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app')
+angular.module('app.account')
   .controller('LoginController', function ($scope, Auth, $location, $window) {
     $scope.user = {};
     $scope.errors = {};

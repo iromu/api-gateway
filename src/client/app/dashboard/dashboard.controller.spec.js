@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: EndpointCtrl', function () {
+describe('Controller: DashboardController', function () {
 
   // load the controller's module
-  beforeEach(module('app'));
+  beforeEach(module('app.dashboard'));
 
   var EndpointCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    EndpointCtrl = $controller('EndpointCtrl', {
+    EndpointCtrl = $controller('DashboardController', {
       $scope: scope
     });
   }));

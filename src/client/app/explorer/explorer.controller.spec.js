@@ -3,7 +3,7 @@
 describe('Controller: ExplorerController', function () {
 
   // load the controller's module
-  beforeEach(module('app'));
+  beforeEach(module('app.explorer'));
 
   var vm, scope, stateParams;
 
