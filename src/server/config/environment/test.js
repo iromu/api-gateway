@@ -5,6 +5,6 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/apigateway-test'
+    uri: process.env.MONGODB_URL || 'mongodb://localhost/apigateway-test'
   }
 };

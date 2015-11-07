@@ -92,7 +92,9 @@
     "karma-phantomjs-launcher": "~0.2.1",
     "karma-requirejs": "~0.2.2",
     "karma-script-launcher": "~0.1.0",
+    "mocha": "^2.3.3",
     "open": "~0.0.5",
+    "phantomjs": "^1.9.18",
     "requirejs": "~2.1.20",
     "should": "~7.1.1",
     "supertest": "~1.1.0",
@@ -107,6 +109,5 @@
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "coverage": "istanbul cover -- grunt test && grunt coveralls:grunt_coveralls_real_coverage",
     "toc": "doctoc --maxlevel 3 README.md"
-  },
-  "private": true
+  }
 }

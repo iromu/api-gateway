@@ -5,7 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/apigateway-dev'
+    uri: process.env.MONGODB_URL || 'mongodb://localhost/apigateway-dev'
   },
   seedDB: true
 };

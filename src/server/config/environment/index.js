@@ -68,7 +68,7 @@ var all = {
   },
 
   redis: {
-    uri: process.env.AWS_ELASTICACHE_URI || process.env.REDISCLOUD_URL || 'redis://localhost:6379'
+    uri: process.env.AWS_ELASTICACHE_URI || process.env.REDISCLOUD_URL || process.env.REDIS_URL || 'redis://localhost:6379'
   }
 };
 
