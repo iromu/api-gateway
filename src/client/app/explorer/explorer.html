@@ -5,12 +5,12 @@
     <input class="form-control input-md" id="inputCode" type="text" aria-describedby="addonCode"
            ng-model="vm.codeSelection"
            placeholder="Service code"
-           typeahead="code for code in vm.typeServiceCode($viewValue)"
+           uib-typeahead="code for code in vm.typeServiceCode($viewValue)"
            typeahead-on-select="vm.onCodeSelection($label)"
            typeahead-select-on-exact="true"
            typeahead-editable="false">
-    <div class="input-group-btn" dropdown is-open="status.isopen">
-      <button ng-click="vm.loadVersions()" type="button" class="btn btn-primary" dropdown-toggle
+    <div class="input-group-btn" uib-dropdown is-open="status.isopen">
+      <button ng-click="vm.loadVersions()" type="button" class="btn btn-primary" uib-dropdown-toggle
               ng-disabled="!vm.codeSelection">
         Version <span class="caret"></span>
       </button>
