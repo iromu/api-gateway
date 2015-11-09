@@ -21,6 +21,7 @@
     "lodash": "~3.10.1",
     "method-override": "~2.3.5",
     "mongoose": "~4.2.4",
+    "mongoose-paginate": "^4.2.0",
     "mongoose-redis-cache": "0.0.3",
     "morgan": "~1.6.1",
     "passport": "~0.3.0",
@@ -73,6 +74,7 @@
     "grunt-plato": "^1.2.1",
     "grunt-protractor-runner": "^2.1.0",
     "grunt-rev": "~0.1.0",
+    "grunt-ssh-deploy": "^0.3.1",
     "grunt-svgmin": "~2.0.1",
     "grunt-usemin": "~3.1.1",
     "grunt-wiredep": "~2.0.0",
@@ -98,6 +100,7 @@
     "requirejs": "~2.1.20",
     "should": "~7.1.1",
     "supertest": "~1.1.0",
+    "supertest-session": "^2.0.0",
     "time-grunt": "~1.2.2"
   },
   "engines": {
@@ -109,5 +112,13 @@
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "coverage": "istanbul cover -- grunt test && grunt coveralls:grunt_coveralls_real_coverage",
     "toc": "doctoc --maxlevel 3 README.md"
-  }
+  },
+  "publishConfig": {
+    "registry": "http://artifactory.local:4873"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://gitlab.local/iot/api-gateway"
+  },
+  "license": "Private non-oss (c) Ivan Rodriguez Murillo 2015"
 }
