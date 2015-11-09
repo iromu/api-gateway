@@ -32,3 +32,6 @@ src/client/assets/templates/jumbotron.html
 
 build
 report
+
+
+test-results.xml

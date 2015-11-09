@@ -70,7 +70,11 @@ module.exports = function (config) {
     // if true, it capture browsers, run tests and exit
     singleRun: false,
 
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage', 'junit'],
+
+    junitReporter: {
+      outputFile: 'test-results.xml'
+    },
 
     coverageReporter: {
       instrumenterOptions: {
@@ -92,7 +96,8 @@ module.exports = function (config) {
       'karma-html2js-preprocessor',
       'karma-jasmine',
       'karma-phantomjs-launcher',
-      'karma-coverage'
+      'karma-coverage',
+      'karma-junit-reporter'
     ]
   });
 };
