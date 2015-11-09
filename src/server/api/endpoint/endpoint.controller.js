@@ -89,5 +89,5 @@ exports.handle = function (req, res) {
 
 function handleError(res, err) {
   console.error(err);
-  return res.status(500).json(err);
+  return res.sendStatus(500).json(err);
 }

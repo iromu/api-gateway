@@ -120,5 +120,5 @@
     "type": "git",
     "url": "http://gitlab.local/iot/api-gateway"
   },
-  "license": "Private non-oss (c) Ivan Rodriguez Murillo 2015"
+  "license": "SEE LICENSE IN LICENSE.md"
 }

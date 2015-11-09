@@ -28,7 +28,7 @@ module.exports = function (app) {
     });
   app.route('/:url(index.html|explorer|dashboard|admin|login|signup)/*')
     .get(function (req, res) {
-      res.sendfile(app.get('appPath') + '/index.html');
+      res.sendFile(app.get('appPath') + '/index.html');
     });
 
   app.use('/*', require('./api/endpoint/index'));

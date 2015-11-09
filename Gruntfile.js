@@ -20,7 +20,8 @@ module.exports = function (grunt) {
     buildcontrol: 'grunt-build-control',
     coveralls: 'grunt-coveralls',
     jscs: 'grunt-jscs',
-    plato: 'grunt-plato'
+    plato: 'grunt-plato',
+    ssh: 'grunt-ssh-deploy'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -28,7 +29,26 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-
+    environments: {
+      options: {
+        local_path: 'dist',
+        deploy_path: '/opt/apps/api-gateway',
+        debug: true,
+        releases_to_keep: '3'
+      },
+      nodejs01: {
+        options: {
+          host: 'nodejs01.local',
+          username: 'root',
+          privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa'),
+          before_deploy: 'cd /opt/apps/api-gateway/current && forever stop "api-gateway"',
+          after_deploy: 'cd /opt/apps/api-gateway/current && ' +
+          'ln -s /opt/apps/api-gateway/node_modules node_modules && ' +
+          //  'npm --production install && ' +
+          'NODE_ENV=production PORT=8085 forever start --uid "api-gateway" -a server/app.js'
+        }
+      }
+    },
       // Project settings
       pkg: grunt.file.readJSON('package.json'),
       yeoman: {

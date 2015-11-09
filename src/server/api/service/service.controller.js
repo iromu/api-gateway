@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Service = require('./service.model.js');
+var BaseController = require('../base.controller');
 
 // Get list of public services
 exports.public = function (req, res) {
@@ -32,26 +33,53 @@ exports.public = function (req, res) {
 // Get list of services
 exports.index = function (req, res) {
 
+  const MAX_SIZE = 50;
+  const MIN_SIZE = 10;
+
+  var columnDefinition;
+  var columnDefinitionForListing = {'_id': 0, 'code': 1, 'name': 1, 'hits': 1};
+  var columnDefinitionForDetailByCode = {'_id': 0, 'code': 1, 'name': 1, 'hits': 1, 'latestVersion': 1, 'endpoints': 1};
+
+  var limit = req.headers.size ? (req.headers.size > MAX_SIZE ? MAX_SIZE : req.headers.size) : MIN_SIZE;
+  var skip = req.headers.page ? (req.headers.page - 1) * limit : 0;
+  var orderBy = req.headers.order ? req.headers.order : 'name asc';
+
   var filter = {};
+  var sortBy = {};
 
   if (req.query.code) {
     filter.code = req.query.code;
+    columnDefinition = columnDefinitionForDetailByCode;
+  } else {
+    columnDefinition = columnDefinitionForListing;
   }
 
   if (req.query.public) {
     filter.public = true;
+    sortBy.hits = -1;
   }
 
-  Service.find(filter)
-    .sort({public: +1})
-    .sort({code: +1})
-    .lean()
-    .exec(function (err, services) {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.status(200).json(services);
+  var buildPaginationResponse = function (data) {
+    Service.count(function (err, count) {
+      res.setHeader('total', count);
+      return res.status(200).json(data);
     });
+  };
+
+  var paginateCallback = function (err, data) {
+    if (err) {
+      return handleError(res, err);
+    }
+    buildPaginationResponse(data);
+  };
+
+  Service.paginate(filter, {
+    page: req.headers.page,
+    limit: limit,
+    columns: columnDefinition,
+    sortBy: sortBy,
+    lean: true
+  }, paginateCallback);
 
 };
 

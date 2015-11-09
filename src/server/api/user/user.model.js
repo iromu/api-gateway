@@ -1,5 +1,5 @@
 'use strict';
-
+var mongoosePaginate = require('mongoose-paginate');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
@@ -20,6 +20,9 @@ var UserSchema = new Schema({
   google: {},
   github: {}
 });
+
+
+UserSchema.plugin(mongoosePaginate);
 
 /**
  * Virtuals

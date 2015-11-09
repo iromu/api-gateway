@@ -34,7 +34,7 @@
             }
             getPage();
           });
-          gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+          $scope.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
             paginationOptions.pageNumber = newPage;
             paginationOptions.pageSize = pageSize;
             getPage();

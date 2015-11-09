@@ -1,5 +1,8 @@
 'use strict';
 
+
+var mongoosePaginate = require('mongoose-paginate');
+
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
@@ -25,5 +28,8 @@ var ServiceSchema = new Schema({
   defaultHeaders: [HeaderSchema],
   endpoints: [EndpointSchema]
 });
+
+
+ServiceSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Service', ServiceSchema);

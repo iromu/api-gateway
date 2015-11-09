@@ -6,6 +6,8 @@
 'use strict';
 
 var _ = require('lodash');
+var fs = require('fs');
+var path = require('path');
 
 var User = require('../api/user/user.model.js');
 var Service = require('../api/service/service.model.js');
@@ -99,6 +101,31 @@ Service.find({}).remove(function () {
       console.log('finished populating services and endpoints');
     }
   );
+});
+
+console.log('reading api models');
+
+fs.readFile(path.join(__dirname, 'api-models.json'), function (err, content) {
+  if (err) throw err;
+  // Define to JSON type
+  var jsonContent = JSON.parse(content);
+  var services = [];
+  for (var json in jsonContent) {
+    var service = {
+      name: json,
+      code: json,
+      public: true,
+      latestVersion: jsonContent[json].preferred
+    };
+    services.push(service);
+  }
+
+  Service.create(services,
+    function () {
+      console.log('finished populating ' + services.length + ' services from api-models');
+    }
+  );
+
 });
 
 
