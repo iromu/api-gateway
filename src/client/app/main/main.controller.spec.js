@@ -2,7 +2,8 @@
 
 describe('Controller: MainController', function () {
 
-
+  beforeEach(module('app.core'));
+  beforeEach(module('app.components'));
   beforeEach(module('app.main'));
   beforeEach(module('socketMock'));
 

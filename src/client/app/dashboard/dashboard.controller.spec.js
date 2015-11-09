@@ -3,6 +3,8 @@
 describe('Controller: DashboardController', function () {
 
   // load the controller's module
+  beforeEach(module('app.core'));
+  beforeEach(module('app.components'));
   beforeEach(module('app.dashboard'));
 
   var EndpointCtrl, scope;
