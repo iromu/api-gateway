@@ -8,7 +8,8 @@
         .state('admin', {
           url: '/admin',
           templateUrl: 'app/admin/admin.html',
-          controller: 'AdminController'
+          controller: 'AdminController',
+          controllerAs: 'vm'
         });
     });
 }());

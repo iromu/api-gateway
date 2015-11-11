@@ -5,7 +5,9 @@
   angular.module('app.admin', []);
 
   angular.module('app.admin')
-    .controller('AdminController', function ($scope, $http, Auth, User, FullRestangular, uiGridConstants) {
+    .controller('AdminController', function ($log, $scope, $http, Auth, User, FullRestangular, uiGridConstants) {
+
+      var vm = this;
 
       var paginationOptions = {
         pageNumber: 1,
@@ -13,7 +15,9 @@
         sort: null
       };
 
-      $scope.gridOptions = {
+      vm.gridOptions = {
+        enableRowSelection: true,
+        multiSelect: false,
         paginationPageSizes: [25],
         paginationPageSize: 25,
         useExternalPagination: true,
@@ -24,24 +28,41 @@
           {name: 'role'}
         ],
         onRegisterApi: function (gridApi) {
-          $scope.gridApi = gridApi;
-          $scope.gridApi.core.on.sortChanged($scope, function (grid, sortColumns) {
+          gridApi.core.on.sortChanged($scope, function (grid, sortColumns) {
             if (sortColumns.length === 0) {
               paginationOptions.sort = null;
             } else {
-              console.log(JSON.stringify(sortColumns));
+              $log.log(sortColumns);
               paginationOptions.sort = sortColumns[0].sort.direction;
             }
             getPage();
           });
-          $scope.gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
+          gridApi.pagination.on.paginationChanged($scope, function (newPage, pageSize) {
             paginationOptions.pageNumber = newPage;
             paginationOptions.pageSize = pageSize;
+
+            $scope.$emit('paginationChanged', newPage, pageSize);
             getPage();
+          });
+          gridApi.selection.on.rowSelectionChanged($scope, function (row) {
+            $scope.$emit('rowSelectionChanged', row);
+          });
+
+          gridApi.selection.on.rowSelectionChangedBatch($scope, function (rows) {
+            var msg = 'rows changed ' + rows.length;
+            $scope.$emit('rowSelectionChangedBatch', rows);
+            $log.log(msg);
           });
         }
       };
 
+      $scope.$on('rowSelectionChanged', function (event, row) {
+        $log.log(row);
+      });
+
+      vm.addRow = function () {
+
+      };
 
       var getPage = function () {
         FullRestangular.all('users').getList({}, {
@@ -49,9 +70,9 @@
           size: paginationOptions.pageSize,
           order: paginationOptions.sort
         }).then(function (response) {
-          $scope.gridOptions.totalItems = response.headers('total');
-          $scope.users = response.data;
-          $scope.gridOptions.data = response.data;
+          vm.gridOptions.totalItems = response.headers('total');
+          vm.users = response.data;
+          vm.gridOptions.data = response.data;
         });
       };
 
@@ -59,15 +80,20 @@
 
 
       // Use the User $resource to fetch all users
-      //$scope.users = User.query();
+      //vm.users = User.query();
 
-      $scope.delete = function (user) {
+      vm.delete = function (user) {
         User.remove({id: user._id});
-        angular.forEach($scope.users, function (u, i) {
+        angular.forEach(vm.users, function (u, i) {
           if (u === user) {
-            $scope.users.splice(i, 1);
+            vm.users.splice(i, 1);
           }
         });
       };
+
+      $scope.$on('$destroy', function () {
+        $log.log('Destroy AdminController');
+      });
+
     });
 }());

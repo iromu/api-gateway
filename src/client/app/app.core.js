@@ -12,6 +12,7 @@
     'swaggerUi',
     'ui.grid',
     'ui.grid.pagination',
+    'ui.grid.selection',
     'app.constants'
   ]);
 

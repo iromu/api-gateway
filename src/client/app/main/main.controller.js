@@ -6,7 +6,7 @@
   angular.module('app.main')
     .controller('MainController', MainController);
 
-  function MainController($scope, $state, socket, FullRestangular) {
+  function MainController($log, $scope, $state, socket, FullRestangular) {
 
     var vm = this;
     vm.jumbotron = {url: '/assets/templates/jumbotron.html'};
@@ -28,7 +28,7 @@
     });
 
     function activate() {
-      console.log('Activate');
+      $log.log('Activate');
       FullRestangular.all('services').getList({public: true}).then(function (response) {
         vm.topServices = response.data;
         socket.syncUpdates('service', vm.topServices);

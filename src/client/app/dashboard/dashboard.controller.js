@@ -6,9 +6,9 @@
   angular.module('app.dashboard')
     .controller('DashboardController', DashboardController);
 
-  function DashboardController($scope, FullRestangular) {
+  function DashboardController($log, $scope, FullRestangular) {
 
-    console.log('Init DashboardController');
+    $log.log('Init DashboardController');
 
     var vm = this;
 
@@ -34,7 +34,7 @@
           if (sortColumns.length === 0) {
             paginationOptions.sort = null;
           } else {
-            console.log(JSON.stringify(sortColumns));
+            $log.log(JSON.stringify(sortColumns));
             paginationOptions.sort = sortColumns[0].sort.direction;
           }
           getPage();
@@ -64,11 +64,11 @@
     activate();
 
     $scope.$on('$destroy', function () {
-      console.log('Destroy DashboardController');
+      $log.log('Destroy DashboardController');
     });
 
     function activate() {
-      console.log('Activate');
+      $log.log('Activate');
     }
 
   }

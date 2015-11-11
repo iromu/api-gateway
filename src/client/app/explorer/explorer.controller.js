@@ -6,9 +6,9 @@
   angular.module('app.explorer')
     .controller('ExplorerController', ExplorerController);
 
-  function ExplorerController($scope, $stateParams, $location, apiService) {
+  function ExplorerController($log, $scope, $stateParams, $location, apiService) {
 
-    console.log('Init ' + JSON.stringify($stateParams));
+    $log.log('Init ' + JSON.stringify($stateParams));
 
     var vm = this;
     vm.loadingServices = false;
@@ -19,7 +19,7 @@
 
     // error management
     vm.swaggerErrorHandler = function (data, status) {
-      console.log('failed to load swagger: ' + status);
+      $log.log('failed to load swagger: ' + status);
     };
 
     // transform API explorer requests
@@ -29,7 +29,7 @@
 
 
     vm.loadVersions = function () {
-      console.log('loadVersions');
+      $log.log('loadVersions');
       apiService.getVersioning(vm.codeSelection).then(function (response) {
         vm.versions = response.data;
       });
@@ -55,12 +55,12 @@
     activate();
 
     $scope.$on('$destroy', function () {
-      console.log('Destroy explorer');
+      $log.log('Destroy explorer');
       $scope.$emit('showExplorer', false);
     });
 
     function activate() {
-      console.log('Activate');
+      $log.log('Activate');
       delete vm.versions;
       delete vm.codeSelection;
       $scope.$emit('showExplorer', true);
