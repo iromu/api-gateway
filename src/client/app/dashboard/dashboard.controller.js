@@ -26,6 +26,7 @@
       columnDefs: [
         {name: 'name'},
         {name: 'code'},
+        {name: 'latestVersion'},
         {name: 'hits'}
       ],
       onRegisterApi: function (gridApi) {

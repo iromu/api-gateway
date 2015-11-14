@@ -1,11 +1,22 @@
 'use strict';
 
+var fs = require('fs');
+var path = require('path');
+
 var should = require('should');
 var request = require('supertest');
 var Service = require('./service/service.model.js');
 
 before(function (done) {
   console.log('global setup');
+
+  var swaggerModel = JSON.parse(fs.readFileSync(path.join(__dirname, '../config/seed/sampleservice-swagger.json')));
+
+  swaggerModel.info.version = '2.0.3';
+  swaggerModel.host = 'localhost:9000/';
+  swaggerModel.basePath = '/api/v203';
+
+  var sampleServiceSwagger = JSON.stringify(swaggerModel);
 
   Service.find({}).remove(function () {
     Service.create({
@@ -16,9 +27,17 @@ before(function (done) {
         latestVersion: '2.1.0',
         endpoints: [
           {uri: 'http://localhost:9000/api/samples/v101', hits: 4, apiVersion: '1.0.1'},
-          {uri: 'http://localhost:9000/api/samples/v200', hits: 1, apiVersion: '2.0.0'},
-          {uri: 'http://localhost:9000/api/samples/v203', hits: 3, apiVersion: '2.0.3'},
-          {uri: 'http://localhost:9000/api/samples/v210', hits: 2, apiVersion: '2.1.0'}
+          {
+            uri: 'http://localhost:9000/api/samples/v200',
+            apiDocUrl: 'http://localhost:9000/api/samples/v200/swagger.json',
+            hits: 1,
+            apiVersion: '2.0.0'
+          },
+          {uri: 'http://localhost:9000/api/samples/v203', apiDoc: sampleServiceSwagger, hits: 3, apiVersion: '2.0.3'},
+          {
+            uri: 'http://localhost:9000/api/samples/v210',
+            apiDocUrl: 'http://localhost:9000/api/samples/v210/swagger.json', hits: 2, apiVersion: '2.1.0'
+          }
         ]
       }, {
         name: 'Private',

@@ -19,6 +19,7 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var RedisStore = require('connect-redis')(session);
 var redisClient = require('../components/redis/index').getRedisClient();
+var errorhandler = require('errorhandler');
 
 module.exports = function (app) {
   var env = app.get('env');
@@ -44,12 +45,14 @@ module.exports = function (app) {
     }
   ));
   if ('production' === env) {
+    app.use(errorhandler());
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
     app.set('appPath', config.root + '/public');
   }
 
   if ('development' === env || 'test' === env) {
+    app.use(errorHandler({dumpExceptions: true, showStack: true}));
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '../.tmp')));
     app.use('/bower_components', express.static(path.join(config.root, '../bower_components')));

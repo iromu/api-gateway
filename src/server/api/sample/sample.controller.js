@@ -23,8 +23,8 @@ var getApiVersion = function (req, res) {
     apiVersion = apiVersionText.split('').join('.');
   }
 
-  console.log('getApiVersion req.url ' + req.url);
-  console.log('getApiVersion apiVersion ' + apiVersion);
+  console.log('getApiVersionFromRequest req.url ' + req.url);
+  console.log('getApiVersionFromRequest apiVersion ' + apiVersion);
   if (allowedApiVersion.indexOf(apiVersion) === -1) {
     return res.send(404);
   }

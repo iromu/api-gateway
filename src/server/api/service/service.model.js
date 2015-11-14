@@ -13,8 +13,14 @@ var HeaderSchema = new Schema({
 
 var EndpointSchema = new Schema({
   hits: {type: Number, default: 0},
+  //base
   uri: String,
   apiVersion: String,
+  // full swagger path: base + apiDocUrl
+  apiDocUrl: String,
+  // swagger model
+  apiDoc: String,
+  apiValid: {type: Boolean, default: false},
   headers: [HeaderSchema]
 });
 

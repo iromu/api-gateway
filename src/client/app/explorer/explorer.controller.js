@@ -8,7 +8,7 @@
 
   function ExplorerController($log, $scope, $stateParams, $location, apiService) {
 
-    $log.log('Init ' + JSON.stringify($stateParams));
+    $log.log('Init ExplorerController with $stateParams: ' + JSON.stringify($stateParams));
 
     var vm = this;
     vm.loadingServices = false;
@@ -55,7 +55,7 @@
     activate();
 
     $scope.$on('$destroy', function () {
-      $log.log('Destroy explorer');
+      $log.log('Destroy ExplorerController');
       $scope.$emit('showExplorer', false);
     });
 

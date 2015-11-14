@@ -37,7 +37,7 @@ exports.index = function (req, res) {
   const MIN_SIZE = 10;
 
   var columnDefinition;
-  var columnDefinitionForListing = {'_id': 0, 'code': 1, 'name': 1, 'hits': 1};
+  var columnDefinitionForListing = {'_id': 0, 'code': 1, 'name': 1, 'hits': 1, 'latestVersion': 1};
   var columnDefinitionForDetailByCode = {'_id': 0, 'code': 1, 'name': 1, 'hits': 1, 'latestVersion': 1, 'endpoints': 1};
 
   var limit = req.headers.size ? (req.headers.size > MAX_SIZE ? MAX_SIZE : req.headers.size) : MIN_SIZE;

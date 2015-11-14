@@ -1,0 +1,47 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Sample API",
+    "description": "Sample API",
+    "version": "XXX"
+  },
+  "host": "XXXX",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "basePath": "/api/vXXXX",
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/hello": {
+      "get": {
+        "summary": "Hello message",
+        "description": "Sample Hello World message.",
+        "responses": {
+          "200": {
+            "description": "Profile information for a user",
+            "schema": {
+              "$ref": "#/definitions/HelloMessage"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "HelloMessage": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Message text."
+        },
+        "version": {
+          "type": "string",
+          "description": "API version."
+        }
+      }
+    }
+  }
+}
