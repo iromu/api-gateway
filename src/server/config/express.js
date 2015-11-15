@@ -16,7 +16,6 @@ var path = require('path');
 var config = require('./environment/index');
 var passport = require('passport');
 var session = require('express-session');
-var mongoose = require('mongoose');
 var RedisStore = require('connect-redis')(session);
 var redisClient = require('../components/redis/index').getRedisClient();
 var errorhandler = require('errorhandler');

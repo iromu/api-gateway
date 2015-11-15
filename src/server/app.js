@@ -36,7 +36,9 @@ var socketio = require('socket.io')(server, {
 
 require('./config/socketio')(socketio);
 require('./config/express')(app);
+require('./config/agenda')(app);
 require('./routes')(app);
+
 
 // Start server
 server.listen(config.port, config.ip, function () {

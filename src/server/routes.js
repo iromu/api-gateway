@@ -10,6 +10,7 @@ module.exports = function (app) {
 
   app.use(cors());
 
+
   // Insert routes below
   app.use('/api/services', require('./api/service/index'));
   app.use('/api/samples', require('./api/sample/index'));
@@ -24,7 +25,7 @@ module.exports = function (app) {
   // All other routes should redirect to the index.html
   app.route('/:url(index.html|explorer|dashboard|admin|login|signup)')
     .get(function (req, res) {
-      res.sendfile(app.get('appPath') + '/index.html');
+      res.sendFile(app.get('appPath') + '/index.html');
     });
   app.route('/:url(index.html|explorer|dashboard|admin|login|signup)/*')
     .get(function (req, res) {

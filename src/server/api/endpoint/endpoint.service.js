@@ -38,6 +38,7 @@ var optionsResponse = function (apiRequest) {
       });
 
       var upstreamUrl = service.endpoints[0].uri + '/';
+      upstreamUrl = _.startsWith(upstreamUrl, '/') ? 'http://' + apiRequest.host + upstreamUrl : upstreamUrl;
 
       var options = {
         url: upstreamUrl//,

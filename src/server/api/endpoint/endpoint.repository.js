@@ -37,7 +37,8 @@ exports.getApiDocModel = function (apiRequest) {
     } else {
       console.log('EndpointRepository.getApiDocModel. Pulling from upstream url: ' + apiRequest.apiDocUrl);
       var options = {};
-      options.uri = apiRequest.apiDocUrl;
+
+      options.uri = _.startsWith(apiRequest.apiDocUrl, '/') ? 'http://' + apiRequest.host + apiRequest.apiDocUrl : apiRequest.apiDocUrl;
 
       request(options, function (error, response, body) {
           if (error) {

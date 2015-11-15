@@ -31,6 +31,7 @@ var ServiceSchema = new Schema({
   latestVersion: String,
   public: {type: Boolean, default: true},
   example: Boolean,
+  provider: String,
   defaultHeaders: [HeaderSchema],
   endpoints: [EndpointSchema]
 });

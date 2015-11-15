@@ -26,11 +26,11 @@ exports.handle = function (req, res) {
 
   } else {
     console.info('Proxy pass init');
-    passEndpoint({code: code, apiVersion: apiVersion}, req, upstreamQuerying, upstreamPath, res);
+    passEndpoint({code: code, apiVersion: apiVersion, host: req.get('host')}, req, upstreamQuerying, upstreamPath, res);
   }
 };
 
-var getApiVersionFromRequest = function (req) {
+function getApiVersionFromRequest(req) {
   var apiVersion;
 
   if (API_VERSION_KEY_LC in req.headers) {
@@ -44,7 +44,7 @@ var getApiVersionFromRequest = function (req) {
   return apiVersion;
 };
 
-var passApiDocument = function (apiRequest, res) {
+function passApiDocument(apiRequest, res) {
   service.getApiDocument(apiRequest)
     .then(function (apiResponse) {
       res.set(apiResponse.headers);
@@ -60,7 +60,7 @@ var passApiDocument = function (apiRequest, res) {
     .done();
 };
 
-var passEndpoint = function (passRequest, req, upstreamQuerystring, upstreamPath, res) {
+function passEndpoint(passRequest, req, upstreamQuerystring, upstreamPath, res) {
   service.passEndpoint(passRequest)
     .then(function (options) {
       options.headers = _.merge(options.headers, req.headers);
