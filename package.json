@@ -3,6 +3,7 @@
   "version": "0.0.1-SNAPSHOT",
   "main": "server/app.js",
   "dependencies": {
+    "agenda": "^0.7.2",
     "async": "^1.5.0",
     "body-parser": "~1.14.1",
     "composable-middleware": "^0.3.0",
@@ -26,7 +27,6 @@
     "mongoose-paginate": "^4.2.0",
     "mongoose-redis-cache": "0.0.3",
     "morgan": "~1.6.1",
-    "npm": "^3.4.0",
     "passport": "~0.3.0",
     "passport-facebook": "latest",
     "passport-github": "^1.0.0",
