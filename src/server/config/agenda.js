@@ -17,12 +17,14 @@ module.exports = function (app) {
   agenda.on('start', function (job) {
     console.log("Job %s starting", job.attrs.name);
   });
-  agenda.on('complete', function(job) {
+  agenda.on('complete', function (job) {
     console.log("Job %s finished", job.attrs.name);
   });
   agenda.on('ready', function () {
     agenda.schedule('in 10 seconds', 'poll apisguru', {time: new Date()});
-    agenda.start();
+    if ('test' !== env) {
+      agenda.start();
+    }
   });
 
   return agenda;
