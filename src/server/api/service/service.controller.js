@@ -33,8 +33,8 @@ exports.public = function (req, res) {
 // Get list of services
 exports.index = function (req, res) {
 
-  const MAX_SIZE = 50;
-  const MIN_SIZE = 10;
+  var MAX_SIZE = 50;
+  var MIN_SIZE = 10;
 
   var columnDefinition;
   var columnDefinitionForListing = {'_id': 0, 'code': 1, 'name': 1, 'hits': 1, 'latestVersion': 1};

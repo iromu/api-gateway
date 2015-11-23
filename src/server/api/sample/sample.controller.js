@@ -3,7 +3,7 @@
 var fs = require('fs');
 var util = require('util');
 var path = require('path');
-var template = JSON.parse(fs.readFileSync(path.join(__dirname, './swagger.json'), 'utf-8'));
+var template = JSON.parse(fs.readFileSync(path.join(__dirname, './swagger.template.json'), 'utf-8'));
 
 var allowedApiVersion = ['1.0.1', '2.0.0', '2.0.3', '2.1.0'];
 

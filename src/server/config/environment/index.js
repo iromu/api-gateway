@@ -37,6 +37,7 @@ var all = {
   // MongoDB connection options
   mongo: {
     options: {
+      server: {socketOptions: {keepAlive: 1, connectTimeoutMS: 30000}},
       db: {
         safe: true
       }

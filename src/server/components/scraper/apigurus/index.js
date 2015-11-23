@@ -103,53 +103,55 @@ function onSwaggerModelLoaded(swaggerModel) {
 
 module.exports.start = function () {
   var deferred = Q.defer();
-  console.log('Reading seed/api-models.json');
+  Service.find({provider: 'apis.guru'}).remove(function () {
+    console.log('Reading seed/api-models.json');
 
-  fs.readFile(path.join(__dirname, 'seed/api-models.json'), function (err, content) {
-    if (err) throw err;
+    fs.readFile(path.join(__dirname, 'seed/api-models.json'), function (err, content) {
+      if (err) throw err;
 
-    var apiModels = JSON.parse(content);
-    var allPromises = [];
+      var apiModels = JSON.parse(content);
+      var allPromises = [];
 
-    for (var apiModelKey in apiModels) {
+      for (var apiModelKey in apiModels) {
 
-      console.log('Loading info for ' + apiModelKey);
+        console.log('Loading info for ' + apiModelKey);
 
-      var headerModelList = undefined;
-      var apiModel = apiModels[apiModelKey];
-      apiModel.apiModelKey = apiModelKey;
-      var versions = apiModel.versions;
-      var loadSwaggerPromises = [];
+        var headerModelList = undefined;
+        var apiModel = apiModels[apiModelKey];
+        apiModel.apiModelKey = apiModelKey;
+        var versions = apiModel.versions;
+        var loadSwaggerPromises = [];
 
-      for (var version in versions) {
-        var promise = loadSwaggerModel(versions[version].swaggerUrl, apiModel).then(onSwaggerModelLoaded);
-        loadSwaggerPromises.push(promise);
-      }
+        for (var version in versions) {
+          var promise = loadSwaggerModel(versions[version].swaggerUrl, apiModel).then(onSwaggerModelLoaded);
+          loadSwaggerPromises.push(promise);
+        }
 
-      var onAllSwaggerModelLoaded = function (endpointModelList) {
-        var apiModel = endpointModelList[0].apiModel;
-        console.log('finished retrieving ' + endpointModelList.length + ' endpoints for ' + apiModel.apiModelKey);
-        var serviceModel = {
-          name: apiModel.apiModelKey,
-          //hits: 0,
-          code: apiModel.apiModelKey,
-          latestVersion: apiModel.preferred,
-          public: true,
-          //example:false,
-          provider: 'apis.guru',
-          defaultHeaders: headerModelList,
-          endpoints: endpointModelList
+        var onAllSwaggerModelLoaded = function (endpointModelList) {
+          var apiModel = endpointModelList[0].apiModel;
+          console.log('finished retrieving ' + endpointModelList.length + ' endpoints for ' + apiModel.apiModelKey);
+          var serviceModel = {
+            name: apiModel.apiModelKey,
+            //hits: 0,
+            code: apiModel.apiModelKey,
+            latestVersion: apiModel.preferred,
+            public: true,
+            //example:false,
+            provider: 'apis.guru',
+            defaultHeaders: headerModelList,
+            endpoints: endpointModelList
+          };
+          return serviceModel;
         };
-        return serviceModel;
-      };
 
-      //Run in parallel
-      allPromises.push(Q.all(loadSwaggerPromises).then(onAllSwaggerModelLoaded, console.error));
+        //Run in parallel
+        allPromises.push(Q.all(loadSwaggerPromises).then(onAllSwaggerModelLoaded, console.error));
 
-      console.log('Finished registering loading info for ' + apiModelKey);
-    }
-    deferred.resolve(Q.all(allPromises).then(saveServices));
+        console.log('Finished registering loading info for ' + apiModelKey);
+      }
+      deferred.resolve(Q.all(allPromises).then(saveServices));
 
+    });
   });
   return deferred.promise;
 };

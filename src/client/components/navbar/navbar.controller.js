@@ -11,7 +11,7 @@
         'link': '/explorer'
       }];
       $scope.brand = {
-        title: (CONFIG && CONFIG.BRAND.TITLE) || 'Api Gateway'
+        title: (CONFIG && CONFIG.BRAND.TITLE) || 'ApiVer (alpha)'
       };
       $scope.isCollapsed = true;
       $scope.isLoggedIn = Auth.isLoggedIn;

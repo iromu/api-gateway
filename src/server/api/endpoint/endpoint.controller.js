@@ -8,8 +8,6 @@ var querystring = require('querystring');
 var util = require('util');
 var request = require('request');
 var service = require('./endpoint.service.js');
-var crypto = require('crypto');
-var hash;
 
 exports.handle = function (req, res) {
   var tokenizeUrl = req.originalUrl.split('/');

@@ -21,7 +21,8 @@ module.exports = function (grunt) {
     coveralls: 'grunt-coveralls',
     jscs: 'grunt-jscs',
     plato: 'grunt-plato',
-    ssh: 'grunt-ssh-deploy'
+    ssh: 'grunt-ssh-deploy',
+    uncss: 'grunt-uncss'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -29,26 +30,26 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-    environments: {
-      options: {
-        local_path: 'dist',
-        deploy_path: '/opt/apps/api-gateway',
-        debug: true,
-        releases_to_keep: '3'
-      },
-      nodejs01: {
+      environments: {
         options: {
-          host: 'nodejs01.local',
-          username: 'root',
-          privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa'),
-          before_deploy: 'cd /opt/apps/api-gateway/current && forever stop "api-gateway"',
-          after_deploy: 'cd /opt/apps/api-gateway/current && ' +
-          'ln -s /opt/apps/api-gateway/node_modules node_modules && ' +
-          'npm --production update && ' +
-          'NODE_ENV=production PORT=8085 forever start --uid "api-gateway" -a server/app.js'
+          local_path: 'dist',
+          deploy_path: '/opt/apps/api-gateway',
+          debug: true,
+          releases_to_keep: '3'
+        },
+        nodejs01: {
+          options: {
+            host: 'nodejs01.local',
+            username: 'root',
+            privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa'),
+            before_deploy: 'cd /opt/apps/api-gateway/current && forever stop "api-gateway"',
+            after_deploy: 'cd /opt/apps/api-gateway/current && ' +
+            'ln -s /opt/apps/api-gateway/node_modules node_modules && ' +
+            'npm --production update && ' +
+            'NODE_ENV=production PORT=8085 forever start --uid "api-gateway" -a server/app.js'
+          }
         }
-      }
-    },
+      },
       // Project settings
       pkg: grunt.file.readJSON('package.json'),
       yeoman: {
@@ -273,7 +274,29 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>/public'
         }
       },
+      uncss: {
+        dist: {
+          options: {
+            csspath: '../../../../../',
+            // Take our Autoprefixed stylesheet main.css &
+            // any other stylesheet dependencies we have..
+            stylesheets: [
+              '.tmp/concat/app/app.css',
+              '.tmp/concat/app/vendor.css',
+            ],
+            // Ignore css selectors for async content with complete selector or regexp
+            // Only needed if using Bootstrap
+            ignore: [/dropdown-menu/, /\.collapsing/, /\.collapse/],
 
+            report: 'min' // optional: include to report savings
+
+          },
+          files: {
+            '.tmp/concat/app/app.css': ['src/client/**/*.html']//,
+            //'.tmp/concat/app/vendor.css': ['src/client/**/*.html']
+          }
+        }
+      },
       // Performs rewrites based on rev and the useminPrepare configuration
       usemin: {
         html: ['<%= yeoman.dist %>/public/{,*/}*.html'],
@@ -291,7 +314,8 @@ module.exports = function (grunt) {
             ]
           }
         }
-      },
+      }
+      ,
 
       // The following *-min tasks produce minified files in the dist folder
       imagemin: {
@@ -303,7 +327,8 @@ module.exports = function (grunt) {
             dest: '<%= yeoman.dist %>/public/assets/images'
           }]
         }
-      },
+      }
+      ,
 
       svgmin: {
         dist: {
@@ -314,7 +339,8 @@ module.exports = function (grunt) {
             dest: '<%= yeoman.dist %>/public/assets/images'
           }]
         }
-      },
+      }
+      ,
 
       // Allow the use of non-minsafe AngularJS files. Automatically makes it
       // minsafe compatible so Uglify does not destroy the ng references
@@ -327,7 +353,8 @@ module.exports = function (grunt) {
             dest: '.tmp/concat'
           }]
         }
-      },
+      }
+      ,
 
       // Package all the html partials into a single javascript payload
       ngtemplates: {
@@ -342,20 +369,24 @@ module.exports = function (grunt) {
             removeRedundantAttributes: true,
             removeScriptTypeAttributes: true,
             removeStyleLinkTypeAttributes: true
-          },
+          }
+          ,
           usemin: 'app/app.js'
-        },
+        }
+        ,
         main: {
           cwd: '<%= yeoman.client %>',
           src: ['{app,components}/**/*.html'],
           dest: '.tmp/templates.js'
-        },
+        }
+        ,
         tmp: {
           cwd: '.tmp',
           src: ['{app,components}/**/*.html'],
           dest: '.tmp/tmp-templates.js'
         }
-      },
+      }
+      ,
       ngconstant: {
         // Options for all targets
         options: {
@@ -366,19 +397,22 @@ module.exports = function (grunt) {
           constants: {
             CONFIG: localConfig.APP
           }
-        },
+        }
+        ,
         // Environment targets
         development: {
           constants: {
             ENV: 'development'
           }
-        },
+        }
+        ,
         production: {
           constants: {
             ENV: 'production'
           }
         }
-      },
+      }
+      ,
 
       // Copies remaining files to places other tasks can use
       copy: {
@@ -570,10 +604,12 @@ module.exports = function (grunt) {
               filePath = filePath.replace('/src/client/', '');
               filePath = filePath.replace('/.tmp/', '');
               return '<script src="' + filePath + '"></script>';
-            },
+            }
+            ,
             starttag: '<!-- injector:js -->',
             endtag: '<!-- endinjector -->'
-          },
+          }
+          ,
           files: {
             '<%= yeoman.client %>/index.html': [
               ['{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
@@ -655,7 +691,8 @@ module.exports = function (grunt) {
             jshint: false,
             title: 'Plato Inspections Report',
             exclude: /\.spec\.js$/,
-          },
+          }
+          ,
           files: {
             'report/plato': ['src/**/*.js']
           }
@@ -788,6 +825,7 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
+    //'uncss',
     'cssmin',
     'uglify',
     'rev',

@@ -3,16 +3,24 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <div class="btn-group">
-        <a type="button" class="btn btn-primary" data-toggle="modal" ng-click="vm.addRow()"><i
-          class="fa fa-fw fa-user-plus"></i>Add</a>
-        <a type="button" class="btn btn-primary" data-toggle="modal" data-ng-disabled="!vm.row.isSelected" ng-click="vm.editRow()"><i
-          class="fa fa-edit fa-fw"></i>Edit<br></a>
-        <a type="button" class="btn btn-danger" data-toggle="modal" data-ng-disabled="!vm.row.isSelected" ng-click="vm.deleteRow()"><i
-          class="fa fa-fw fa-user-times"></i>Delete
-          <span class="badge">42</span></a>
+
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="btn-group">
+            <a type="button" class="btn btn-primary" data-toggle="modal" ng-click="vm.addRow()"><i
+              class="fa fa-fw fa-user-plus"></i>Add</a>
+            <a type="button" class="btn btn-primary" data-toggle="modal" data-ng-disabled="!vm.row.isSelected" ng-click="vm.editRow()"><i
+              class="fa fa-edit fa-fw"></i>Edit<br></a>
+            <a type="button" class="btn btn-danger" data-toggle="modal" data-ng-disabled="!vm.row.isSelected" ng-click="vm.deleteRow()"><i
+              class="fa fa-fw fa-user-times"></i>Delete
+              <span class="badge">42</span></a>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div ui-grid="vm.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
+        </div>
       </div>
-      <div ui-grid="vm.gridOptions" ui-grid-pagination ui-grid-selection class="grid"></div>
     </div>
   </div>
 </div>

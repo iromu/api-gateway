@@ -40,6 +40,8 @@
 
   <div ng-show="vm.codeSelection && vm.swaggerUrl" swagger-ui url="vm.swaggerUrl" api-explorer="true"
        error-handler="vm.swaggerErrorHandler"
-       api-explorer-transform="vm.swaggerTransform"></div>
+       loading="vm.swaggerLoading"
+       api-explorer-transform="vm.swaggerTransform"
+       validator-url="false"></div>
 </div>
 

@@ -10,5 +10,6 @@ router.post('/', controller.handle);
 router.put('/', controller.handle);
 router.patch('/', controller.handle);
 router.delete('/', controller.handle);
+//router.options('/', controller.handle);
 
 module.exports = router;

@@ -16,46 +16,61 @@ var config = require('./config/environment/index');
 var fs = require('fs');
 var path = require('path');
 
-// Connect to database
-mongoose.connect(config.mongo.uri, config.mongo.options);
-require('./components/redis/index').mongooseRedisCache(mongoose);
 
-// Populate DB with sample data
-if (config.seedDB) {
-  require('./config/seed');
-}
+/*
+ * Mongoose uses a different connection string format than MongoDB's standard.
+ * Use the mongodb-uri library to help you convert from the standard format to
+ * Mongoose's format.
+ */
+//var mongodbUri = 'mongodb://user:pass@host:port/db';
+//var mongooseUri = uriUtil.formatMongoose(mongodbUri);
+//mongoose.connect(mongooseUri, options);
+
 
 // Setup server
 var app = express();
-var server = require('http').createServer(app);
 
-var socketio = require('socket.io')(server, {
-  serveClient: (config.env === 'production') ? false : true,
-  path: '/socket.io-client'
-});
+// Connect to database
+mongoose.connect(config.mongo.uri, config.mongo.options);
+var conn = mongoose.connection;
+conn.on('error', console.error.bind(console, 'connection error:'));
+conn.once('open', function () {
+  require('./components/redis/index').mongooseRedisCache(mongoose);
 
-require('./config/socketio')(socketio);
-require('./config/express')(app);
-require('./config/agenda')(app);
-require('./routes')(app);
+// Populate DB with sample data
+  if (config.seedDB) {
+    require('./config/seed');
+  }
 
+
+  var server = require('http').createServer(app);
+
+  var socketio = require('socket.io')(server, {
+    serveClient: (config.env === 'production') ? false : true,
+    path: '/socket.io-client'
+  });
+
+  require('./config/socketio')(socketio);
+  require('./config/express')(app);
+  require('./config/agenda')(app);
+  require('./routes')(app);
 
 // Start server
-server.listen(config.port, config.ip, function () {
-  console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+  server.listen(config.port, config.ip, function () {
+    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+  });
+
+  var options = {
+    key: fs.readFileSync(path.join(__dirname, './config/cert/key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, './config/cert/cert.pem')),
+    requestCert: false,
+    rejectUnauthorized: false
+  };
+
+  require('https').createServer(options, app).listen(config.portSsl, config.ip, function () {
+    console.log('Express secure server listening on %d, in %s mode', config.portSsl, app.get('env'));
+  });
 });
-
-var options = {
-  key: fs.readFileSync(path.join(__dirname, './config/cert/key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, './config/cert/cert.pem')),
-  requestCert: false,
-  rejectUnauthorized: false
-};
-
-require('https').createServer(options, app).listen(config.portSsl, config.ip, function () {
-  console.log('Express secure server listening on %d, in %s mode', config.portSsl, app.get('env'));
-});
-
 
 // Expose app
 exports = module.exports = app;
