@@ -27,11 +27,15 @@
       vm.showExplorerView = data;
     });
 
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('topServices');
+    });
+
     function activate() {
       $log.log('Activate');
       FullRestangular.all('services').getList({public: true}).then(function (response) {
         vm.topServices = response.data;
-        socket.syncUpdates('service', vm.topServices);
+        socket.syncUpdates('topServices', vm.topServices);
       });
     }
 
