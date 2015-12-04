@@ -20,7 +20,10 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'account/login/login.scss';
 @import 'admin/admin.scss';
 @import 'dashboard/dashboard.scss';
+@import 'dashboard/endpoint.scss';
 @import 'explorer/swagger-ui.scss';
 @import 'main/main.scss';
+@import 'bootstrap-override/home.scss';
+@import 'bootstrap-override/ui.grid.scss';
 @import 'modal/modal.scss';
 // endinjector
