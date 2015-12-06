@@ -1,6 +1,6 @@
 {
   "name": "api-gateway",
-  "version": "0.0.1",
+  "version": "0.0.2-SNAPSHOT",
   "dependencies": {
     "angular": "~1.5.0",
     "json3": "~3.3.2",
