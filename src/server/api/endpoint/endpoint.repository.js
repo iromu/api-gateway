@@ -4,19 +4,19 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
 var Service = require('../service/service.model');
-var redisClient = require('../../components/redis/index').getRedisClient();
+var redisClient = require('../../components/cache/index').getRedisClient();
 var redis = require('redis');
 var Q = require('q');
 var request = require('request');
 
 exports.findOne = function (model) {
   console.log('EndpointRepository.findOne ' + JSON.stringify(model));
-  return Q.when(Service.findOne(model).lean().exec());
+  return Service.findOne(model).lean().exec();
 };
 
 exports.findOne = function (model, predicate) {
   console.log('EndpointRepository.findOne ' + JSON.stringify(model) + ' with predicate ' + JSON.stringify(predicate));
-  return Q.when(Service.findOne(model, predicate).lean().exec());
+  return Service.findOne(model, predicate).lean().exec();
 };
 
 exports.updateAll = function (find, update) {

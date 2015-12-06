@@ -45,9 +45,14 @@ module.exports = function (app, socketio) {
   });
 
   function graceful() {
-    agenda.stop(function () {
+    try {
+      agenda.stop(function () {
+        process.exit(0);
+      });
+    } catch (e) {
+      console.error(e);
       process.exit(0);
-    });
+    }
   }
 
   process.on('SIGTERM', graceful);

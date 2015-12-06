@@ -48,6 +48,18 @@ module.exports = function (grunt) {
             'npm --production update && ' +
             'NODE_ENV=production PORT=8085 forever start --uid "api-gateway" -a server/app.js'
           }
+        },
+        nodejs02: {
+          options: {
+            host: 'nodejs02.local',
+            username: 'root',
+            privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa'),
+            before_deploy: 'cd /opt/apps/api-gateway/current && forever stop "api-gateway"',
+            after_deploy: 'cd /opt/apps/api-gateway/current && ' +
+            'ln -s /opt/apps/api-gateway/node_modules node_modules && ' +
+            'npm --production update && ' +
+            'NODE_ENV=production PORT=8085 forever start --uid "api-gateway" -a server/app.js'
+          }
         }
       },
       // Project settings

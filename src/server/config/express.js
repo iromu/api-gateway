@@ -16,8 +16,7 @@ var path = require('path');
 var config = require('./environment/index');
 var passport = require('passport');
 var session = require('express-session');
-var RedisStore = require('connect-redis')(session);
-var redisClient = require('../components/redis/index').getRedisClient();
+var sessionStore = require('../components/cache/index').getSessionStore(session);
 var errorhandler = require('errorhandler');
 
 module.exports = function (app) {
@@ -32,12 +31,8 @@ module.exports = function (app) {
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(passport.initialize());
-
   app.use(session({
-      store: new RedisStore({
-        client: redisClient,
-        prefix: 'sess:ag:'
-      }),
+      store: sessionStore,
       resave: true,
       saveUninitialized: true,
       secret: config.secrets.session
