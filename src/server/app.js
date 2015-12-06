@@ -12,20 +12,10 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var express = require('express');
 var mongoose = require('mongoose');
+mongoose.Promise = require('q').Promise;
 var config = require('./config/environment/index');
 var fs = require('fs');
 var path = require('path');
-
-
-/*
- * Mongoose uses a different connection string format than MongoDB's standard.
- * Use the mongodb-uri library to help you convert from the standard format to
- * Mongoose's format.
- */
-//var mongodbUri = 'mongodb://user:pass@host:port/db';
-//var mongooseUri = uriUtil.formatMongoose(mongodbUri);
-//mongoose.connect(mongooseUri, options);
-
 
 // Setup server
 var app = express();
@@ -33,15 +23,15 @@ var app = express();
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
 var conn = mongoose.connection;
+
 conn.on('error', console.error.bind(console, 'connection error:'));
+
 conn.once('open', function () {
-  require('./components/redis/index').mongooseRedisCache(mongoose);
 
 // Populate DB with sample data
   if (config.seedDB) {
     require('./config/seed');
   }
-
 
   var server = require('http').createServer(app);
 

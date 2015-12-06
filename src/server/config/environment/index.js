@@ -69,6 +69,8 @@ var all = {
   },
 
   redis: {
+    purgeOnLoad: false,
+    prefix: process.env.REDIS_PREFIX || 'ag:',
     uri: process.env.AWS_ELASTICACHE_URI || process.env.REDISCLOUD_URL || process.env.REDIS_URL || 'redis://localhost:6379'
   }
 };

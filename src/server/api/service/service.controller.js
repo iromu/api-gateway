@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Service = require('./service.model.js');
 var BaseController = require('../base.controller');
+var repository = require('./service.repository');
 
 // Get list of public services
 exports.public = function (req, res) {
@@ -59,52 +60,34 @@ exports.index = function (req, res) {
     sortBy.hits = -1;
   }
 
-  var buildPaginationResponse = function (data) {
-    Service.count(function (err, count) {
-      res.setHeader('total', count);
-      return res.status(200).json(data);
-    });
-  };
-
-  var paginateCallback = function (err, data) {
-    if (err) {
-      return handleError(res, err);
-    }
-    buildPaginationResponse(data);
-  };
-
   Service.paginate(filter, {
-    page: req.headers.page,
-    limit: limit,
-    columns: columnDefinition,
-    sortBy: sortBy,
-    lean: true
-  }, paginateCallback);
-
+      page: req.headers.page,
+      limit: limit,
+      columns: columnDefinition,
+      sortBy: sortBy,
+      lean: true
+    })
+    .spread(function (data, pageCount, itemCount) {
+      res.setHeader('total', itemCount);
+      return res.status(200).json(data);
+    })
+    .catch(function (err) {
+      return handleError(res, err);
+    });
 };
 
 exports.typeahead = function (req, res) {
-
-  var filter = {};
-
-  if (req.query.code) {
-    filter.code = new RegExp(req.query.code, 'i');
+  var codeFilter = req.query.code;
+  if (!codeFilter) {
+    return res.status(400);
   }
-  else {
-    res.status(400);
-  }
-
-  Service.find(filter)
-    .sort({public: +1})
-    .sort({code: +1})
-    .lean()
-    .exec(function (err, services) {
-      if (err) {
-        return handleError(res, err);
-      }
-      return res.status(200).json(_.pluck(services, 'code'));
-    });
-
+  repository.typeahead(codeFilter)
+    .then(function (result) {
+      returnJson(res, result)
+    })
+    .catch(function (error) {
+      handleError(res, error)
+    })
 };
 
 // Get a single service
@@ -223,5 +206,10 @@ exports.destroy = function (req, res) {
 };
 
 function handleError(res, err) {
-  return res.send(500, err);
+  console.error(err);
+  return res.status(500).json(err);
+}
+
+function returnJson(res, result) {
+  return res.json(result);
 }
