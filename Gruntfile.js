@@ -22,7 +22,8 @@ module.exports = function (grunt) {
     jscs: 'grunt-jscs',
     plato: 'grunt-plato',
     ssh: 'grunt-ssh-deploy',
-    uncss: 'grunt-uncss'
+    uncss: 'grunt-uncss',
+    sgrelease: 'grunt-sg-release'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -30,6 +31,26 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+      sg_release: {
+        myTarget: {
+          options: {
+            skipBowerInstall: true,
+            skipNpmInstall: true,
+            developBranch: 'develop',
+            masterBranch: 'master',
+            files: [
+              'bower.json',
+              'package.json',
+              'README.md'
+            ],
+            commitMessage: 'Release v%VERSION%',
+            commitFiles: ['-a'], // '-a' for all files
+            pushTo: 'origin',
+            mergeOptions: '',
+            tagName: '%VERSION%'
+          }
+        }
+      },
       environments: {
         options: {
           local_path: 'dist',
@@ -561,6 +582,7 @@ module.exports = function (grunt) {
 
       protractor: {
         options: {
+          webdriverManagerUpdate: true,
           configFile: 'protractor.conf.js'
         }
         ,
