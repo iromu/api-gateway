@@ -3,9 +3,19 @@
 var config = require('./environment/index');
 var Agenda = require('agenda');
 
-module.exports = function (app) {
+module.exports = function (app, socketio) {
   var env = app.get('env');
   var agenda = new Agenda({db: {address: config.mongo.uri}});
+
+  socketio.on('connection', function (socket) {
+
+    try {
+      require('../jobs/topServices.job').define(agenda, socket);
+    } catch (e) {
+      console.error(e);
+    }
+
+  });
 
   try {
     require('../jobs/apisguru.job').define(agenda);
@@ -25,6 +35,9 @@ module.exports = function (app) {
 
       //run every night at 2:30
       agenda.every('30 2 * * *', ['poll apisguru']);
+
+      agenda.every('10 seconds', 'topServices');
+
     }
     if ('test' !== env) {
       agenda.start();

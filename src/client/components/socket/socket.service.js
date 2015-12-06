@@ -60,6 +60,11 @@
             _.remove(array, {_id: item._id});
             cb(event, item, array);
           });
+          socket.on(modelName + ':refresh', function (items) {
+            var event = 'refresh';
+            array = items;
+            cb(event, items, array);
+          });
         },
 
         /**
@@ -69,6 +74,7 @@
          */
         unsyncUpdates: function (modelName) {
           socket.removeAllListeners(modelName + ':save');
+          socket.removeAllListeners(modelName + ':refresh');
           socket.removeAllListeners(modelName + ':remove');
         }
       };

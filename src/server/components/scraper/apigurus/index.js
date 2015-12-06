@@ -87,7 +87,7 @@ function onSwaggerModelLoaded(swaggerModel) {
 
    */
 
-  console.log(swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl);
+  //console.log(swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl);
   return {//endpointModel
     hits: 0,
     uri: swaggerModel.schemes[0] + '://' + swaggerModel.host + (swaggerModel.basePath || ''),
@@ -114,7 +114,7 @@ module.exports.start = function () {
 
       for (var apiModelKey in apiModels) {
 
-        console.log('Loading info for ' + apiModelKey);
+        //console.log('Loading info for ' + apiModelKey);
 
         var headerModelList = undefined;
         var apiModel = apiModels[apiModelKey];
@@ -129,7 +129,7 @@ module.exports.start = function () {
 
         var onAllSwaggerModelLoaded = function (endpointModelList) {
           var apiModel = endpointModelList[0].apiModel;
-          console.log('finished retrieving ' + endpointModelList.length + ' endpoints for ' + apiModel.apiModelKey);
+          //console.log('finished retrieving ' + endpointModelList.length + ' endpoints for ' + apiModel.apiModelKey);
           var serviceModel = {
             name: apiModel.apiModelKey,
             //hits: 0,
@@ -147,7 +147,7 @@ module.exports.start = function () {
         //Run in parallel
         allPromises.push(Q.all(loadSwaggerPromises).then(onAllSwaggerModelLoaded, console.error));
 
-        console.log('Finished registering loading info for ' + apiModelKey);
+        //console.log('Finished registering loading info for ' + apiModelKey);
       }
       deferred.resolve(Q.all(allPromises).then(saveServices));
 

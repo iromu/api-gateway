@@ -42,7 +42,7 @@ conn.once('open', function () {
 
   require('./config/socketio')(socketio);
   require('./config/express')(app);
-  require('./config/agenda')(app);
+  require('./config/agenda')(app, socketio);
   require('./routes')(app);
 
 // Start server
