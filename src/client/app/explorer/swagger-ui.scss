@@ -1,0 +1,356 @@
+//colors
+$color_mountain_mist_approx: #999;
+$black: #000;
+$color_alto_approx: #ddd;
+$color_fuscous_gray_approx: #555;
+$white: #fff;
+$color_storm_dust_approx: #666;
+$color_pearl_lusta_approx: #fcf6db;
+$color_beryl_green_approx: #e5e0c6;
+$color_silver_chalice_approx: #aaa;
+$color_blue_violet_approx: #5555aa;
+$color_scotch_mist_approx: #ffd;
+$color_aqua_squeeze_approx: #e7f0f7;
+$color_botticelli_approx: #c3d9ec;
+$color_denim_approx: #0f6ab4;
+$color_danube_approx: #6fa5d2;
+$color_panache_approx: #ebf7f0;
+$color_edgewater_approx: #c3e8d1;
+$color_green_haze_approx: #10a54a;
+$color_de_york_approx: #6fc992;
+$color_white_linen_approx: #f9f2e9;
+$color_almond_approx: #f0e0ca;
+$color_brandy_punch_approx: #c5862b;
+$color_harvest_gold_approx: #dcb67f;
+$color_dawn_pink_approx: #f5e8e8;
+$color_dust_storm_approx: #e8c6c7;
+$color_mexican_red_approx: #a41e22;
+$color_old_rose_approx: #c8787a;
+$color_pot_pourri_approx: #fce9e3;
+$color_raw_sienna_approx: #d38042;
+$color_cream_approx: #fcffcd;
+$color_candlelight_approx: #ffd20f;
+
+//fonts
+$font_0: Menlo;
+$font_1: Monaco;
+$font_2: Consolas;
+$font_3: Courier New;
+$font_4: monospace;
+
+.swagger-ui {
+  color: black;
+  .api-description {
+    margin-bottom: 20px;
+  }
+  .api-version {
+    color: $color_mountain_mist_approx;
+  }
+  .external-docs {
+    color: $black;
+  }
+  .endpoint {
+    border-bottom: 1px solid $color_alto_approx;
+    &:last-child {
+      border: 0;
+    }
+    &.active {
+      h4 a {
+        color: $black;
+      }
+      .endpoint-actions li a {
+        color: $color_fuscous_gray_approx;
+      }
+    }
+    &:hover {
+      h4 a {
+        color: $black;
+      }
+      .endpoint-actions li a {
+        color: $color_fuscous_gray_approx;
+      }
+    }
+    .endpoint-actions {
+      line-height: 1.1;
+      margin: 10px 0;
+      li {
+        border-right: 1px solid $color_alto_approx;
+        &:last-child {
+          border-right: 0;
+        }
+      }
+    }
+    .endpoint-heading span {
+      color: $color_mountain_mist_approx;
+    }
+  }
+  .operation {
+    margin-bottom: 10px;
+    .http-method {
+      color: $white;
+      padding: 7px 0 4px;
+      text-align: center;
+      width: 50px;
+      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      border-radius: 2px;
+      display: inline-block;
+      font-size: .7em;
+    }
+    .path {
+      color: $black;
+      padding-left: 10px;
+      display: inline-block;
+    }
+    .description {
+      margin: 2px 10px 0 0;
+    }
+    .content {
+      padding: 10px;
+      border-top: 0 !important;
+      h5 {
+        font-weight: bold;
+        padding: 15px 0 5px;
+        margin: 0;
+      }
+      .table {
+        margin: 0;
+        font: inherit;
+        table-layout: fixed;
+        min-width: 650px;
+      }
+      pre {
+        background-color: $color_pearl_lusta_approx;
+        border: 1px solid $color_beryl_green_approx;
+        max-height: 200px;
+        overflow: auto;
+        font-size: .9em;
+        word-wrap: initial;
+        &.model {
+          font: inherit;
+          border: 0;
+          background: transparent !important;
+          height: auto;
+          max-height: initial;
+          cursor: text;
+          font-size: .9em;
+          //Instead of the line below you could use @include word-break($value)
+          word-break: break-word;
+          white-space: normal;
+          .model-item {
+            margin-bottom: 5px;
+          }
+          .type {
+            color: $color_blue_violet_approx;
+          }
+          .pad {
+            margin-left: 1em;
+          }
+        }
+      }
+      input {
+        width: 100%;
+      }
+      textarea {
+        width: 100%;
+        height: 100px;
+        resize: none;
+        font-family: $font_0, $font_1, $font_2, $font_3, $font_4;
+        font-size: .9em;
+      }
+      label {
+        font-weight: normal;
+      }
+      .parameters {
+        .name {
+          width: 12%;
+        }
+        .value {
+          width: 30%;
+        }
+        .desc {
+          width: 20%;
+        }
+        .type {
+          width: 12%;
+        }
+        .model-schema pre {
+          cursor: pointer;
+          &:hover {
+            background-color: $color_scotch_mist_approx;
+          }
+        }
+      }
+      .hide-try-it {
+        text-decoration: underline;
+        padding: 4px 0 0 10px;
+      }
+      .table-responsive .table {
+        td {
+          white-space: initial;
+          //Instead of the line below you could use @include word-break($value)
+          word-break: break-word;
+        }
+        th {
+          white-space: initial;
+          //Instead of the line below you could use @include word-break($value)
+          word-break: break-word;
+        }
+      }
+      thead th {
+        color: $color_storm_dust_approx;
+        padding: 5px;
+        border-bottom: 1px solid $color_mountain_mist_approx;
+      }
+      ul.schema {
+        margin: 0;
+        li {
+          border-right: 1px solid $color_alto_approx;
+          margin: 0 5px 5px 0;
+          padding: 2px 5px 2px 0;
+          &:last-child {
+            border-right: 0;
+          }
+          a {
+            color: $color_silver_chalice_approx;
+            &.active {
+              color: $black;
+            }
+            &:hover {
+              color: $black;
+            }
+          }
+        }
+      }
+      .responses .code {
+        width: 15%;
+      }
+    }
+    .heading a:hover {
+      text-decoration: none;
+    }
+    .content-type label {
+      margin-right: 5px;
+    }
+  }
+  .get {
+    .heading {
+      background-color: $color_aqua_squeeze_approx;
+      border: 1px solid $color_botticelli_approx;
+    }
+    .content {
+      background-color: white;
+      color: red;
+      border: 1px solid $color_botticelli_approx;
+    }
+    .http-method {
+      background-color: $color_denim_approx;
+    }
+    h5 {
+      color: $color_denim_approx;
+    }
+    .description {
+      color: $color_denim_approx;
+    }
+  }
+  .post {
+    .heading {
+      background-color: $color_panache_approx;
+      border: 1px solid $color_edgewater_approx;
+    }
+    .content {
+      background-color: $color_panache_approx;
+      border: 1px solid $color_edgewater_approx;
+    }
+    .http-method {
+      background-color: $color_green_haze_approx;
+    }
+    h5 {
+      color: $color_green_haze_approx;
+    }
+    .description {
+      color: $color_green_haze_approx;
+    }
+  }
+  .put {
+    .heading {
+      background-color: $color_white_linen_approx;
+      border: 1px solid $color_almond_approx;
+    }
+    .content {
+      background-color: $color_white_linen_approx;
+      border: 1px solid $color_almond_approx;
+    }
+    .http-method {
+      background-color: $color_brandy_punch_approx;
+    }
+    h5 {
+      color: $color_brandy_punch_approx;
+    }
+    .description {
+      color: $color_brandy_punch_approx;
+    }
+  }
+  .delete {
+    .heading {
+      background-color: $color_dawn_pink_approx;
+      border: 1px solid $color_dust_storm_approx;
+    }
+    .content {
+      background-color: $color_dawn_pink_approx;
+      border: 1px solid $color_dust_storm_approx;
+    }
+    .http-method {
+      background-color: $color_mexican_red_approx;
+    }
+    h5 {
+      color: $color_mexican_red_approx;
+    }
+    .description {
+      color: $color_mexican_red_approx;
+    }
+  }
+  .patch {
+    .heading {
+      background-color: $color_pot_pourri_approx;
+      border: 1px solid $color_almond_approx;
+    }
+    .content {
+      background-color: $color_pot_pourri_approx;
+      border: 1px solid $color_almond_approx;
+    }
+    .http-method {
+      background-color: $color_raw_sienna_approx;
+    }
+    h5 {
+      color: $color_raw_sienna_approx;
+    }
+    .description {
+      color: $color_raw_sienna_approx;
+    }
+  }
+  .head {
+    .heading {
+      background-color: $color_cream_approx;
+      border: 1px solid $color_candlelight_approx;
+    }
+    .content {
+      background-color: $color_cream_approx;
+      border: 1px solid $color_candlelight_approx;
+    }
+    .http-method {
+      background-color: $color_candlelight_approx;
+    }
+    h5 {
+      color: $color_candlelight_approx;
+    }
+    .description {
+      color: $color_candlelight_approx;
+    }
+  }
+  .bold {
+    font-weight: bold !important;
+    label {
+      font-weight: bold !important;
+    }
+  }
+}

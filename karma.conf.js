@@ -1,7 +1,7 @@
 // Karma configuration
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     // base path, that will be used to resolve files and exclude
     basePath: '',
@@ -11,41 +11,32 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'client/bower_components/jquery/dist/jquery.js',
-      'client/bower_components/angular/angular.js',
-      'client/bower_components/angular-mocks/angular-mocks.js',
-      'client/bower_components/angular-resource/angular-resource.js',
-      'client/bower_components/angular-cookies/angular-cookies.js',
-      'client/bower_components/angular-sanitize/angular-sanitize.js',
-      'client/bower_components/angular-route/angular-route.js',
-      'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-      'client/bower_components/restangular/dist/restangular.js',
-      'client/bower_components/lodash/dist/lodash.compat.js',
-      'client/bower_components/angular-socket-io/socket.js',
-      'client/bower_components/angular-ui-router/release/angular-ui-router.js',
-      'client/app/app.js',
-      'client/app/app.coffee',
-      'client/app/**/*.js',
-      'client/app/**/*.coffee',
-      'client/components/**/*.js',
-      'client/components/**/*.coffee',
-      'client/app/**/*.jade',
-      'client/components/**/*.jade',
-      'client/app/**/*.html',
-      'client/components/**/*.html'
+      'bower_components/jquery/dist/jquery.js',
+      'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/angular-ui-grid/ui-grid.js',
+      'bower_components/angular-resource/angular-resource.js',
+      'bower_components/angular-cookies/angular-cookies.js',
+      'bower_components/angular-sanitize/angular-sanitize.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/lodash/lodash.js',
+      'bower_components/angular-socket-io/socket.js',
+      'bower_components/angular-ui-router/release/angular-ui-router.js',
+      'bower_components/restangular/dist/restangular.js',
+      'bower_components/angular-swagger-ui/dist/scripts/swagger-ui.min.js',
+      'src/client/app/app.js',
+      'src/client/app/**/*.js',
+      'src/client/components/**/*.js',
+      'src/client/app/**/*.html',
+      'src/client/components/**/*.html'
     ],
 
     preprocessors: {
-      '**/*.jade': 'ng-jade2js',
       '**/*.html': 'html2js',
-      '**/*.coffee': 'coffee',
+      'src/client/app/**/*.js': ['coverage']
     },
 
     ngHtml2JsPreprocessor: {
-      stripPrefix: 'client/'
-    },
-
-    ngJade2JsPreprocessor: {
       stripPrefix: 'client/'
     },
 
@@ -61,7 +52,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // Start these browsers, currently available:
@@ -77,6 +68,36 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: false,
+
+    reporters: ['progress', 'coverage', 'junit'],
+
+    junitReporter: {
+      outputFile: 'test-results.xml'
+    },
+
+    coverageReporter: {
+      instrumenterOptions: {
+        istanbul: {noCompact: true}
+      },
+      reporters: [
+        {type: 'html', subdir: 'client-report'},
+        {
+          type: 'lcovonly',
+          subdir: '.',
+          file: 'client-lcov.info'
+        },
+        {type: 'teamcity', subdir: '.', file: 'client-teamcity.txt'},
+        {type: 'text', subdir: '.', file: 'client-text.txt'},
+        {type: 'text-summary', subdir: '.', file: 'client-text-summary.txt'},]
+    },
+
+    plugins: [
+      'karma-html2js-preprocessor',
+      'karma-jasmine',
+      'karma-phantomjs-launcher',
+      'karma-coverage',
+      'karma-junit-reporter'
+    ]
   });
 };

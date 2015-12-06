@@ -3,6 +3,10 @@ node_js:
   - '0.12'
 before_script:
   - npm install -g bower grunt-cli
+  - npm install -g istanbul
   - gem install sass
   - bower install
-services: mongodb
+script: "npm run-script coverage"
+services:
+  - mongodb
+  - redis-server

@@ -1,0 +1,36 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="jumbotron" ng-hide="vm.showExplorerView">
+    <h1>Versionable <kbd>REST</kbd> Registry</h1>
+
+    <div class="slide-animate-container">
+      <div class="slide-animate" ng-include="vm.jumbotron.url"></div>
+    </div>
+    <p><a class="btn btn-primary btn-lg" href="/explorer" ng-click="vm.showExplorer()" role="button">Explore public
+      services</a>
+    </p>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Popular Public Services</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="nav nav-pills nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="top in vm.topServices">
+        <li><a href="/explorer/{{top.code}}" ng-click="vm.selectService(top.code)">
+          {{top.name}} <span class="badge">{{top.hits}}</span>
+        </a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default" ng-show="vm.showExplorerView">
+    <div class="panel-heading">
+      <h3 class="panel-title">API Documentation explorer</h3>
+    </div>
+    <div class="panel-body">
+      <div ui-view></div>
+    </div>
+  </div>
+
+</div>

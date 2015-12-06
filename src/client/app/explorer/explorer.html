@@ -1,0 +1,47 @@
+<div>
+
+  <div class="input-group">
+    <span class="input-group-addon" id="addonCode">{{vm.apiRestBaseEndpoint}}</span>
+    <input class="form-control input-md" id="inputCode" type="text" aria-describedby="addonCode"
+           ng-model="vm.codeSelection"
+           placeholder="Service code"
+           uib-typeahead="code for code in vm.typeServiceCode($viewValue)"
+           typeahead-on-select="vm.onCodeSelection($label)"
+           typeahead-select-on-exact="true"
+           typeahead-editable="false">
+    <div class="input-group-btn" uib-dropdown is-open="status.isopen">
+      <button ng-click="vm.loadVersions()" type="button" class="btn btn-primary" uib-dropdown-toggle
+              ng-disabled="!vm.codeSelection">
+        Version <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+        <li ng-selected="vm.apiVersionSelection == apiVersion"
+            ng-repeat="apiVersion in vm.versions" ng-value="item.apiVersion">
+          <a href="#" ng-click="vm.selectVersion(apiVersion)">{{apiVersion}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="row" ng-show="vm.codeSelection && vm.apiVersionSelection">
+    <div class="col-lg-12">
+      <div class="alert alert-info" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+        Configured <em>headers['X-Api-Version'] = {{vm.apiVersionSelection}}</em>
+        <br>
+        Loaded Swagger config from <strong>{{vm.swaggerUrlDisplay}}</strong>
+      </div>
+    </div>
+  </div>
+
+
+  <div ng-show="vm.codeSelection && vm.swaggerUrl" swagger-ui url="vm.swaggerUrl" api-explorer="true"
+       error-handler="vm.swaggerErrorHandler"
+       loading="vm.swaggerLoading"
+       api-explorer-transform="vm.swaggerTransform"
+       validator-url="false"></div>
+</div>
+
