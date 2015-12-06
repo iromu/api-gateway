@@ -1,6 +1,6 @@
 {
   "name": "api-gateway",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "0.0.1",
   "main": "server/app.js",
   "dependencies": {
     "agenda": "^0.7.5",

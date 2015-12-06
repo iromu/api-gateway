@@ -109,7 +109,7 @@ Open HTML reports:
     "name": "Sample Service",
     "code": "sampleservice",
     "public": true,
-    "latestVersion": "2.1.0",
+    "latestVersion": "0.0.1",
     "hits": 10,
     "endpoints": [{
         "uri": "http://localhost:9000/api/samples/v1",
