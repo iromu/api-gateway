@@ -35,10 +35,10 @@ exports.getApiDocModel = function (apiRequest) {
       console.log('checkApiDocModel EndpointRepository.apiRequest.apiDoc? true');
       deferred.resolve(apiRequest);
     } else {
-      console.log('EndpointRepository.getApiDocModel. Pulling from upstream url: ' + apiRequest.apiDocUrl);
+      console.log('EndpointRepository.getApiDocModel. Pulling from upstream url: ' + apiRequest.apiBaseUrl);
       var options = {};
 
-      options.uri = _.startsWith(apiRequest.apiDocUrl, '/') ? 'http://' + apiRequest.host + apiRequest.apiDocUrl : apiRequest.apiDocUrl;
+      options.uri = _.startsWith(apiRequest.apiBaseUrl, '/') ? 'http://' + apiRequest.host + apiRequest.apiBaseUrl : apiRequest.apiBaseUrl;
 
       request(options, function (error, response, body) {
           if (error) {

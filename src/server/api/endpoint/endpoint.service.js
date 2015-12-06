@@ -5,7 +5,7 @@ var path = require('path');
 var _ = require('lodash');
 var Q = require('q');
 var repository = require('./endpoint.repository');
-
+var cache = require('../../components/cache/index').getCacheClient();
 
 var isLatestVersion = function (apiVersion) {
   return !apiVersion || '@latest' === apiVersion.toLowerCase() || 'latest' === apiVersion.toLowerCase();
@@ -89,7 +89,7 @@ var _getEndpointModel = function (apiRequest) {
       });
 
       apiRequest.apiDoc = service.endpoints[0].apiDoc;
-      console.info('Resolved EndpointService._getEndpointModel apiDoc? ' + (apiRequest.apiDoc ? true : false) + ', apiDocUrl: ' + apiRequest.apiDocUrl);
+      console.info('Resolved EndpointService._getEndpointModel apiDoc? ' + (apiRequest.apiDoc ? true : false) + ', apiBaseUrl: ' + apiRequest.apiBaseUrl);
       deferred.resolve(apiRequest);
     }).catch(function (error) {
       console.error('Rejected EndpointService._getEndpointModel');
@@ -131,10 +131,10 @@ var getApiModel = function (apiRequest) {
        });*/
 
       apiRequest.apiDoc = service.endpoints[0].apiDoc;
-      apiRequest.apiDocUrl = service.endpoints[0].apiDocUrl || (service.endpoints[0].uri + '/swagger.json');
+      apiRequest.apiBaseUrl = service.endpoints[0].apiBaseUrl || (service.endpoints[0].uri + '/swagger.json');
 
       console.info('Resolved EndpointService.getApiModel ' +
-        'apiDoc? ' + (apiRequest.apiDoc ? true : false) + ', apiDocUrl: ' + apiRequest.apiDocUrl);
+        'apiDoc? ' + (apiRequest.apiDoc ? true : false) + ', apiBaseUrl: ' + apiRequest.apiBaseUrl);
       deferred.resolve(apiRequest);
     }).catch(function (error) {
       console.error('Rejected EndpointService.getApiModel');
@@ -149,7 +149,7 @@ var checkApiDocModel = function (apiRequest) {
   if (apiRequest.apiDoc) {
     return apiRequest;
   }
-  console.info('Entering EndpointService.checkApiDocModel apiRequest.apiDocUrl:' + apiRequest.apiDocUrl);
+  console.info('Entering EndpointService.checkApiDocModel apiRequest.apiBaseUrl:' + apiRequest.apiBaseUrl);
   return repository.getApiDocModel(apiRequest);
 };
 
@@ -202,11 +202,41 @@ var apiResponse = function (apiRequest) {
   return {headers: [], body: JSON.parse(body)};
 };
 
+
 exports.getApiDocument = function (apiRequest) {
-  return lookupVersionMarkers(apiRequest)
-    .then(getApiModel)
-    .then(checkApiDocModel)
-    .then(apiResponse);
+  var deferred = Q.defer();
+  var cacheKey = 'apidoc:' + apiRequest.code + ':' + apiRequest.apiVersion;
+
+  var saveApiResponseCache = function (apiResponse) {
+    try {
+      var data = JSON.stringify(apiResponse);
+      cache.set(cacheKey, data);
+    } catch (e) {
+      deferred.reject('error on JSON.stringify: ' + e);
+    }
+    return apiResponse;
+  };
+
+  function refreshCache() {
+    deferred.resolve(lookupVersionMarkers(apiRequest)
+      .then(getApiModel)
+      .then(checkApiDocModel)
+      .then(apiResponse)
+      .then(saveApiResponseCache));
+  }
+
+  cache.get(cacheKey)
+    .then(function (result) {
+      if (result) {
+        deferred.resolve(JSON.parse(result));
+      } else {
+        refreshCache();
+      }
+    })
+    .catch(function (error) {
+      deferred.reject(error);
+    });
+  return deferred.promise;
 };
 
 exports.passEndpoint = function (passRequest) {

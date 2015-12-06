@@ -28,16 +28,18 @@ function loadSwaggerModel(url, apiModel) {
   fs.readFile(swaggerFile, function (err, swaggerContent) {
     if (err || swaggerContent === 'null') {
       console.log('Loading Swagger from ' + url);
-      pullSwaggerConfigFrom(url).then(function (swaggerContent) {
-        fs.writeFile(swaggerFile, JSON.stringify(swaggerContent), function (err) {
-          if (err) deferred.reject(err);
-          //var json = JSON.parse(swaggerContent);
-          swaggerContent.apiModel = apiModel;
-          deferred.resolve(swaggerContent);
+      pullSwaggerConfigFrom(url)
+        .then(function (swaggerContent) {
+          fs.writeFile(swaggerFile, JSON.stringify(swaggerContent), function (err) {
+            if (err) deferred.reject(err);
+            //var json = JSON.parse(swaggerContent);
+            swaggerContent.apiModel = apiModel;
+            deferred.resolve(swaggerContent);
+          });
+        })
+        .fail(function (error) {
+          console.error('FAILED ' + error);
         });
-      }).fail(function (error) {
-        console.error('FAILED ' + error);
-      });
     }
     else {
       var json = JSON.parse(swaggerContent);
@@ -75,23 +77,11 @@ function pullSwaggerConfigFrom(url) {
 }
 
 function onSwaggerModelLoaded(swaggerModel) {
-
-  /*
-   SwaggerParser.validate(parsed)
-   .then(function (api) {
-   console.log("Valid API name: %s, Version: %s", api.info.title, api.info.version);
-   })
-   .catch(function (err) {
-   return err;
-   });
-
-   */
-
-  //console.log(swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl);
+  var scheme = swaggerModel.schemes ? swaggerModel.schemes[0] : 'http';
   return {//endpointModel
     hits: 0,
-    uri: swaggerModel.schemes[0] + '://' + swaggerModel.host + (swaggerModel.basePath || ''),
-    apiDocUrl: swaggerModel.info['x-origin'].url || swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl,
+    uri: scheme + '://' + swaggerModel.host + (swaggerModel.basePath || ''),
+    apiBaseUrl: swaggerModel.info['x-origin'].url || swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl,
     apiDoc: JSON.stringify(swaggerModel),
     apiDocValid: undefined,
     apiVersion: swaggerModel.info.version,
@@ -113,10 +103,6 @@ module.exports.start = function () {
       var allPromises = [];
 
       for (var apiModelKey in apiModels) {
-
-        //console.log('Loading info for ' + apiModelKey);
-
-        var headerModelList = undefined;
         var apiModel = apiModels[apiModelKey];
         apiModel.apiModelKey = apiModelKey;
         var versions = apiModel.versions;
@@ -129,16 +115,13 @@ module.exports.start = function () {
 
         var onAllSwaggerModelLoaded = function (endpointModelList) {
           var apiModel = endpointModelList[0].apiModel;
-          //console.log('finished retrieving ' + endpointModelList.length + ' endpoints for ' + apiModel.apiModelKey);
           var serviceModel = {
             name: apiModel.apiModelKey,
             //hits: 0,
             code: apiModel.apiModelKey,
             latestVersion: apiModel.preferred,
             public: true,
-            //example:false,
             provider: 'apis.guru',
-            defaultHeaders: headerModelList,
             endpoints: endpointModelList
           };
           return serviceModel;

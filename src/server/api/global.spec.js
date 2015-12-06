@@ -29,14 +29,14 @@ before(function (done) {
           {uri: '/api/samples/v101', hits: 4, apiVersion: '1.0.1'},
           {
             uri: '/api/samples/v200',
-            apiDocUrl: '/api/samples/v200/swagger.json',
+            apiBaseUrl: '/api/samples/v200/swagger.json',
             hits: 1,
             apiVersion: '2.0.0'
           },
           {uri: '/api/samples/v203', apiDoc: sampleServiceSwagger, hits: 3, apiVersion: '2.0.3'},
           {
             uri: '/api/samples/v210',
-            apiDocUrl: '/api/samples/v210/swagger.json', hits: 2, apiVersion: '2.1.0'
+            apiBaseUrl: '/api/samples/v210/swagger.json', hits: 2, apiVersion: '2.1.0'
           }
         ]
       }, {

@@ -16,12 +16,18 @@ var EndpointSchema = new Schema({
   //base
   uri: String,
   apiVersion: String,
-  // full swagger path: base + apiDocUrl
+  // full swagger path: base + apiBaseUrl
+  apiBaseUrl: String,
+  // http and/or https
+  apiSchemes: [String],
+  // url to swagger model
   apiDocUrl: String,
   // swagger model
   apiDoc: String,
   apiValid: {type: Boolean, default: false},
-  headers: [HeaderSchema]
+  headers: [HeaderSchema],
+  created: {type: Date, default: Date.now},
+  updated: {type: Date, default: Date.now}
 });
 
 var ServiceSchema = new Schema({
