@@ -6,9 +6,8 @@
 'use strict';
 
 var MainPage = function () {
-  this.heroEl = element(by.css('.hero-unit'));
-  this.h1El = this.heroEl.element(by.css('h1'));
-  this.imgEl = this.heroEl.element(by.css('img'));
+  this.heroEl = element(by.css('.jumbotron'));
+  this.headingEl = this.heroEl.element(by.css('h1'));
 };
 
 module.exports = new MainPage();
