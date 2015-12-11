@@ -43,8 +43,11 @@ function loadSwaggerModel(url, apiModel) {
     }
     else {
       var json = JSON.parse(swaggerContent);
-      if (json) json.apiModel = apiModel;
-      deferred.resolve(json);
+      if (json) {
+        json.apiModel = apiModel;
+        deferred.resolve(json);
+      }
+      else deferred.reject('Error reading ' + url);
     }
   });
   return deferred.promise;
