@@ -37,7 +37,7 @@ describe('EndpointController', function () {
 
       it('should respond with hello world version 2.0.0 using querystring', function (done) {
         request(app)
-          .get('/sampleservice/hello?X-Api-Version=2.0.0')// case sensitive
+          .get('/-/sampleservice/hello?X-Api-Version=2.0.0')// case sensitive
           .expect(200)
           .expect('Content-Type', /json/)
           .expect(respondWithObject)
@@ -49,7 +49,7 @@ describe('EndpointController', function () {
 
       it('should respond with hello world version 2.0.0 using headers', function (done) {
         request(app)
-          .get('/sampleservice/hello')
+          .get('/-/sampleservice/hello')
           .set({
             'x-Api-VeRsion': '2.0.0'// case insensitive
           })
@@ -74,7 +74,7 @@ describe('EndpointController', function () {
         version = version || target;
         it('should respond with version ' + version, function (done) {
           request(app)
-            .get('/sampleservice/hello?X-Api-Version=' + target)
+            .get('/-/sampleservice/hello?X-Api-Version=' + target)
             .set({
               'Echo-Header': 'new'
             })
@@ -97,7 +97,7 @@ describe('EndpointController', function () {
         version = version || target;
         it('should fail with version ' + version, function (done) {
           request(app)
-            .get('/sampleservice/hello?X-Api-Version=' + target)
+            .get('/-/sampleservice/hello?X-Api-Version=' + target)
             .expect(404)
             .end(function (err, res) {
               if (err) return done(err);
@@ -119,7 +119,7 @@ describe('EndpointController', function () {
 
       it('should respond with swagger config 2.0.0 using querystring', function (done) {
         request(app)
-          .get('/sampleservice/swagger.json?X-Api-Version=2.0.0')
+          .get('/-/sampleservice/swagger.json?X-Api-Version=2.0.0')
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res) {
@@ -134,7 +134,7 @@ describe('EndpointController', function () {
             res.body.swagger.should.equal('2.0');
             res.body.info.version.should.equal('2.0.0');
             //res.body.host.should.equal('localhost:9000');
-            res.body.basePath.should.equal('/sampleservice');
+            res.body.basePath.should.equal('/-/sampleservice');
 
             done();
           });
@@ -145,7 +145,7 @@ describe('EndpointController', function () {
         version = version || target;
         it('should respond with version ' + version, function (done) {
           request(app)
-            .get('/sampleservice/swagger.json?X-Api-Version=' + target)
+            .get('/-/sampleservice/swagger.json?X-Api-Version=' + target)
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function (err, res) {
@@ -160,7 +160,7 @@ describe('EndpointController', function () {
               res.body.swagger.should.equal('2.0');
               res.body.info.version.should.equal(version);
               res.body.host.should.not.be.undefined();
-              res.body.basePath.should.equal('/sampleservice');
+              res.body.basePath.should.equal('/-/sampleservice');
 
               done();
             });
@@ -171,7 +171,7 @@ describe('EndpointController', function () {
         version = version || target;
         it('should fail with version ' + version, function (done) {
           request(app)
-            .get('/sampleservice/swagger.json?X-Api-Version=' + target)
+            .get('/-/sampleservice/swagger.json?X-Api-Version=' + target)
             .expect(404)
             .end(function (err, res) {
               if (err) return done(err);
