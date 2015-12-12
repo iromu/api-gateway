@@ -1,5 +1,8 @@
 'use strict';
 
+
+var logger = require('log4js').getLogger('endpoint.controller');
+
 var API_VERSION_KEY = 'X-Api-Version';
 var API_VERSION_KEY_LC = API_VERSION_KEY.toLowerCase();
 
@@ -11,6 +14,7 @@ var service = require('./endpoint.service.js');
 
 exports.handle = function (req, res) {
   var tokenizeUrl = req.originalUrl.split('/');
+  tokenizeUrl.splice(0, 1);
   var code = tokenizeUrl[1];
   tokenizeUrl.splice(0, 2);
   var upstreamPath = tokenizeUrl.join('/');
@@ -19,11 +23,11 @@ exports.handle = function (req, res) {
   var apiVersion = getApiVersionFromRequest(req);
 
   if (upstreamPath && _.contains(upstreamPath, 'swagger.json')) {
-    console.info('Special endpoint swagger.json');
+    logger.info('Special endpoint swagger.json');
     passApiDocument({code: code, apiVersion: apiVersion, host: req.get('host')}, res);
 
   } else {
-    console.info('Proxy pass init');
+    logger.info('Proxy pass init');
     passEndpoint({code: code, apiVersion: apiVersion, host: req.get('host')}, req, upstreamQuerying, upstreamPath, res);
   }
 };
@@ -77,7 +81,7 @@ function passEndpoint(passRequest, req, upstreamQuerystring, upstreamPath, res) 
 };
 
 function handleError(res, err) {
-  console.error(err);
+  logger.error(err);
   try {
     return res.sendStatus(500).json(err);
   }

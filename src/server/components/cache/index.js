@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  var logger = require('log4js').getLogger('cache');
+
   var config = require('../../config/environment/index');
   var redis = require('redis');
   var bluebird = require('bluebird');
@@ -14,7 +16,7 @@
   var redisStore;
 
   var newClient = function (options) {
-    console.log('Redis connecting to ' + redisConf.hostname + ':' + redisConf.port);
+    logger.debug('Redis connecting to ' + redisConf.hostname + ':' + redisConf.port);
     var redisClient = redis.createClient(redisConf.port, redisConf.hostname, options);
     if (redisConf.password) {
       redisClient.auth(redisConf.password, function (err) {
@@ -22,10 +24,10 @@
       });
     }
     redisClient.on('connect', function () {
-      console.log('Redis connected to ' + redisConf.hostname + ':' + redisConf.port);
+      logger.debug('Redis connected to ' + redisConf.hostname + ':' + redisConf.port);
     });
     redisClient.on('error', function (err) {
-      console.log('Redis error ' + err);
+      logger.debug('Redis error ' + err);
     });
     return redisClient;
   };
@@ -54,7 +56,7 @@
       },
       purge: function () {
         return new Promise(function (resolve, reject) {
-          console.log('Purge all keys ' + prefix + '*');
+          logger.debug('Purge all keys ' + prefix + '*');
           client.keys(prefix + '*', function (err, keys) {
             if (keys && keys.length < 1) return reject();
 

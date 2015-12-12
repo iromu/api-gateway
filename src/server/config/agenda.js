@@ -1,5 +1,7 @@
 'use strict';
 
+var logger = require('log4js').getLogger('agenda');
+
 var config = require('./environment/index');
 var Agenda = require('agenda');
 
@@ -12,7 +14,7 @@ module.exports = function (app, socketio) {
     try {
       require('../jobs/topServices.job').define(agenda, socket);
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
 
   });
@@ -20,14 +22,14 @@ module.exports = function (app, socketio) {
   try {
     require('../jobs/apisguru.job').define(agenda);
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 
   agenda.on('start', function (job) {
-    console.log("Job %s starting", job.attrs.name);
+    logger.info("Job %s starting", job.attrs.name);
   });
   agenda.on('complete', function (job) {
-    console.log("Job %s finished", job.attrs.name);
+    logger.info("Job %s finished", job.attrs.name);
   });
   agenda.on('ready', function () {
     if ('development' === env) {
@@ -50,7 +52,7 @@ module.exports = function (app, socketio) {
         process.exit(0);
       });
     } catch (e) {
-      console.error(e);
+      logger.error(e);
       process.exit(0);
     }
   }

@@ -4,6 +4,7 @@
 
 'use strict';
 
+var logger = require('log4js').getLogger('service.socket');
 var Service = require('./service.model.js');
 
 exports.register = function (socket) {
@@ -16,12 +17,12 @@ exports.register = function (socket) {
 };
 
 function onSave(socket, doc, cb) {
-  console.log('this fired after a document was saved');
+  logger.debug('this fired after a document was saved');
   socket.emit('service:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  console.log('this fired after a document was removed');
+  logger.debug('this fired after a document was removed');
   socket.emit('service:remove', doc);
 }
 

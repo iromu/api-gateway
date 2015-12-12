@@ -5,6 +5,8 @@
 
 'use strict';
 
+var logger = require('log4js').getLogger('seed');
+
 var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
@@ -28,7 +30,7 @@ User.find({}).remove(function () {
       email: 'admin@admin.com',
       password: 'admin'
     }, function () {
-      console.log('finished populating users');
+      logger.debug('finished populating users');
     }
   );
 
@@ -122,7 +124,7 @@ Service.find({}).remove(function () {
       ]
     },
     function () {
-      console.log('finished populating services and endpoints');
+      logger.debug('finished populating services and endpoints');
     }
   );
 });

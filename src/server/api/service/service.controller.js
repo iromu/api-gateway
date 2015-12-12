@@ -1,5 +1,8 @@
 'use strict';
 
+
+var logger = require('log4js').getLogger('service.controller');
+
 var _ = require('lodash');
 var Service = require('./service.model.js');
 var BaseController = require('../base.controller');
@@ -206,7 +209,7 @@ exports.destroy = function (req, res) {
 };
 
 function handleError(res, err) {
-  console.error(err);
+  logger.error(err);
   return res.status(500).json(err);
 }
 

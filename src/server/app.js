@@ -4,6 +4,9 @@
 
 'use strict';
 
+
+var logger = require('log4js').getLogger('app');
+
 //add timestamps in front of log messages
 require('console-stamp')(console, '[HH:MM:ss.l]');
 
@@ -24,7 +27,7 @@ var app = express();
 mongoose.connect(config.mongo.uri, config.mongo.options);
 var conn = mongoose.connection;
 
-conn.on('error', console.error.bind(console, 'connection error:'));
+conn.on('error', logger.error.bind(console, 'connection error:'));
 
 conn.once('open', function () {
 
@@ -47,7 +50,7 @@ conn.once('open', function () {
 
 // Start server
   server.listen(config.port, config.ip, function () {
-    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    logger.info('Express server listening on %d, in %s mode', config.port, app.get('env'));
   });
 
   var options = {
@@ -58,7 +61,7 @@ conn.once('open', function () {
   };
 
   require('https').createServer(options, app).listen(config.portSsl, config.ip, function () {
-    console.log('Express secure server listening on %d, in %s mode', config.portSsl, app.get('env'));
+    logger.info('Express secure server listening on %d, in %s mode', config.portSsl, app.get('env'));
   });
 });
 

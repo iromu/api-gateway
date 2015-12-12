@@ -1,5 +1,7 @@
 'use strict';
 
+var logger = require('log4js').getLogger('global.spec');
+
 var fs = require('fs');
 var path = require('path');
 
@@ -8,7 +10,7 @@ var request = require('supertest');
 var Service = require('./service/service.model.js');
 
 before(function (done) {
-  console.log('global setup');
+  logger.debug('global setup');
 
   var swaggerModel = JSON.parse(fs.readFileSync(path.join(__dirname, '../config/seed/sampleservice-swagger.json')));
 
@@ -53,7 +55,7 @@ before(function (done) {
         ]
       },
       function () {
-        console.log('global spec finished populating services and endpoints');
+        logger.debug('global spec finished populating services and endpoints');
         done();
       }
     );

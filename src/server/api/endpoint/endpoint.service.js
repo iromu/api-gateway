@@ -1,5 +1,7 @@
 'use strict';
 
+var logger = require('log4js').getLogger('endpoint.service');
+
 var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
@@ -26,7 +28,7 @@ var optionsResponse = function (apiRequest) {
     //.lean()
     .then(function (service) {
       if (!service || !service.endpoints) {
-        console.warn('Rejected EndpointService.optionsResponse. Not Found');
+        logger.warn('Rejected EndpointService.optionsResponse. Not Found');
         deferred.reject(undefined);
       }
 
@@ -45,10 +47,10 @@ var optionsResponse = function (apiRequest) {
         //response: service.endpoints[0].apiDoc
       };
       options.headers = _.merge(service.endpoints[0].headers, service.defaultHeaders) || [];
-      console.info('Resolved EndpointService.optionsResponse, headers: ' + JSON.stringify(options.headers));
+      logger.info('Resolved EndpointService.optionsResponse, headers: ' + JSON.stringify(options.headers));
       deferred.resolve(options);
     }).catch(function (error) {
-      console.error('Rejected EndpointService.optionsResponse');
+      logger.error('Rejected EndpointService.optionsResponse');
       deferred.reject(error);
     })
     .done();
@@ -60,7 +62,7 @@ var optionsResponse = function (apiRequest) {
 var _getEndpointModel = function (apiRequest) {
 
 
-  console.info('Entering EndpointService._getEndpointModel');
+  logger.info('Entering EndpointService._getEndpointModel');
 
   var deferred = Q.defer();
 
@@ -77,7 +79,7 @@ var _getEndpointModel = function (apiRequest) {
     .then(function (service) {
 
       if (!service || !service.endpoints) {
-        console.warn('Rejected EndpointService._getEndpointModel. Not Found');
+        logger.warn('Rejected EndpointService._getEndpointModel. Not Found');
         deferred.reject(undefined);
       }
 
@@ -89,10 +91,10 @@ var _getEndpointModel = function (apiRequest) {
       });
 
       apiRequest.apiDoc = service.endpoints[0].apiDoc;
-      console.info('Resolved EndpointService._getEndpointModel apiDoc? ' + (apiRequest.apiDoc ? true : false) + ', apiBaseUrl: ' + apiRequest.apiBaseUrl);
+      logger.info('Resolved EndpointService._getEndpointModel apiDoc? ' + (apiRequest.apiDoc ? true : false) + ', apiBaseUrl: ' + apiRequest.apiBaseUrl);
       deferred.resolve(apiRequest);
     }).catch(function (error) {
-      console.error('Rejected EndpointService._getEndpointModel');
+      logger.error('Rejected EndpointService._getEndpointModel');
       deferred.reject(error);
     })
     .done();
@@ -104,7 +106,7 @@ var _getEndpointModel = function (apiRequest) {
  * {code: code, apiVersion: apiVersion}
  * */
 var getApiModel = function (apiRequest) {
-  console.info('Entering EndpointService.getApiModel');
+  logger.info('Entering EndpointService.getApiModel');
   var deferred = Q.defer();
   var populateOptions = {
     path: 'endpoints',
@@ -119,7 +121,7 @@ var getApiModel = function (apiRequest) {
     .then(function (service) {
 
       if (!service || !service.endpoints) {
-        console.warn('Rejected EndpointService.getApiModel. Not Found');
+        logger.warn('Rejected EndpointService.getApiModel. Not Found');
         deferred.reject(undefined);
       }
       /*
@@ -133,11 +135,11 @@ var getApiModel = function (apiRequest) {
       apiRequest.apiDoc = service.endpoints[0].apiDoc;
       apiRequest.apiBaseUrl = service.endpoints[0].apiBaseUrl || (service.endpoints[0].uri + '/swagger.json');
 
-      console.info('Resolved EndpointService.getApiModel ' +
+      logger.info('Resolved EndpointService.getApiModel ' +
         'apiDoc? ' + (apiRequest.apiDoc ? true : false) + ', apiBaseUrl: ' + apiRequest.apiBaseUrl);
       deferred.resolve(apiRequest);
     }).catch(function (error) {
-      console.error('Rejected EndpointService.getApiModel');
+      logger.error('Rejected EndpointService.getApiModel');
       deferred.reject(error);
     })
     .done();
@@ -149,7 +151,7 @@ var checkApiDocModel = function (apiRequest) {
   if (apiRequest.apiDoc) {
     return apiRequest;
   }
-  console.info('Entering EndpointService.checkApiDocModel apiRequest.apiBaseUrl:' + apiRequest.apiBaseUrl);
+  logger.info('Entering EndpointService.checkApiDocModel apiRequest.apiBaseUrl:' + apiRequest.apiBaseUrl);
   return repository.getApiDocModel(apiRequest);
 };
 
@@ -160,30 +162,30 @@ var checkApiDocModel = function (apiRequest) {
  * @returns apiRequest with entry apiVersion
  * */
 var lookupVersionMarkers = function (apiRequest) {
-  console.info('Entering EndpointService.lookupVersionMarkers');
+  logger.info('Entering EndpointService.lookupVersionMarkers');
   var deferred = Q.defer();
   try {
     if (isLatestVersion(apiRequest.apiVersion)) {
-      console.log('Step EndpointService.lookupVersionMarkers. Find lookupVersionMarkers for ' + apiRequest.code);
+      logger.debug('Step EndpointService.lookupVersionMarkers. Find lookupVersionMarkers for ' + apiRequest.code);
       var promise = repository.findOne({code: apiRequest.code});
       promise.then(function (service) {
         if (!service) {
-          console.warn('Rejected EndpointService.lookupVersionMarkers. Not Found');
+          logger.warn('Rejected EndpointService.lookupVersionMarkers. Not Found');
           deferred.reject(undefined);
         }
         apiRequest.apiVersion = service.latestVersion;
-        console.info('Resolved EndpointService.lookupVersionMarkers. apiRequest.apiVersion: ' + apiRequest.apiVersion);
+        logger.info('Resolved EndpointService.lookupVersionMarkers. apiRequest.apiVersion: ' + apiRequest.apiVersion);
         deferred.resolve(apiRequest);
       }).catch(function (error) {
-        console.error('Rejected EndpointService.lookupVersionMarkers');
+        logger.error('Rejected EndpointService.lookupVersionMarkers');
         deferred.reject(error);
       }).done();
     } else {
-      console.info('Resolved EndpointService.lookupVersionMarkers');
+      logger.info('Resolved EndpointService.lookupVersionMarkers');
       deferred.resolve(apiRequest);
     }
   } catch (err) {
-    console.error('Rejected EndpointService.lookupVersionMarkers');
+    logger.error('Rejected EndpointService.lookupVersionMarkers');
     deferred.reject(err);
   }
   return deferred.promise;
@@ -193,7 +195,7 @@ var apiResponse = function (apiRequest) {
   var body = apiRequest.apiDoc;
   // Replace basePath and host to match this running server
   var match = /"basePath" *?: *?".+?" *?,/;
-  body = body.replace(match, '"basePath":"/' + apiRequest.code + '",');
+  body = body.replace(match, '"basePath":"/-/' + apiRequest.code + '",');
 
   var host = apiRequest.host;
   match = /"host" *?: *?".+?" *?,/;
