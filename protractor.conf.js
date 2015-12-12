@@ -4,7 +4,7 @@
 'use strict';
 
 exports.config = {
-  directConnect: true,
+  // directConnect: false,
 
   // The timeout for each script run on the browser. This should be longer
   // than the maximum time your application needs to stabilize between tasks.
@@ -16,7 +16,7 @@ exports.config = {
 
   // If true, only chromedriver will be started, not a standalone selenium.
   // Tests for browsers other than chrome will not run.
-  chromeOnly: true,
+  //chromeOnly: true,
 
   // list of files / patterns to load in the browser
   specs: [
@@ -41,7 +41,33 @@ exports.config = {
   // Jasmine and Cucumber are fully supported as a test and assertion framework.
   // Mocha has limited beta support. You will need to include your own
   // assertion framework if working with mocha.
-  framework: 'jasmine',
+  frameworks: 'jasmine',
+
+  onPrepare: function () {
+
+    // Disable animations so e2e tests run more quickly
+    var disableNgAnimate = function () {
+      angular.module('disableNgAnimate', []).run(function ($animate) {
+        $animate.enabled(false);
+      });
+    };
+
+    browser.addMockModule('disableNgAnimate', disableNgAnimate);
+
+
+    var reporters = require('jasmine-reporters');
+    var capsPromise = browser.getCapabilities();
+    capsPromise.then(function (caps) {
+      var browserName = caps.caps_.browserName.toUpperCase();
+      var browserVersion = caps.caps_.version;
+      var prePendStr = browserName + "-" + browserVersion + "-";
+      jasmine.getEnv().addReporter(new
+        reporters.JUnitXmlReporter('report/e2e-' + prePendStr, true, true));
+    });
+
+
+    browser.driver.manage().window().maximize();
+  },
 
   // ----- Options to be passed to minijasminenode -----
   //
