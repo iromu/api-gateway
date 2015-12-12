@@ -56,7 +56,7 @@ function passApiDocument(apiRequest, res) {
       if (error) {
         return handleError(res, error);
       } else {
-        return res.send(404);
+        return res.sendStatus(404);
       }
     })
     .done();
