@@ -175,7 +175,6 @@ describe('EndpointController', function () {
             .expect(404)
             .end(function (err, res) {
               if (err) return done(err);
-
               done();
             });
         });
