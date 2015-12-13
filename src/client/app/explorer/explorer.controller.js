@@ -15,7 +15,7 @@
     vm.apiVersionSelection = '@latest';
 
     var port = ($location.port() !== 80 && $location.protocol() !== 'https') ? ':' + $location.port() : '';
-    vm.apiRestBaseEndpoint = $location.protocol() + '://' + $location.host() + port + '/';
+    vm.apiRestBaseEndpoint = $location.protocol() + '://' + $location.host() + port + '/-/';
 
     // error management
     vm.swaggerErrorHandler = function (data, status) {
@@ -75,7 +75,7 @@
       var ts = Date.now();
       vm.swaggerUrlDisplay = vm.apiRestBaseEndpoint + vm.codeSelection + '/swagger.json';
       vm.swaggerUrl = vm.swaggerUrlDisplay + '?X-Api-Version=' + vm.apiVersionSelection + '&ts=' + ts;
-      vm.swaggerUrlMin = '/' + vm.codeSelection + '/swagger.json' + '?X-Api-Version=' + vm.apiVersionSelection;
+      vm.swaggerUrlMin = '/-/' + vm.codeSelection + '/swagger.json' + '?X-Api-Version=' + vm.apiVersionSelection;
     }
   }
 }());

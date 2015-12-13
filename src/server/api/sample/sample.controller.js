@@ -1,5 +1,7 @@
 'use strict';
 
+var logger = require('log4js').getLogger('sample.controller');
+
 var fs = require('fs');
 var util = require('util');
 var path = require('path');
@@ -24,8 +26,8 @@ var getApiVersion = function (req, res) {
     apiVersion = apiVersionText.split('').join('.');
   }
 
-  console.log('getApiVersionFromRequest req.url ' + req.url);
-  console.log('getApiVersionFromRequest apiVersion ' + apiVersion);
+  logger.debug('getApiVersionFromRequest req.url ' + req.url);
+  logger.debug('getApiVersionFromRequest apiVersion ' + apiVersion);
   if (allowedApiVersion.indexOf(apiVersion) === -1) {
     return res.send(404);
   }

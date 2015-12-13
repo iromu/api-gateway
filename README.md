@@ -74,10 +74,6 @@ You need a running local mongodb instance. (For OSX, 'brew install mongodb')
     $ grunt test:client
     
 ##### Run e2e with protractor
-
-To setup protractor e2e tests, you must first run
-
-    $ npm run update-webdriver
     
 Run    
 
@@ -109,7 +105,7 @@ Open HTML reports:
     "name": "Sample Service",
     "code": "sampleservice",
     "public": true,
-    "latestVersion": "0.0.1",
+    "latestVersion": "0.0.2",
     "hits": 10,
     "endpoints": [{
         "uri": "http://localhost:9000/api/samples/v1",

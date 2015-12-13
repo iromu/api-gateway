@@ -4,6 +4,8 @@
 
 'use strict';
 
+var logger = require('log4js').getLogger('HTTP');
+
 var express = require('express');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
@@ -38,6 +40,17 @@ module.exports = function (app) {
       secret: config.secrets.session
     }
   ));
+
+
+  app.use(morgan('combined',
+    {
+      stream: {
+        write: function (str) {
+          logger.debug(str);
+        }
+      }
+    }));
+
   if ('production' === env) {
     app.use(errorhandler());
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
@@ -52,7 +65,6 @@ module.exports = function (app) {
     app.use('/bower_components', express.static(path.join(config.root, '../bower_components')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', path.join(config.root, 'client'));
-    app.use(morgan('dev'));
     app.use(errorHandler()); // Error handler - has to be last
   }
 };

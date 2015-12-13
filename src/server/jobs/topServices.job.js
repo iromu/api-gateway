@@ -1,5 +1,6 @@
 'use strict';
 
+var logger = require('log4js').getLogger('job.topService');
 
 var Service = require('../api/service/service.model');
 
@@ -7,7 +8,7 @@ module.exports.define = function (agenda, socket) {
   agenda.define('topServices', function (job, done) {
 
     var handleError = function (e) {
-      console.error(e);
+      logger.error(e);
       job.fail(e);
     };
 
@@ -17,7 +18,7 @@ module.exports.define = function (agenda, socket) {
         //res.setHeader('total', count);
         //return res.status(200).json(data);
         socket.emit('topServices:refresh', data);
-        console.log('End topServices.');
+        logger.debug('End topServices.');
         done();
         //});
       };
@@ -29,7 +30,7 @@ module.exports.define = function (agenda, socket) {
         buildPaginationResponse(data);
       };
 
-      console.log('Start topServices.');
+      logger.debug('Start topServices.');
 
       var MIN_SIZE = 10;
 

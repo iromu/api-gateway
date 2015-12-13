@@ -42,8 +42,8 @@ describe('Controller: ExplorerController', function () {
     expect(vm.codeSelection).toBe('test');
   });
 
-  it('should set apiRestBaseEndpoint scope to http://server/', function () {
-    expect(vm.apiRestBaseEndpoint).toBe('http://server/');
+  it('should set apiRestBaseEndpoint scope to http://server/-/', function () {
+    expect(vm.apiRestBaseEndpoint).toBe('http://server/-/');
   });
 
   it('should emit showExplorer {false} when scope $destroyed', function () {

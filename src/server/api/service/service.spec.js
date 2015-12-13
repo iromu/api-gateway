@@ -51,7 +51,7 @@ describe('GET /api/services', function () {
 
         endpoints.forEach(function (endpoint) {
           if (!('apiVersion' in  endpoint)) throw new Error('endpoint missing apiVersion key');
-          //if (!('apiDocUrl' in endpoint)) throw new Error('endpoint missing apiDocUrl key');
+          //if (!('apiBaseUrl' in endpoint)) throw new Error('endpoint missing apiBaseUrl key');
         });
 
         done();

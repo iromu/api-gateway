@@ -1,5 +1,7 @@
 'use strict';
 
+var logger = require('log4js').getLogger('scraper.apigurus');
+
 var _ = require('lodash');
 var fs = require('fs');
 var path = require('path');
@@ -13,7 +15,7 @@ var Service = require('../../../api/service/service.model.js');
 function saveServices(services) {
   Service.create(services,
     function () {
-      console.log('finished populating ' + services.length + ' services from seed/api-models.json');
+      logger.info('finished populating ' + services.length + ' services from seed/api-models.json');
     }
   );
 }
@@ -27,22 +29,27 @@ function loadSwaggerModel(url, apiModel) {
 
   fs.readFile(swaggerFile, function (err, swaggerContent) {
     if (err || swaggerContent === 'null') {
-      console.log('Loading Swagger from ' + url);
-      pullSwaggerConfigFrom(url).then(function (swaggerContent) {
-        fs.writeFile(swaggerFile, JSON.stringify(swaggerContent), function (err) {
-          if (err) deferred.reject(err);
-          //var json = JSON.parse(swaggerContent);
-          swaggerContent.apiModel = apiModel;
-          deferred.resolve(swaggerContent);
+      logger.info('Loading Swagger from ' + url);
+      pullSwaggerConfigFrom(url)
+        .then(function (swaggerContent) {
+          fs.writeFile(swaggerFile, JSON.stringify(swaggerContent), function (err) {
+            if (err) deferred.reject(err);
+            //var json = JSON.parse(swaggerContent);
+            swaggerContent.apiModel = apiModel;
+            deferred.resolve(swaggerContent);
+          });
+        })
+        .fail(function (error) {
+          logger.error('FAILED ' + error);
         });
-      }).fail(function (error) {
-        console.error('FAILED ' + error);
-      });
     }
     else {
       var json = JSON.parse(swaggerContent);
-      if (json) json.apiModel = apiModel;
-      deferred.resolve(json);
+      if (json) {
+        json.apiModel = apiModel;
+        deferred.resolve(json);
+      }
+      else deferred.reject('Error reading ' + url);
     }
   });
   return deferred.promise;
@@ -61,37 +68,25 @@ function pullSwaggerConfigFrom(url) {
       try {
         var parsed = JSON.parse(body);
       } catch (err) {
-        console.error('pullSwaggerConfigFrom: Unable to parse response as JSON', err);
-        console.error('pullSwaggerConfigFrom: ', body);
+        logger.error('pullSwaggerConfigFrom: Unable to parse response as JSON', err);
+        logger.error('pullSwaggerConfigFrom: ', body);
         deferred.reject(err);
       }
       deferred.resolve(parsed);
     });
   }).on('error', function (err) {
-    console.error('Error with the request:', err.message);
+    logger.error('Error with the request:', err.message);
     deferred.reject(err);
   });
   return deferred.promise;
 }
 
 function onSwaggerModelLoaded(swaggerModel) {
-
-  /*
-   SwaggerParser.validate(parsed)
-   .then(function (api) {
-   console.log("Valid API name: %s, Version: %s", api.info.title, api.info.version);
-   })
-   .catch(function (err) {
-   return err;
-   });
-
-   */
-
-  //console.log(swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl);
+  var scheme = swaggerModel.schemes ? swaggerModel.schemes[0] : 'http';
   return {//endpointModel
     hits: 0,
-    uri: swaggerModel.schemes[0] + '://' + swaggerModel.host + (swaggerModel.basePath || ''),
-    apiDocUrl: swaggerModel.info['x-origin'].url || swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl,
+    uri: scheme + '://' + swaggerModel.host + (swaggerModel.basePath || ''),
+    apiBaseUrl: swaggerModel.info['x-origin'].url || swaggerModel.apiModel.versions[swaggerModel.info.version].swaggerUrl,
     apiDoc: JSON.stringify(swaggerModel),
     apiDocValid: undefined,
     apiVersion: swaggerModel.info.version,
@@ -104,7 +99,7 @@ function onSwaggerModelLoaded(swaggerModel) {
 module.exports.start = function () {
   var deferred = Q.defer();
   Service.find({provider: 'apis.guru'}).remove(function () {
-    console.log('Reading seed/api-models.json');
+    logger.info('Reading seed/api-models.json');
 
     fs.readFile(path.join(__dirname, 'seed/api-models.json'), function (err, content) {
       if (err) throw err;
@@ -113,10 +108,6 @@ module.exports.start = function () {
       var allPromises = [];
 
       for (var apiModelKey in apiModels) {
-
-        //console.log('Loading info for ' + apiModelKey);
-
-        var headerModelList = undefined;
         var apiModel = apiModels[apiModelKey];
         apiModel.apiModelKey = apiModelKey;
         var versions = apiModel.versions;
@@ -129,25 +120,22 @@ module.exports.start = function () {
 
         var onAllSwaggerModelLoaded = function (endpointModelList) {
           var apiModel = endpointModelList[0].apiModel;
-          //console.log('finished retrieving ' + endpointModelList.length + ' endpoints for ' + apiModel.apiModelKey);
           var serviceModel = {
             name: apiModel.apiModelKey,
             //hits: 0,
             code: apiModel.apiModelKey,
             latestVersion: apiModel.preferred,
             public: true,
-            //example:false,
             provider: 'apis.guru',
-            defaultHeaders: headerModelList,
             endpoints: endpointModelList
           };
           return serviceModel;
         };
 
         //Run in parallel
-        allPromises.push(Q.all(loadSwaggerPromises).then(onAllSwaggerModelLoaded, console.error));
+        allPromises.push(Q.all(loadSwaggerPromises).then(onAllSwaggerModelLoaded, logger.error));
 
-        //console.log('Finished registering loading info for ' + apiModelKey);
+        //logger.debug('Finished registering loading info for ' + apiModelKey);
       }
       deferred.resolve(Q.all(allPromises).then(saveServices));
 

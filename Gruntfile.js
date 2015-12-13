@@ -23,7 +23,9 @@ module.exports = function (grunt) {
     plato: 'grunt-plato',
     ssh: 'grunt-ssh-deploy',
     uncss: 'grunt-uncss',
-    sgrelease: 'grunt-sg-release'
+    sgrelease: 'grunt-sg-release',
+    shell: 'grunt-shell-spawn',
+    env: 'grunt-env'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -31,6 +33,26 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+      shell: {
+        xvfb: {
+          command: 'Xvfb :99 -ac -screen 0 1600x1200x24',
+          options: {
+            async: true
+          }
+        }
+      },
+      env: {
+        xvfb: {
+          DISPLAY: ':99'
+        },
+        test: {
+          NODE_ENV: 'test'
+        },
+        prod: {
+          NODE_ENV: 'production'
+        },
+        all: localConfig
+      },
       sg_release: {
         myTarget: {
           options: {
@@ -80,6 +102,14 @@ module.exports = function (grunt) {
             'ln -s /opt/apps/api-gateway/node_modules node_modules && ' +
             'npm --production update && ' +
             'NODE_ENV=production PORT=8085 forever start --uid "api-gateway" -a server/app.js'
+          }
+        },
+        balancer: {
+          options: {
+            host: 'balancer.local',
+            username: 'root',
+            privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa'),
+            after_deploy: 'service nginx restart'
           }
         }
       },
@@ -596,19 +626,6 @@ module.exports = function (grunt) {
       }
       ,
 
-      env: {
-        test: {
-          NODE_ENV: 'test'
-        }
-        ,
-        prod: {
-          NODE_ENV: 'production'
-        }
-        ,
-        all: localConfig
-      }
-      ,
-
       // Compiles Sass to CSS
       sass: {
         server: {
@@ -829,6 +846,25 @@ module.exports = function (grunt) {
         'autoprefixer',
         'express:dev',
         'protractor'
+      ]);
+    }
+
+    else if (target === 'e2e-xvfb') {
+      return grunt.task.run([
+        'clean:server',
+        'ngconstant:development',
+        'env:all',
+        'env:test',
+        'injector:sass',
+        'concurrent:test',
+        'injector',
+        'wiredep',
+        'autoprefixer',
+        'express:dev',
+        'shell:xvfb',
+        'env:xvfb',
+        'protractor',
+        'shell:xvfb:kill'
       ]);
     }
 
