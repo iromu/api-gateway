@@ -108,7 +108,8 @@ module.exports = function (grunt) {
           options: {
             host: 'balancer.local',
             username: 'root',
-            privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa')
+            privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa'),
+            after_deploy: 'service nginx restart'
           }
         }
       },
