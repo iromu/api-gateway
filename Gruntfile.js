@@ -103,6 +103,13 @@ module.exports = function (grunt) {
             'npm --production update && ' +
             'NODE_ENV=production PORT=8085 forever start --uid "api-gateway" -a server/app.js'
           }
+        },
+        balancer: {
+          options: {
+            host: 'balancer.local',
+            username: 'root',
+            privateKey: require('fs').readFileSync(process.env.HOME + '/.ssh/id_rsa')
+          }
         }
       },
       // Project settings
