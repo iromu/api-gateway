@@ -8,6 +8,8 @@ var Service = require('./service.model.js');
 var BaseController = require('../base.controller');
 var repository = require('./service.repository');
 
+var service = require('./service.service');
+
 // Get list of public services
 exports.public = function (req, res) {
 
@@ -45,9 +47,6 @@ exports.index = function (req, res) {
   var columnDefinitionForDetailByCode = {'_id': 0, 'code': 1, 'name': 1, 'hits': 1, 'latestVersion': 1, 'endpoints': 1};
 
   var limit = req.headers.size ? (req.headers.size > MAX_SIZE ? MAX_SIZE : req.headers.size) : MIN_SIZE;
-  var skip = req.headers.page ? (req.headers.page - 1) * limit : 0;
-  var orderBy = req.headers.order ? req.headers.order : 'name asc';
-
   var filter = {};
   var sortBy = {};
 
@@ -63,20 +62,31 @@ exports.index = function (req, res) {
     sortBy.hits = -1;
   }
 
-  Service.paginate(filter, {
+  var request = {
+    filter: filter,
+    options: {
       page: req.headers.page,
       limit: limit,
       columns: columnDefinition,
       sortBy: sortBy,
       lean: true
+    }
+  };
+
+  service.getPage(request)
+    .then(function (response) {
+      res.set(response.headers);
+      return res.send(response.body);
     })
-    .spread(function (data, pageCount, itemCount) {
-      res.setHeader('total', itemCount);
-      return res.status(200).json(data);
+    .catch(function (error) {
+      if (error) {
+        return handleError(res, error);
+      } else {
+        return res.sendStatus(404);
+      }
     })
-    .catch(function (err) {
-      return handleError(res, err);
-    });
+    .done();
+
 };
 
 exports.typeahead = function (req, res) {

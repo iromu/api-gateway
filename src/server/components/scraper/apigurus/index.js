@@ -1,6 +1,7 @@
 'use strict';
 
-var logger = require('log4js').getLogger('scraper.apigurus');
+var log4js = require('log4js');
+var logger = log4js.getLogger('scraper.apigurus');
 
 var _ = require('lodash');
 var fs = require('fs');
@@ -11,7 +12,6 @@ var Q = require('q');
 
 var Service = require('../../../api/service/service.model.js');
 
-
 function saveServices(services) {
   Service.create(services,
     function () {
@@ -19,7 +19,6 @@ function saveServices(services) {
     }
   );
 }
-
 
 function loadSwaggerModel(url, apiModel) {
   var deferred = Q.defer();
@@ -75,10 +74,14 @@ function pullSwaggerConfigFrom(url) {
       deferred.resolve(parsed);
     });
   }).on('error', function (err) {
-    logger.error('Error with the request:', err.message);
+    console.error('Error with the request:', err.message);
     deferred.reject(err);
   });
   return deferred.promise;
+}
+
+function handleError(err) {
+  logger.error(err);
 }
 
 function onSwaggerModelLoaded(swaggerModel) {
@@ -94,7 +97,6 @@ function onSwaggerModelLoaded(swaggerModel) {
     apiModel: swaggerModel.apiModel
   };
 };
-
 
 module.exports.start = function () {
   var deferred = Q.defer();
@@ -133,7 +135,7 @@ module.exports.start = function () {
         };
 
         //Run in parallel
-        allPromises.push(Q.all(loadSwaggerPromises).then(onAllSwaggerModelLoaded, logger.error));
+        allPromises.push(Q.all(loadSwaggerPromises).then(onAllSwaggerModelLoaded, handleError));
 
         //logger.debug('Finished registering loading info for ' + apiModelKey);
       }

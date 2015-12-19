@@ -10,7 +10,7 @@ var _ = require('lodash');
 var querystring = require('querystring');
 var util = require('util');
 var request = require('request');
-var service = require('./endpoint.service.js');
+var service = require('./endpoint.service');
 
 exports.handle = function (req, res) {
   var tokenizeUrl = req.originalUrl.split('/');
@@ -71,13 +71,13 @@ function passEndpoint(passRequest, req, upstreamQuerystring, upstreamPath, res) 
       options.url = options.url + upstreamPath + '?' + querystring.stringify(qs);
       req.pipe(request(options)).pipe(res);
     }).catch(function (error) {
-      if (error) {
-        return handleError(res, error);
-      }
-      if (!error) {
-        return res.sendStatus(404);
-      }
-    }).done();
+    if (error) {
+      return handleError(res, error);
+    }
+    if (!error) {
+      return res.sendStatus(404);
+    }
+  }).done();
 };
 
 function handleError(res, err) {

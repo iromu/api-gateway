@@ -6,8 +6,6 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
 var Service = require('../service/service.model');
-var redisClient = require('../../components/cache/index').getRedisClient();
-var redis = require('redis');
 var Q = require('q');
 var request = require('request');
 

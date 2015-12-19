@@ -6,39 +6,5 @@
   <li class="list-group-item">Do this for all your public (and private) services</li>
 </ul>
 
-<div class="row">
-  <div class="col-md-6"><span class="caret"></span>
-    Stop spreading this in every configuration and source code files
-    <ul class="list-unstyled">
-      <li><kbd>http://my-test.herokuapp.com/api/v1</kbd></li>
-      <li><kbd>http://my-ci.elasticbeanstalk.com/api/v1.0.1</kbd></li>
-      <li><kbd>http://555.234.12.1:8135/api/v1</kbd></li>
-      <li><kbd>http://producti.on/api/</kbd></li>
-    </ul>
-  </div>
-  <div class="col-md-6">Use this for latest version<br/>
-
-    <kbd>http://apiver.io/myservice</kbd><br/>
-
-    Add this magic<br/>
-    <kbd>http://apiver.io/myservice?X-Api-Version=1.1.0</kbd><br/>
-
-    More sugar<br/>
-    <kbd>http://apiver.io/myservice</kbd><br/>
-    <kbd>Header X-Api-Version: 1.1.0</kbd><br/>
-
-    Everyone is welcome<br/>
-    <kbd>http://apiver.io/myservice/1.0.1</kbd><br/>
-    <kbd>http://apiver.io/myservice?{AltCustom-Version-Param}=1.0.1</kbd><br/>
-    <br/>
-
-    Use apiver.io as a service registry for REST<br/>
-    <kbd>GET http://apiver.io/short/1.0.1</kbd><br/>
-    (Passthrough disabled in configuration)<br/>
-    <kbd>HTTP/1.1 302 Found</kbd><br/>
-    <kbd>Location: http://usny2367553.elasticbeanstalk.com/api/v1.0.1</kbd>
-  </div>
-</div>
-
 
 <p>Good bye network nightmare.</p>

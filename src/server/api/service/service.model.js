@@ -1,8 +1,7 @@
 'use strict';
 
-
+var SwaggerParser = require('swagger-parser');
 var mongoosePaginate = require('mongoose-paginate');
-
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
@@ -30,6 +29,30 @@ var EndpointSchema = new Schema({
   updated: {type: Date, default: Date.now}
 });
 
+var validatePresenceOf = function (value) {
+  return value && value.length;
+};
+/**
+ * Pre-save hook
+ */
+/*
+ EndpointSchema
+ .pre('save', function (next) {
+
+ if (validatePresenceOf(this.apiDoc)) {
+ SwaggerParser.validate(this.apiDoc)
+ .then(function (api) {
+ console.log("Valid API name: %s, Version: %s", api.info.title, api.info.version);
+ next();
+ })
+ .catch(function (err) {
+ next(new Error(err));
+ });
+ }
+ else
+ next();
+ });
+ */
 var ServiceSchema = new Schema({
   name: String,
   hits: {type: Number, default: 0},
@@ -42,6 +65,16 @@ var ServiceSchema = new Schema({
   endpoints: [EndpointSchema]
 });
 
+/**
+ * Validations
+ */
+
+// Validate empty email
+ServiceSchema
+  .path('code')
+  .validate(function (code) {
+    return code.length;
+  }, 'Code cannot be blank');
 
 ServiceSchema.plugin(mongoosePaginate);
 

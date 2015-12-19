@@ -10,6 +10,7 @@ module.exports = {
 
   redis: {
     purgeOnLoad: true,
+    prefix: process.env.REDIS_PREFIX || 'ag-dev:',
     uri: process.env.REDIS_URL || 'redis://localhost:6379'
   },
   seedDB: true

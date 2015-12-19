@@ -3,14 +3,15 @@
   'use strict';
 
   angular.module('app', [
-    'app.core',
-    'app.components',
-    'app.explorer',
-    'app.dashboard',
-    'app.admin',
-    'app.account',
-    'app.main'
-  ])
+      'app.core',
+      'app.components',
+      'app.explorer',
+      'app.dashboard',
+      'app.admin',
+      'app.account',
+      'app.learn',
+      'app.main'
+    ])
     .config(configure)
     .factory('authInterceptor', authInterceptor)
     .run(initialize);

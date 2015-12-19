@@ -7,6 +7,9 @@
         'title': 'Home',
         'link': '/'
       }, {
+        'title': 'Learn',
+        'link': '/learn'
+      }, {
         'title': 'Explorer',
         'link': '/explorer'
       }];

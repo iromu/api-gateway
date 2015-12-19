@@ -1,6 +1,7 @@
 'use strict';
 
-var logger = require('log4js').getLogger('job.apigurus');
+var log4js = require('log4js');
+var logger = log4js.getLogger('job.apigurus');
 var scraper = require('../components/scraper/apigurus');
 
 module.exports.define = function (agenda) {
@@ -10,9 +11,11 @@ module.exports.define = function (agenda) {
       scraper
         .start()
         .then(function () {
+          logger.info('End poll apisguru.');
           done();
-        });
-      logger.info('End poll apisguru.');
+        }).fail(function (error) {
+        logger.error('FAILED ' + error);
+      });
     } catch (e) {
       logger.error(e);
       job.fail(e);

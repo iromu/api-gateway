@@ -228,9 +228,12 @@ exports.getApiDocument = function (apiRequest) {
   }
 
   cache.get(cacheKey)
-    .then(function (result) {
-      if (result) {
-        deferred.resolve(JSON.parse(result));
+    .then(function (data) {
+      if (data) {
+        var apiResponse = JSON.parse(data);
+        //Override host value from persistence with current running instance
+        apiResponse.body.host = apiRequest.host;
+        deferred.resolve(apiResponse);
       } else {
         refreshCache();
       }

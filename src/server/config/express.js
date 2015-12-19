@@ -23,10 +23,13 @@ var errorhandler = require('errorhandler');
 
 module.exports = function (app) {
   var env = app.get('env');
+  var morganFormat = 'combined';
 
-  app.set('views', config.root + '/server/views');
+  //app.set('views', config.root + '/server/views');
+
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
+
   app.use(compression());
   app.use(bodyParser.urlencoded({extended: false}));
   app.use(bodyParser.json());
@@ -41,16 +44,6 @@ module.exports = function (app) {
     }
   ));
 
-
-  app.use(morgan('combined',
-    {
-      stream: {
-        write: function (str) {
-          logger.debug(str);
-        }
-      }
-    }));
-
   if ('production' === env) {
     app.use(errorhandler());
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
@@ -59,6 +52,7 @@ module.exports = function (app) {
   }
 
   if ('development' === env || 'test' === env) {
+    morganFormat = 'dev';
     app.use(errorHandler({dumpExceptions: true, showStack: true}));
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '../.tmp')));
@@ -67,4 +61,13 @@ module.exports = function (app) {
     app.set('appPath', path.join(config.root, 'client'));
     app.use(errorHandler()); // Error handler - has to be last
   }
+
+  app.use(morgan(morganFormat,
+    {
+      stream: {
+        write: function (str) {
+          logger.debug(str);
+        }
+      }
+    }));
 };
