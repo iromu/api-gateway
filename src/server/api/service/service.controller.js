@@ -151,7 +151,7 @@ exports.apiVersions = function (req, res) {
         if (!service) {
           return res.send(404);
         }
-        return res.status(200).json(_.pluck(service.endpoints, 'apiVersion'));
+        return res.status(200).json(_.map(service.endpoints, 'apiVersion'));
       });
   }
   else {

@@ -22,7 +22,7 @@ exports.handle = function (req, res) {
   upstreamPath = upstreamPath.split('?')[0];
   var apiVersion = getApiVersionFromRequest(req);
 
-  if (upstreamPath && _.contains(upstreamPath, 'swagger.json')) {
+  if (upstreamPath && _.includes(upstreamPath, 'swagger.json')) {
     logger.info('Special endpoint swagger.json');
     passApiDocument({code: code, apiVersion: apiVersion, host: req.get('host')}, res);
 

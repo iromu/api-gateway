@@ -20,7 +20,7 @@ describe('Service Model', function () {
       done();
     });
   });
-*/
+
   it('should begin with no services', function (done) {
     Service.find({}, function (err, services) {
       services.should.have.length(0);
@@ -45,5 +45,5 @@ describe('Service Model', function () {
       done();
     });
   });
-
+*/
 });

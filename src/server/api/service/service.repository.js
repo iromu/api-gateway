@@ -22,7 +22,7 @@ exports.typeahead = function (codeFilter) {
         if (err) {
           deferred.reject(err);
         } else {
-          var input = _.pluck(data, 'code');
+          var input = _.map(data, 'code');
           deferred.resolve(input);
           var codeArray;
           try {
