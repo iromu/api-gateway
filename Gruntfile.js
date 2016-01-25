@@ -456,10 +456,7 @@ module.exports = function (grunt) {
           space: '  ',
           wrap: '(function () {\n\'use strict\';\n\n {%= __ngModule %}\n}());\n',
           name: 'app.constants',
-          dest: '<%= yeoman.client %>/app/app.constants.js',
-          constants: {
-            CONFIG: localConfig.APP
-          }
+          dest: '<%= yeoman.client %>/app/app.constants.js'
         }
         ,
         // Environment targets

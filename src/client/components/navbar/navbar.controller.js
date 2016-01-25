@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('app.components')
-    .controller('NavbarController', function ($scope, $location, Auth, CONFIG) {
+    .controller('NavbarController', function ($scope, $location, Auth) {
       $scope.menu = [{
         'title': 'Home',
         'link': '/'
@@ -14,7 +14,7 @@
         'link': '/explorer'
       }];
       $scope.brand = {
-        title: (CONFIG && CONFIG.BRAND.TITLE) || 'ApiVer (alpha)'
+        title: 'ApiVer (alpha)'
       };
       $scope.isCollapsed = true;
       $scope.isLoggedIn = Auth.isLoggedIn;
