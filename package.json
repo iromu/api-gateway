@@ -123,11 +123,9 @@
     "start": "node server/app.js",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
+    "build": "grunt build --force",
     "coverage": "istanbul cover -- grunt test",
     "toc": "doctoc --maxlevel 3 README.md"
-  },
-  "publishConfig": {
-    "registry": "http://sinopia.local:4873"
   },
   "repository": {
     "type": "git",
